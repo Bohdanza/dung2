@@ -74,7 +74,7 @@ namespace dung
                         mainArray[x][y] = 2;
 
                         rooms.Add(new Tuple<int, int>(x, y));
-                        roomsRarity.Add(maxRarity-2-(int)(GetDist(x, y, mainArray.Count / 2, mainArray[0].Count / 2) / Math.Max(mainArray.Count / (maxRarity), mainArray[0].Count / (maxRarity))));
+                        roomsRarity.Add(maxRarity - (int)(GetDist(x, y, mainArray.Count / 2, mainArray[0].Count / 2) / Math.Max(mainArray.Count / maxRarity / 2, mainArray[0].Count / maxRarity / 2)));
 
                         c++;
                     }

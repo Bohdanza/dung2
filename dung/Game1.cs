@@ -39,6 +39,9 @@ namespace dung
             _graphics.ApplyChanges();
 
             this.Window.IsBorderless = true;
+
+            _graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();
         }
 
         protected override void Initialize()
@@ -58,7 +61,7 @@ namespace dung
 
             //dungeonSynthesizer.AlternativeGenerate(30, 4, 12);
             //dungeonSynthesizer.Reset(1024, 1024);
-            dungeonSynthesizer.RandomSeeds(4096, 4097, 16, 5);
+            dungeonSynthesizer.RandomSeeds(4096, 4097, 16, 6);
             dungeonSynthesizer.GenerateCorridors(250, 300);
 
             dungeonSynthesizer.ReplaceRooms(13, 13);
