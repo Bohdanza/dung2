@@ -140,8 +140,8 @@ namespace dung
             }
             else
             {
-                    GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.25), tmpdir);
                 spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
+                GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.25), tmpdir);
             }
 
             if (GunInHand.TimeSinceLastShoot < GunInHand.FireSpeed)

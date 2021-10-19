@@ -71,10 +71,17 @@ namespace dung
 
                     if (mainArray[x][y] == 0)
                     {
+                        int q = (int)(GetDist(x, y, mainArray.Count / 2, mainArray[0].Count / 2));
+                        int fs = (mainArray.Count / dist)/maxRarity/2;
+
+                        q /= dist;
+                        q /= fs;
+
                         mainArray[x][y] = 2;
 
                         rooms.Add(new Tuple<int, int>(x, y));
-                        roomsRarity.Add(maxRarity - (int)(GetDist(x, y, mainArray.Count / 2, mainArray[0].Count / 2) / Math.Max(mainArray.Count / maxRarity / 2, mainArray[0].Count / maxRarity / 2)));
+
+                        roomsRarity.Add(maxRarity - q);
 
                         c++;
                     }
@@ -218,6 +225,30 @@ namespace dung
             }
         }
 
+        public void PlaceAround(int aroundWhat, int whatToPlace)
+        {
+            for (int i = 0; i < mainArray.Count; i++)
+            {
+                for (int j = 0; j < mainArray[i].Count; j++)
+                {
+                    if (mainArray[i][j] == aroundWhat)
+                    {
+                        //I know that looks like shit, but 2 next loops will do only 9 operations, so i wrote them instead of 9 long ifs
+                        for (int i1 = i - 1; i1 < i + 2; i1++)
+                        {
+                            for (int j1 = j - 1; j1 < j + 2; j1++)
+                            {
+                                if (i1 >= 0 && j1 >= 0 && i1 < mainArray.Count && j1 < mainArray[i].Count && !(i1 == i && j1 == j))
+                                {
+                                    mainArray[i1][j1] = whatToPlace;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Alternative generation
         /// </summary>
@@ -330,14 +361,14 @@ namespace dung
                     }
                     else if (this.mainArray[i][j] == 2)
                     {
-                        spriteBatch.Draw(texture, new Vector2(i * width  + x, j * height + y), Color.Red);
+                        spriteBatch.Draw(texture, new Vector2(i * width  + x, j * height + y), Color.Black);
                     }
                 }
             }
 
             for (int i = 0; i < rooms.Count; i++)
             { 
-                spriteBatch.Draw(texture2, new Vector2(rooms[i].Item1 * width + x - texture2.Width/2, rooms[i].Item2 * height + y - texture2.Height / 2), new Color(roomsRarity[i] * 0, roomsRarity[i] * 100, roomsRarity[i] * 100));
+                spriteBatch.Draw(texture2, new Vector2(rooms[i].Item1 * width + x - texture2.Width/2, rooms[i].Item2 * height + y - texture2.Height / 2), new Color(roomsRarity[i] * 0, roomsRarity[i] * 50, roomsRarity[i] * 50));
             }
         }
        

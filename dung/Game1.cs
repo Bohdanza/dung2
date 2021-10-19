@@ -40,7 +40,7 @@ namespace dung
 
             this.Window.IsBorderless = true;
 
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
         }
 
@@ -57,17 +57,17 @@ namespace dung
                 
             tmpfont = Content.Load<SpriteFont>("mainfont");
 
-            dungeonSynthesizer = new DungeonSynthesizer(Content, 1024, 1024);
+            //dungeonSynthesizer = new DungeonSynthesizer(Content, 768, 768);
 
             //dungeonSynthesizer.AlternativeGenerate(30, 4, 12);
             //dungeonSynthesizer.Reset(1024, 1024);
-            dungeonSynthesizer.RandomSeeds(4096, 4097, 16, 6);
-            dungeonSynthesizer.GenerateCorridors(250, 300);
+            //dungeonSynthesizer.RandomSeeds(250, 750, 16, 4);
+            //dungeonSynthesizer.GenerateCorridors(250, 300);
 
-            dungeonSynthesizer.ReplaceRooms(13, 13);
-            dungeonSynthesizer.PlaceWalls();
+            //dungeonSynthesizer.ReplaceRooms(13, 13);
+            //dungeonSynthesizer.PlaceWalls();
 
-            //testworld = new GameWorld(Content/*, "info/worlds/world1"*/);
+            testworld = new GameWorld(Content/*, "info/worlds/world1"*/);
         }
 
         protected override void Update(GameTime gameTime)
@@ -75,7 +75,7 @@ namespace dung
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            //testworld.update(Content);
+            testworld.update(Content);
 
             KeyboardState ks = Keyboard.GetState();
 
@@ -86,7 +86,7 @@ namespace dung
 
             if(!IsActive)
             {
-                //testworld.Save("info/worlds/world1");
+                testworld.Save("info/worlds/world1");
             }
 
             base.Update(gameTime);
@@ -98,8 +98,8 @@ namespace dung
 
             _spriteBatch.Begin();
 
-            //testworld.draw(_spriteBatch, tmpx, tmpy);
-            dungeonSynthesizer.Visualize(_spriteBatch, 0, 0, 1, 1);
+            testworld.draw(_spriteBatch, tmpx, tmpy);
+            //dungeonSynthesizer.Visualize(_spriteBatch, 0, 0, 1, 1);
 
             KeyboardState ks = Keyboard.GetState();
 

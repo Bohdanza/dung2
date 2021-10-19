@@ -61,7 +61,10 @@ namespace dung
             //generating main dungeon
             DungeonSynthesizer ds = new DungeonSynthesizer(contentManager, 480, 480);
 
-            ds.AlternativeGenerate(30, 5, 12);
+            ds.RandomSeeds(0, 150, 16, 4);
+            ds.GenerateCorridors(250, 300);
+            ds.ReplaceRooms(13, 13);
+
             ds.PlaceWalls();
 
             List<List<int>> tmplist = ds.GetList();
@@ -71,7 +74,7 @@ namespace dung
             for (int i = 0; i < tmplist.Count; i++)
             {
                 List<Block> tmpblock = new List<Block>();
-
+                    
                 for (int j = 0; j < tmplist[i].Count; j++)
                 {
                     if (tmplist[i][j] == 1)
@@ -342,7 +345,7 @@ namespace dung
                     {
                         if (blocks[i][j].type != 0)
                         {
-                            blocks[i][j].draw(spriteBatch, drawx + i * BlockWidth, drawy + j * blockDrawY - blocks[i][j].textures[0].Height + blockDrawY);
+                            blocks[i][j].draw(spriteBatch, drawx + i * BlockWidth, drawy + j * blockDrawY - blocks[i][j].textures[0].Height + blockDrawY, this);
                         }
                     }
                 }

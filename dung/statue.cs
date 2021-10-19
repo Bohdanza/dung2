@@ -11,11 +11,11 @@ using System.Runtime.InteropServices;
 
 namespace dung
 {
-   /* public class Statue : Block
+    public class Door
     {
-        public Statue(int type, int x, int y, ContentManager contentManager)
+        public Door(int type, int x, int y, ContentManager contentManager, List<Block> controlledBlocks)
         {
 
         }
-    }*/
+    }
 }

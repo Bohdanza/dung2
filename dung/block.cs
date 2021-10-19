@@ -90,14 +90,21 @@ namespace dung
             }
         }
 
-        public virtual void update(ContentManager contentManager)
+        public virtual void update(ContentManager contentManager, GameWorld gameWorld)
         {
             updateTexture(contentManager, false);
         }
 
-        public virtual void draw(SpriteBatch spriteBatch, int x, int y)
+        public virtual void draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
-            spriteBatch.Draw(textures[texturePhase], new Vector2(x, y), Color.White);
+            if (Math.Abs(gameWorld.referenceToHero.X - this.x) < 1 && y > 540 - gameWorld.referenceToHero.Textures[0].Height && y < 540)
+            {
+                spriteBatch.Draw(textures[texturePhase], new Vector2(x, y), new Color(255, 255, 255, 25));
+            }
+            else
+            {
+                spriteBatch.Draw(textures[texturePhase], new Vector2(x, y), Color.White);
+            }
         }
     }
 }
