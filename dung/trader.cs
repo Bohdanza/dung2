@@ -18,5 +18,15 @@ namespace dung
         public override string Action { get => base.Action; protected set => base.Action = value; }
         public override List<string> phrases { get => base.phrases; protected set => base.phrases = value; }
         public List<Tuple<Item, Item>> ItemsForChange { get; protected set; }
+
+        public Trader(ContentManager contentManager, double x, double y, int type)
+        {
+            
+        }
+
+        public Trader(ContentManager contentManager, double x, double y, Trader sample)
+        {
+            
+        }
     }
 }

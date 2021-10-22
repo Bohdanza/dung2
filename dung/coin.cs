@@ -61,5 +61,19 @@ namespace dung
         {
             return "Coin";
         }
+
+        public override List<string> SaveList()
+        {
+            List<string> tmplist = new List<string>();
+
+            tmplist.Add("Coin");
+
+            tmplist.Add(X.ToString());
+            tmplist.Add(Y.ToString());
+
+            tmplist.Add(Type.ToString());
+
+            return tmplist;
+        }
     }
 }

@@ -23,6 +23,8 @@ namespace dung
         public List<Block> sampleBlocks { get; private set; } = new List<Block>();
         public List<Ghost> sampleGhosts { get; private set; } = new List<Ghost>();
         public List<Gun> sampleGuns { get; private set; } = new List<Gun>();
+        public List<Coin> sampleCoins { get; private set; } = new List<Coin>();
+
         private SoundEffect backgroundSong;
         private Texture2D cursor;
 
@@ -57,6 +59,8 @@ namespace dung
             {
                 sampleGuns.Add(new Gun(contentManager, i, 0, 0));
             }
+
+            sampleCoins.Add(new Coin(contentManager, 0, 0, 8));
 
             //generating main dungeon
             DungeonSynthesizer ds = new DungeonSynthesizer(contentManager, 480, 480);
@@ -165,7 +169,7 @@ namespace dung
 
                     if (tmptype < tmprar.Count && tmprar[tmptype] < sampleGuns.Count)
                     {
-                        insertGun(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 17, 17, tmprar[tmptype]);
+                        insertGun(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 13, 13, tmprar[tmptype]);
                     }
                 }
             }
@@ -252,7 +256,7 @@ namespace dung
             {
                 if (read[i].Trim('\n').Trim('\r') == "Hero")
                 {
-                    referenceToHero = AddObject(new Hero(contentManager, read, i + 1, sampleGuns));
+                    referenceToHero = AddObject(new Hero(contentManager, read, i + 1, sampleGuns, sampleCoins));
                 }
                 else if (read[i].Trim('\n').Trim('\r') == "Ghost")
                 {

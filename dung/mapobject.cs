@@ -67,5 +67,11 @@ namespace dung
 
             return tmplist;
         }
+
+        public virtual void Move(double x, double y)
+        {
+            X += x;
+            Y += y;
+        }
     }
 }

@@ -24,6 +24,8 @@ namespace dung
         public override double Radius { get; protected set; }
         public override int HP { get; protected set; }
 
+        private double pickUpRadius=3;
+
         /// <summary>
         /// used to avoid hp texture type each time. Try to cut it out, then you'll understand
         /// </summary>
@@ -36,6 +38,7 @@ namespace dung
         public Gun GunInHand;
 
         private int timeSinceLastAction = 0;
+        public List<Coin> coins { get; protected set; }
 
         public Hero(ContentManager contentManager, double x, double y)
         {
@@ -59,6 +62,8 @@ namespace dung
 
             GunInHand = new Gun(contentManager, 0, 0, 0);
 
+            coins = new List<Coin>();
+
             HpTextures = new List<int>();
 
             stabilizeHpList();
@@ -66,7 +71,7 @@ namespace dung
             UpdateTextures(contentManager, true);
         }
 
-        public Hero(ContentManager contentManager, List<string> strList, int beginning, List<Gun> sampleGuns)
+        public Hero(ContentManager contentManager, List<string> strList, int beginning, List<Gun> sampleGuns, List<Coin> sampleCoins)
         {
             Type = Int32.Parse(strList[beginning]);
 
@@ -87,6 +92,8 @@ namespace dung
             }
 
             hpFont = contentManager.Load<SpriteFont>("hpfont");
+
+            coins = new List<Coin>();
 
             HpTextures = new List<int>();
 
@@ -143,7 +150,7 @@ namespace dung
                 spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
                 GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.25), tmpdir);
             }
-
+            
             if (GunInHand.TimeSinceLastShoot < GunInHand.FireSpeed)
             {
                 spriteBatch.Draw(reloadTexture, new Vector2(x - reloadTexture.Width / 2, (int)(y - Textures[texturesPhase].Height - reloadTexture.Height * 1.2)), Color.White);
@@ -223,7 +230,25 @@ namespace dung
                     }
                 }
             }
-            
+
+            MapObject closestCoin = gameWorld.GetClosestObject(X, Y, myIndex, "Coin");
+
+            if (gameWorld.GetDist(X, Y, closestCoin.X, closestCoin.Y) < pickUpRadius)
+            {
+                double xTo = X - closestCoin.X;
+                double yTo = Y - closestCoin.Y;
+
+                double unknownValue = 1 / (xTo + yTo);
+
+                closestCoin.Move(speed * 3 * unknownValue * Math.Abs(xTo), speed * 3 * unknownValue * Math.Abs(yTo));
+
+                if (gameWorld.GetDist(X, Y, closestCoin.X, closestCoin.Y) < speed * 3)
+                {
+                    gameWorld.RemoveObject(closestCoin);
+                    coins.Add((Coin)closestCoin);
+                }
+            }
+
             GunInHand.Update(contentManager, gameWorld, myIndex);
 
             var mouseState = Mouse.GetState();
@@ -235,7 +260,7 @@ namespace dung
                     double tmpdir = Math.Atan2(540 - (int)(Textures[texturesPhase].Height * 0.25) - mouseState.Y, 960 - mouseState.X);
 
                     tmpdir += (float)Math.PI;
-
+                    
                     tmpdir %= (float)(Math.PI * 2);
 
                     GunInHand.ShootInDirection(gameWorld, contentManager, X, Y - ((double)Textures[texturesPhase].Height * 0.25 / GameWorld.blockDrawY), tmpdir, Radius);
