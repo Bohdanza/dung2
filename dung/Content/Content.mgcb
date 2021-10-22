@@ -5965,6 +5965,18 @@
 /processorParam:TextureFormat=Color
 /build:8bullet0.png
 
+#begin 8item0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:8item0.png
+
 #begin 9bullet0.png
 /importer:TextureImporter
 /processor:TextureProcessor

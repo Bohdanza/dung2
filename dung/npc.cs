@@ -11,21 +11,46 @@ using System.Runtime.InteropServices;
 
 namespace dung
 {
-    public class Npc:MapObject
+    public abstract class Npc:MapObject
     {
+        public override int Type { get => base.Type; protected set => base.Type = value; }
         public override double X { get => base.X; protected set => base.X = value; }
         public override double Y { get => base.Y; protected set => base.Y = value; }
         public override bool alive { get => base.alive; protected set => base.alive = value; }
         public override List<Texture2D> Textures { get => base.Textures; protected set => base.Textures = value; }
-        public List<string> phrases { get; protected set; }
+        public override double Radius { get => base.Radius; protected set => base.Radius = value; }
+        public override string Action { get => base.Action; protected set => base.Action = value; }
+        public virtual List<string> phrases { get; protected set; }
+        public virtual int currentPhrase { get; protected set; }
+        protected int texturePhase { get; set; }
 
-        public Npc()
+        protected virtual void UpdateTexture(ContentManager contentManager, bool reload)
         {
-            
+            if (reload)
+            {
+                Textures = new List<Texture2D>();
+
+                texturePhase = 0;
+
+                while (File.Exists("Content/" + Type.ToString() + "npc_" + Action + "_" + texturePhase.ToString() + ".xnb"))
+                {
+                    Textures.Add(contentManager.Load<Texture2D>(Type.ToString() + "npc_" + Action + "_" + texturePhase.ToString()));
+
+                    texturePhase++;
+                }
+
+                texturePhase = 0;
+            }
+            else
+            {
+                texturePhase++;
+
+                texturePhase %= Textures.Count;
+            }
         }
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld, int myIndex)
-        {
+        { 
             base.Update(contentManager, gameWorld, myIndex);
         }
 

@@ -30,6 +30,11 @@ namespace dung
         protected double viewRadius { get; set; }
 
         /// <summary>
+        /// item is item, 2 ints are the min and the max number
+        /// </summary>
+        public List<Tuple<Item, int, int>> Loot { get; protected set; }
+
+        /// <summary>
         /// with file reading, hp to max
         /// </summary>
         /// <param name="contentManager"></param>
@@ -70,6 +75,20 @@ namespace dung
                 attackSpeed = Int32.Parse(tmplist[3].Trim('\r'));
 
                 viewRadius = double.Parse(tmplist[4].Trim('\r'));
+
+                //6=5+1
+                int tmpn = Int32.Parse(tmplist[5]) * 4 + 6;
+                int currentString;
+
+                Loot = new List<Tuple<Item, int, int>>();
+
+                for (currentString = 6; currentString < tmpn; currentString += 4)
+                {
+                    if (tmplist[currentString].Trim('\n').Trim('\r') == "coin")
+                    {
+                        Loot.Add(new Tuple<Item, int, int>(new Coin(contentManager, 0, 0, Int32.Parse(tmplist[currentString + 1])), Int32.Parse(tmplist[currentString + 2]), Int32.Parse(tmplist[currentString + 3])));
+                    }
+                }
             }
             
             updateTexture(contentManager, true);
@@ -113,6 +132,8 @@ namespace dung
 
             viewRadius = sampleGhost.viewRadius;
 
+            Loot = sampleGhost.Loot;
+
             updateTexture(contentManager, true);
         }
 
@@ -145,6 +166,8 @@ namespace dung
             attackSpeed = samples[Type].attackSpeed;
 
             viewRadius = samples[Type].viewRadius;
+
+            Loot = samples[Type].Loot;
 
             updateTexture(contentManager, true);
         }
@@ -278,6 +301,23 @@ namespace dung
                     timeSinceLastAttack = 0;
 
                     gameWorld.referenceToHero.Attack(1);
+                }
+            }
+
+            //to check if it has already dropped
+            if (Action == "di" && texturePhase == Textures.Count-1)
+            {
+                foreach(var currentItem in Loot)
+                {
+                    int c = rnd.Next(currentItem.Item2, currentItem.Item2);
+
+                    if (currentItem.Item1.GetTypeAsString() == "Coin")
+                    {
+                        for (int i = 0; i < c; i++)
+                        {
+                            gameWorld.AddObject(new Coin(contentManager, this.X - 0.5 + rnd.NextDouble(), this.Y - 0.5 + rnd.NextDouble(), (Coin)currentItem.Item1));
+                        }
+                    }
                 }
             }
 
