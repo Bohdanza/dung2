@@ -97,14 +97,7 @@ namespace dung
 
         public virtual void draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
-            if (Math.Abs(gameWorld.referenceToHero.X - this.x) < 1 && y > 540 - gameWorld.referenceToHero.Textures[0].Height && y < 540)
-            {
-                spriteBatch.Draw(textures[texturePhase], new Vector2(x, y), new Color(255, 255, 255, 25));
-            }
-            else
-            {
-                spriteBatch.Draw(textures[texturePhase], new Vector2(x, y), Color.White);
-            }
+            spriteBatch.Draw(textures[texturePhase], new Vector2(x, y), Color.White);
         }
     }
 }

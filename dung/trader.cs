@@ -21,7 +21,17 @@ namespace dung
 
         public Trader(ContentManager contentManager, double x, double y, int type)
         {
-            
+            //given shit
+            X = x;
+            Y = y;
+
+            Type = type;
+
+            //reading shit from file
+            using (StreamReader sr = new StreamReader("info/global/npc/traders/"+Type.ToString()+"/m.info"))
+            {
+     //           List<string> tmplist
+            }
         }
 
         public Trader(ContentManager contentManager, double x, double y, Trader sample)

@@ -39,6 +39,7 @@ namespace dung
 
         private int timeSinceLastAction = 0;
         public List<Coin> coins { get; protected set; }
+        public int CoinsSum { get; protected set; } = 0;
 
         public Hero(ContentManager contentManager, double x, double y)
         {
@@ -173,6 +174,7 @@ namespace dung
             }
 
             spriteBatch.DrawString(hpFont, HP.ToString(), new Vector2(15, (int)(35 + hpHeartTextures[0].Height * 1.3)), Color.White);
+            spriteBatch.DrawString(hpFont, CoinsSum.ToString(), new Vector2(1900 - hpFont.MeasureString(CoinsSum.ToString()).X, 15), Color.White);
         }
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld, int myIndex)
@@ -238,14 +240,16 @@ namespace dung
                 double xTo = X - closestCoin.X;
                 double yTo = Y - closestCoin.Y;
 
-                double unknownValue = 1 / (xTo + yTo);
+                float dir = (float)Math.Atan2(yTo, xTo);
 
-                closestCoin.Move(speed * 3 * unknownValue * Math.Abs(xTo), speed * 3 * unknownValue * Math.Abs(yTo));
+                closestCoin.Move(dir, speed * 3);
 
                 if (gameWorld.GetDist(X, Y, closestCoin.X, closestCoin.Y) < speed * 3)
                 {
                     gameWorld.RemoveObject(closestCoin);
                     coins.Add((Coin)closestCoin);
+
+                    CoinsSum += ((Coin)closestCoin).value;
                 }
             }
 

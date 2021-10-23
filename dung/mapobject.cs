@@ -73,5 +73,11 @@ namespace dung
             X += x;
             Y += y;
         }
+
+        public virtual void Move(float direction, double speed)
+        {
+            X += Math.Cos(direction) * speed;
+            Y += Math.Sin(direction) * speed;
+        }
     }
 }
