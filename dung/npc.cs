@@ -20,8 +20,6 @@ namespace dung
         public override List<Texture2D> Textures { get => base.Textures; protected set => base.Textures = value; }
         public override double Radius { get => base.Radius; protected set => base.Radius = value; }
         public override string Action { get => base.Action; protected set => base.Action = value; }
-        public virtual List<string> phrases { get; protected set; }
-        public virtual int currentPhrase { get; protected set; }
         protected int texturePhase { get; set; }
 
         protected virtual void UpdateTexture(ContentManager contentManager, bool reload)
@@ -38,7 +36,7 @@ namespace dung
 
                     texturePhase++;
                 }
-
+                
                 texturePhase = 0;
             }
             else
@@ -56,7 +54,7 @@ namespace dung
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y)
         {
-            
+            spriteBatch.Draw(Textures[texturePhase], new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height), Color.White);
         }
 
         public override string GetTypeAsString()

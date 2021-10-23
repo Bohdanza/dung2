@@ -24,6 +24,7 @@ namespace dung
         public List<Ghost> sampleGhosts { get; private set; } = new List<Ghost>();
         public List<Gun> sampleGuns { get; private set; } = new List<Gun>();
         public List<Coin> sampleCoins { get; private set; } = new List<Coin>();
+        public List<Trader> sampleTraders { get; private set; } = new List<Trader>();
 
         private SoundEffect backgroundSong;
         private Texture2D cursor;
@@ -62,10 +63,15 @@ namespace dung
 
             sampleCoins.Add(new Coin(contentManager, 0, 0, 8));
 
+            for (int i = 0; i < 1; i++)
+            {
+                sampleTraders.Add(new Trader(contentManager, 0, 0, i));
+            }
+
             //generating main dungeon
             DungeonSynthesizer ds = new DungeonSynthesizer(contentManager, 480, 480);
 
-            ds.RandomSeeds(0, 150, 16, 4);
+            ds.RandomSeeds(150, 250, 16, 4);
             ds.GenerateCorridors(250, 300);
             ds.ReplaceRooms(13, 13);
 
@@ -100,7 +106,7 @@ namespace dung
             //generating mobs, loot etc.
             List<int> specialRooms = new List<int>();
 
-            while(specialRooms.Count<2)
+            while(specialRooms.Count<1)
             {
                 int tmpi = rnd.Next(0, ds.rooms.Count);
 
@@ -118,7 +124,13 @@ namespace dung
 
             for (int i = 0; i < ds.rooms.Count; i++)
             {
-                if(!specialRooms.Contains(i))
+                int tmpspecial = rnd.Next(100);
+
+                if (tmpspecial <= 100)
+                {
+                    AddObject(new Trader(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, sampleTraders[0]));
+                }
+                else if(!specialRooms.Contains(i))
                 {
                     insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 12, 12, "", 7, 5, 12);
 

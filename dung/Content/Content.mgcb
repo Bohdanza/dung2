@@ -2965,6 +2965,18 @@
 /processorParam:TextureFormat=Color
 /build:0mob_wa_w9.png
 
+#begin 0npc_id_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:0npc_id_0.png
+
 #begin 10bullet0.png
 /importer:TextureImporter
 /processor:TextureProcessor

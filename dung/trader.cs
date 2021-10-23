@@ -15,8 +15,7 @@ namespace dung
     {
         public override double X { get => base.X; protected set => base.X = value; }
         public override double Y { get => base.Y; protected set => base.Y = value; }
-        public override string Action { get => base.Action; protected set => base.Action = value; }
-        public override List<string> phrases { get => base.phrases; protected set => base.phrases = value; }
+        public override string Action { get; protected set; } = "id";
         public List<Tuple<Item, Item>> ItemsForChange { get; protected set; }
 
         public Trader(ContentManager contentManager, double x, double y, int type)
@@ -28,15 +27,35 @@ namespace dung
             Type = type;
 
             //reading shit from file
-            using (StreamReader sr = new StreamReader("info/global/npc/traders/"+Type.ToString()+"/m.info"))
+            using (StreamReader sr = new StreamReader("info/global/npc/traders/" + Type.ToString() + "/m.info"))
             {
-     //           List<string> tmplist
+                List<string> tmplist = sr.ReadToEnd().Split('\n').ToList();
+
+                int n = Int32.Parse(tmplist[0]);
             }
+
+            base.UpdateTexture(contentManager, true);
         }
 
         public Trader(ContentManager contentManager, double x, double y, Trader sample)
         {
-            
+            //given shit
+            X = x;
+            Y = y;
+
+            Type = sample.Type;
+
+            base.UpdateTexture(contentManager, true);
+        }
+
+        public override void Update(ContentManager contentManager, GameWorld gameWorld, int myIndex)
+        {
+            UpdateTexture(contentManager, false);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        {
+            base.Draw(spriteBatch, x, y);
         }
     }
 }
