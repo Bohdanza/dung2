@@ -124,64 +124,67 @@ namespace dung
 
             for (int i = 0; i < ds.rooms.Count; i++)
             {
-                int tmpspecial = rnd.Next(100);
-
-                if (tmpspecial <= 100)
+                if (!specialRooms.Contains(i))
                 {
-                    AddObject(new Trader(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, sampleTraders[0]));
-                }
-                else if(!specialRooms.Contains(i))
-                {
-                    insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 12, 12, "", 7, 5, 12);
+                    int tmpspecial = rnd.Next(100);
 
-                    int roomDif = ds.roomsRarity[i]; 
-
-                    if (roomDif == 0)
+                    if (tmpspecial <= 70)
                     {
-                        insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(3, 5), 0);
-                    }
-                    else if (roomDif == 1)
-                    {
-                        insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(5, 8), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(2, 5), 1);
-                    }
-                    else if(roomDif == 2)
-                    {
-                        insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(8, 12), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(5, 8), 1);
-                    }
-                    else if(roomDif == 3)
-                    {
-                        insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(11, 16), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(5, 10), 1);
-                        //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(1, 3), 2);
+                        AddObject(new Trader(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, sampleTraders[0]));
                     }
                     else
                     {
-                        roomDif = 4;
+                        insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 12, 12, "", 7, 5, 12);
 
-                        insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(12, 21), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(7, 14), 1);
-                        //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(2, 5), 2);
-                    }
+                        int roomDif = ds.roomsRarity[i];
 
-                    int tmptype = 0;
-
-                    List<int> tmprar = new List<int>();
-
-                    for (int tmprarc = 0; tmprarc < sampleGuns.Count; tmprarc++)
-                    {
-                        if (sampleGuns[tmprarc].rarity == roomDif)
+                        if (roomDif == 0)
                         {
-                            tmprar.Add(tmprarc);
+                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(3, 5), 0);
                         }
-                    }
+                        else if (roomDif == 1)
+                        {
+                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(5, 8), 0);
+                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(2, 5), 1);
+                        }
+                        else if (roomDif == 2)
+                        {
+                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(8, 12), 0);
+                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(5, 8), 1);
+                        }
+                        else if (roomDif == 3)
+                        {
+                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(11, 16), 0);
+                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(5, 10), 1);
+                            //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(1, 3), 2);
+                        }
+                        else
+                        {
+                            roomDif = 4;
 
-                    tmptype = rnd.Next(0, tmprar.Count);
+                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(12, 21), 0);
+                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(7, 14), 1);
+                            //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(2, 5), 2);
+                        }
 
-                    if (tmptype < tmprar.Count && tmprar[tmptype] < sampleGuns.Count)
-                    {
-                        insertGun(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 13, 13, tmprar[tmptype]);
+                        int tmptype = 0;
+
+                        List<int> tmprar = new List<int>();
+
+                        for (int tmprarc = 0; tmprarc < sampleGuns.Count; tmprarc++)
+                        {
+                            if (sampleGuns[tmprarc].rarity == roomDif)
+                            {
+                                tmprar.Add(tmprarc);
+                            }
+                        }
+
+                        tmptype = rnd.Next(0, tmprar.Count);
+
+                        if (tmptype < tmprar.Count && tmprar[tmptype] < sampleGuns.Count)
+                        {
+                            insertGun(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 13, 13, tmprar[tmptype]);
+                        }
                     }
                 }
             }
