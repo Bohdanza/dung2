@@ -380,5 +380,10 @@ namespace dung
 
             return tmplist;
         }
+
+        public override MapObject Clone(ContentManager contentManager)
+        {
+            return new Ghost(contentManager, Type, X, Y, WorkingX, WorkingY, this);
+        }
     }
 }

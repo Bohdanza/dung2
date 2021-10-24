@@ -39,7 +39,7 @@ namespace dung
 
         private int timeSinceLastAction = 0;
         public List<Coin> coins { get; protected set; }
-        public int CoinsSum { get; protected set; } = 0;
+        public int CoinsSum { get; set; } = 0;
 
         public Hero(ContentManager contentManager, double x, double y)
         {
@@ -61,7 +61,7 @@ namespace dung
 
             reloadTexture = contentManager.Load<Texture2D>("reloadfull");
 
-            GunInHand = new Gun(contentManager, 0, 0, 0);
+            GunInHand = new Gun(contentManager, 9, 0, 0);
 
             coins = new List<Coin>();
 
@@ -235,21 +235,24 @@ namespace dung
 
             MapObject closestCoin = gameWorld.GetClosestObject(X, Y, myIndex, "Coin");
 
-            if (gameWorld.GetDist(X, Y, closestCoin.X, closestCoin.Y) < pickUpRadius)
+            if (closestCoin != null && closestCoin.GetTypeAsString() == "Coin")
             {
-                double xTo = X - closestCoin.X;
-                double yTo = Y - closestCoin.Y;
-
-                float dir = (float)Math.Atan2(yTo, xTo);
-
-                closestCoin.Move(dir, speed * 3);
-
-                if (gameWorld.GetDist(X, Y, closestCoin.X, closestCoin.Y) < speed * 3)
+                if (gameWorld.GetDist(X, Y, closestCoin.X, closestCoin.Y) < pickUpRadius)
                 {
-                    gameWorld.RemoveObject(closestCoin);
-                    coins.Add((Coin)closestCoin);
+                    double xTo = X - closestCoin.X;
+                    double yTo = Y - closestCoin.Y;
 
-                    CoinsSum += ((Coin)closestCoin).value;
+                    float dir = (float)Math.Atan2(yTo, xTo);
+
+                    closestCoin.Move(dir, speed * 3);
+
+                    if (gameWorld.GetDist(X, Y, closestCoin.X, closestCoin.Y) < speed * 3)
+                    {
+                        gameWorld.RemoveObject(closestCoin);
+                        coins.Add((Coin)closestCoin);
+
+                        CoinsSum += ((Coin)closestCoin).value;
+                    }
                 }
             }
 
@@ -347,6 +350,16 @@ namespace dung
             }
             
             return tmplist;
+        }
+
+        /// <summary>
+        /// DONT USE IT! HERO CANT BE CLONED!
+        /// </summary>
+        /// <param name="contentManager"></param>
+        /// <returns></returns>
+        public override MapObject Clone(ContentManager contentManager)
+        {
+            throw new Exception("Hero cant be cloned! You didnt read the description, did you?");
         }
     }
 }

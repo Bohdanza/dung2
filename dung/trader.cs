@@ -52,11 +52,11 @@ namespace dung
 
                     Item item1 = null;
 
-                    if (classType1 == "Coin")
+                    if (classType1.Trim('\n').Trim('\r') == "Coin")
                     {
                         item1 = new Coin(contentManager, 0, 0, type1);
                     }
-                    else if (classType1 == "Gun")
+                    else if (classType1.Trim('\n').Trim('\r') == "Gun")
                     {
                         item1 = new Gun(contentManager, type1, 0, 0);
                     }
@@ -87,15 +87,31 @@ namespace dung
         {
             timeSinceLastShow++;
 
+            var rnd = new Random();
             var ks = Keyboard.GetState();
 
-            if (timeSinceLastShow >= 40)
+            if (timeSinceLastShow >= 10)
             {
+                timeSinceLastShow = 0;
+
                 if (gameWorld.GetDist(gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y, X, Y) <= this.Radius + gameWorld.referenceToHero.Radius + 1)
                 {
                     if(ks.IsKeyDown(Keys.Space))
                     {
                         currentOffer++;
+
+                        currentOffer %= ItemsForChange.Count;
+                    }
+                    else if(ks.IsKeyDown(Keys.Enter))
+                    {
+                        if (((Hero)gameWorld.referenceToHero).CoinsSum >= ItemsForChange[currentOffer].Item1)
+                        {
+                            ((Hero)gameWorld.referenceToHero).CoinsSum -= ItemsForChange[currentOffer].Item1;
+
+                            var reference = gameWorld.AddObject(ItemsForChange[currentOffer].Item2.Item1.Clone(contentManager));
+
+                            reference.ChangeCoords(X, Y + 1.5);
+                        }
                     }
                 }
             }
@@ -107,7 +123,19 @@ namespace dung
         {
             base.Draw(spriteBatch, x, y);
 
-            spriteBatch.DrawString(hpFont, currentOffer.ToString(), new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height * 1.1f), Color.White);
+            spriteBatch.DrawString(hpFont, ItemsForChange[currentOffer].Item1.ToString(), new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height - 25), Color.White);
+
+            if (ItemsForChange[currentOffer].Item2.Item2 > 1)
+            {
+                spriteBatch.DrawString(hpFont, ItemsForChange[currentOffer].Item2.ToString(), new Vector2(x + Textures[texturePhase].Width / 2 - ItemsForChange[currentOffer].Item2.Item1.Textures[0].Width * 0.55f, y - Textures[texturePhase].Height * 1.1f), Color.White);
+            }
+
+            ItemsForChange[currentOffer].Item2.Item1.Draw(spriteBatch, x + Textures[texturePhase].Width / 2, (int)(y - Textures[texturePhase].Height * 1.1 + ItemsForChange[currentOffer].Item2.Item1.Textures[0].Height * 0.5f));
+        }
+
+        public override MapObject Clone(ContentManager contentManager)
+        {
+            return new Trader(contentManager, X, Y, this);
         }
     }
 }

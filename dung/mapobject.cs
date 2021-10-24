@@ -79,5 +79,7 @@ namespace dung
             X += Math.Cos(direction) * speed;
             Y += Math.Sin(direction) * speed;
         }
+
+        public abstract MapObject Clone(ContentManager contentManager);
     }
 }

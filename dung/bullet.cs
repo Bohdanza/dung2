@@ -163,12 +163,19 @@ namespace dung
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y)
         {
-            spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
+            //spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
+
+            spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height / 2), new Rectangle(0, 0, Textures[texturesPhase].Width, Textures[texturesPhase].Height), Color.White, (float)degDirection, new Vector2(Textures[texturesPhase].Width / 2, Textures[texturesPhase].Height / 2), 1f, SpriteEffects.None, 0);
         }
 
         public override string GetTypeAsString()
         {
             return "Bullet";
+        }
+
+        public override MapObject Clone(ContentManager contentManager)
+        {
+            return new Bullet(contentManager, Type, X, Y, degDirection, this);
         }
     }
 }

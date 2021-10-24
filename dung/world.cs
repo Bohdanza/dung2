@@ -71,7 +71,7 @@ namespace dung
             //generating main dungeon
             DungeonSynthesizer ds = new DungeonSynthesizer(contentManager, 480, 480);
 
-            ds.RandomSeeds(150, 250, 16, 4);
+            ds.RandomSeeds(400, 500, 16, 4);
             ds.GenerateCorridors(250, 300);
             ds.ReplaceRooms(13, 13);
 

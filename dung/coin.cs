@@ -75,5 +75,10 @@ namespace dung
 
             return tmplist;
         }
+
+        public override MapObject Clone(ContentManager contentManager)
+        {
+            return new Coin(contentManager, X, Y, this);
+        }
     }
 }

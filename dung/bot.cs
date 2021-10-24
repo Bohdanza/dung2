@@ -173,5 +173,10 @@ namespace dung
 
             return new Tuple<double, double>(x - speed, y);
         }
+
+        public override MapObject Clone(ContentManager contentManager)
+        {
+            return new Robot(Type, contentManager, X, Y, this);
+        }
     }
 }

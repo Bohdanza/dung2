@@ -161,5 +161,10 @@ namespace dung
 
             return tmplist;
         }
+
+        public override MapObject Clone(ContentManager contentManager)
+        {
+            return new Gun(contentManager, this.Type, this.X, this.Y, this);
+        }
     }
 }
