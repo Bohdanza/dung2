@@ -26,6 +26,7 @@ namespace dung
         public List<Coin> sampleCoins { get; private set; } = new List<Coin>();
         public List<Trader> sampleTraders { get; private set; } = new List<Trader>();
         public List<Trap> sampleTraps { get; private set; } = new List<Trap>();
+        public List<Potion> samplePotions { get; private set; } = new List<Potion>();
 
         private SoundEffect backgroundSong;
         private Texture2D cursor;
@@ -73,6 +74,8 @@ namespace dung
             {
                 sampleTraps.Add(new Trap(contentManager, 0, 0, i));
             }
+
+            samplePotions.Add(new Potion(contentManager, 0, 0, 10));
 
             //generating main dungeon
             DungeonSynthesizer ds = new DungeonSynthesizer(contentManager, 480, 480);
@@ -124,6 +127,7 @@ namespace dung
 
             referenceToHero = AddObject(new Hero(contentManager, ds.rooms[specialRooms[0]].Item1, ds.rooms[specialRooms[0]].Item2));
             AddObject(new Door(contentManager, 0, ds.rooms[specialRooms[0]].Item1 + 2, ds.rooms[specialRooms[0]].Item2 + 2, this));
+            AddObject(new Potion(contentManager, ds.rooms[specialRooms[0]].Item1 - 2, ds.rooms[specialRooms[0]].Item2 - 2, samplePotions[0]));
 
             List<List<int>> fightingRooms = new List<List<int>>();
 

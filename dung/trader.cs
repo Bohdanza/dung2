@@ -60,6 +60,10 @@ namespace dung
                     {
                         item1 = new Gun(contentManager, type1, 0, 0);
                     }
+                    else if (classType1.Trim('\n').Trim('\r') == "Potion")
+                    {
+                        item1 = new Potion(contentManager, 0, 0, type1);
+                    }
 
                     ItemsForChange.Add(new Tuple<int, Tuple<Item, int>>(count2, new Tuple<Item, int>(item1, count1)));
                 }
