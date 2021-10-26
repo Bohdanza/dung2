@@ -137,7 +137,7 @@ namespace dung
                 {
                     int tmpspecial = rnd.Next(100);
 
-                    if (tmpspecial <= 30)
+                    if (tmpspecial <= 80)
                     {
                         AddObject(new Trader(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, sampleTraders[0]));
                     }

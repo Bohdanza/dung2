@@ -16,15 +16,20 @@ namespace dung
         public override double X { get => base.X; protected set => base.X = value; }
         public override double Y { get => base.Y; protected set => base.Y = value; }
         public override string Action { get; protected set; } = "id";
+        public List<Tuple<int, Tuple<Item, int>>> GlobalItemsForChange { get; protected set; }
         public List<Tuple<int, Tuple<Item, int>>> ItemsForChange { get; protected set; }
         private int timeSinceLastShow { get; set; } = 0;
         public int currentOffer { get; protected set; } = 0;
         private SpriteFont hpFont;
+        private int itemsCount { get; set; } = 0;
 
         public Trader(ContentManager contentManager, double x, double y, int type)
         {
+            var rnd = new Random();
+
             hpFont = contentManager.Load<SpriteFont>("hpfont");
 
+            GlobalItemsForChange = new List<Tuple<int, Tuple<Item, int>>>();
             ItemsForChange = new List<Tuple<int, Tuple<Item, int>>>();
          
             //given shit
@@ -65,7 +70,25 @@ namespace dung
                         item1 = new Potion(contentManager, 0, 0, type1);
                     }
 
-                    ItemsForChange.Add(new Tuple<int, Tuple<Item, int>>(count2, new Tuple<Item, int>(item1, count1)));
+                    GlobalItemsForChange.Add(new Tuple<int, Tuple<Item, int>>(count2, new Tuple<Item, int>(item1, count1)));
+                }
+
+                currentStr = n * 4 + 1;
+
+                int tmpn = Int32.Parse(tmplist[currentStr]);
+                tmpn = Math.Min(tmpn, GlobalItemsForChange.Count);
+
+                itemsCount = tmpn;
+
+                List<Tuple<int, Tuple<Item, int>>> tmpGlobalItems = new List<Tuple<int, Tuple<Item, int>>>(GlobalItemsForChange);
+
+                for (int i = 0; i < tmpn; i++)
+                {
+                    int q = rnd.Next(0, tmpGlobalItems.Count);
+
+                    ItemsForChange.Add(tmpGlobalItems[q]);
+
+                    tmpGlobalItems.RemoveAt(q);
                 }
             }
 
@@ -82,7 +105,24 @@ namespace dung
 
             Type = sample.Type;
 
-            ItemsForChange = sample.ItemsForChange;
+            ItemsForChange = new List<Tuple<int, Tuple<Item, int>>>();
+
+            GlobalItemsForChange = sample.GlobalItemsForChange;
+
+            var rnd = new Random();
+
+            int tmpn = sample.itemsCount;
+
+            List<Tuple<int, Tuple<Item, int>>> tmpGlobalItems = new List<Tuple<int, Tuple<Item, int>>>(GlobalItemsForChange);
+
+            for (int i = 0; i < tmpn; i++)
+            {
+                int q = rnd.Next(0, tmpGlobalItems.Count);
+
+                ItemsForChange.Add(tmpGlobalItems[q]);
+
+                tmpGlobalItems.RemoveAt(q);
+            }
 
             base.UpdateTexture(contentManager, true);
         }
