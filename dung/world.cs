@@ -25,6 +25,7 @@ namespace dung
         public List<Gun> sampleGuns { get; private set; } = new List<Gun>();
         public List<Coin> sampleCoins { get; private set; } = new List<Coin>();
         public List<Trader> sampleTraders { get; private set; } = new List<Trader>();
+        public List<Trap> sampleTraps { get; private set; } = new List<Trap>();
 
         private SoundEffect backgroundSong;
         private Texture2D cursor;
@@ -66,6 +67,11 @@ namespace dung
             for (int i = 0; i < 1; i++)
             {
                 sampleTraders.Add(new Trader(contentManager, 0, 0, i));
+            }
+
+            for (int i = 0; i < 1; i++)
+            {
+                sampleTraps.Add(new Trap(contentManager, 0, 0, i));
             }
 
             //generating main dungeon
@@ -128,7 +134,7 @@ namespace dung
                 {
                     int tmpspecial = rnd.Next(100);
 
-                    if (tmpspecial <= 70)
+                    if (tmpspecial <= 30)
                     {
                         AddObject(new Trader(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, sampleTraders[0]));
                     }
@@ -138,7 +144,7 @@ namespace dung
 
                         int roomDif = ds.roomsRarity[i];
 
-                        if (roomDif == 0)
+                       /* if (roomDif == 0)
                         {
                             insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(3, 5), 0);
                         }
@@ -166,7 +172,7 @@ namespace dung
                             insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(7, 14), 1);
                             //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(2, 5), 2);
                         }
-
+                       */
                         int tmptype = 0;
 
                         List<int> tmprar = new List<int>();
@@ -184,6 +190,11 @@ namespace dung
                         if (tmptype < tmprar.Count && tmprar[tmptype] < sampleGuns.Count)
                         {
                             insertGun(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 13, 13, tmprar[tmptype]);
+                        }
+
+                        for(int tmpTraps=0; tmpTraps<=5; tmpTraps++)
+                        {
+                            insertObject(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, new Trap(contentManager, 0, 0, sampleTraps[0]));
                         }
                     }
                 }
@@ -545,6 +556,27 @@ namespace dung
                 if ((int)tmpx >= 0 && (int)tmpy >= 0 && (int)tmpx < blocks.Count && (int)tmpy < blocks[(int)tmpx].Count && blocks[(int)tmpx][(int)tmpy].passable)
                 {
                     AddObject(new Gun(contentManager, type, tmpx, tmpy, sampleGuns[type]));
+
+                    placed = true;
+                }
+            }
+        }
+       
+        private void insertObject(ContentManager contentManager, int x, int y, int xsize, int ysize, MapObject mapObject)
+        {
+            var rnd = new Random();
+            bool placed = false;
+
+            while (!placed)
+            {
+                double tmpx = x + rnd.NextDouble() * xsize;
+                double tmpy = y + rnd.NextDouble() * ysize;
+
+                if ((int)tmpx >= 0 && (int)tmpy >= 0 && (int)tmpx < blocks.Count && (int)tmpy < blocks[(int)tmpx].Count && blocks[(int)tmpx][(int)tmpy].passable)
+                {
+                    MapObject reference =  AddObject(mapObject);
+
+                    reference.ChangeCoords(tmpx, tmpy);
 
                     placed = true;
                 }

@@ -61,7 +61,7 @@ namespace dung
 
             reloadTexture = contentManager.Load<Texture2D>("reloadfull");
 
-            GunInHand = new Gun(contentManager, 9, 0, 0);
+            GunInHand = new Gun(contentManager, 0, 0, 0);
 
             coins = new List<Coin>();
 
@@ -152,13 +152,13 @@ namespace dung
                 GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.25), tmpdir);
             }
             
-            if (GunInHand.TimeSinceLastShoot < GunInHand.FireSpeed)
+            if (GunInHand.TimeSinceLastShoot < GunInHand.FireSpeed[GunInHand.currentFirePause])
             {
                 spriteBatch.Draw(reloadTexture, new Vector2(x - reloadTexture.Width / 2, (int)(y - Textures[texturesPhase].Height - reloadTexture.Height * 1.2)), Color.White);
 
                 spriteBatch.Draw(reloadTexture,
                 new Vector2(x - reloadTexture.Width / 2, (int)(y - Textures[texturesPhase].Height - reloadTexture.Height * 1.2)),
-                new Rectangle(0, 0, (int)(reloadTexture.Width * (double)GunInHand.TimeSinceLastShoot / GunInHand.FireSpeed), reloadTexture.Height), Color.White);
+                new Rectangle(0, 0, (int)(reloadTexture.Width * (double)GunInHand.TimeSinceLastShoot / GunInHand.FireSpeed[GunInHand.currentFirePause]), reloadTexture.Height), Color.White);
             }
         }
 
@@ -262,16 +262,13 @@ namespace dung
             
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
-                if (GunInHand.TimeSinceLastShoot >= GunInHand.FireSpeed)
-                {
-                    double tmpdir = Math.Atan2(540 - (int)(Textures[texturesPhase].Height * 0.25) - mouseState.Y, 960 - mouseState.X);
+                double tmpdir = Math.Atan2(540 - (int)(Textures[texturesPhase].Height * 0.25) - mouseState.Y, 960 - mouseState.X);
 
-                    tmpdir += (float)Math.PI;
+                tmpdir += (float)Math.PI;
                     
-                    tmpdir %= (float)(Math.PI * 2);
+                tmpdir %= (float)(Math.PI * 2);
 
-                    GunInHand.ShootInDirection(gameWorld, contentManager, X, Y - ((double)Textures[texturesPhase].Height * 0.25 / GameWorld.blockDrawY), tmpdir, Radius);
-                }
+                GunInHand.ShootInDirection(gameWorld, contentManager, X, Y - ((double)Textures[texturesPhase].Height * 0.25 / GameWorld.blockDrawY), tmpdir, Radius);
             }
 
             if ((int)X != (int)px || (int)Y != (int)py)

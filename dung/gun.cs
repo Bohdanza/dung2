@@ -17,7 +17,8 @@ namespace dung
         public override double Y { get; protected set; }
         public override int Type { get; protected set; }
         public List<Tuple<Bullet, double>> bulletsShooting { get; protected set; }
-        public int FireSpeed { get; protected set; }
+        public List<int> FireSpeed { get; protected set; }
+        public int currentFirePause { get; protected set; }
         public int TimeSinceLastShoot { get; protected set; }
         public int rarity { get; protected set; }
 
@@ -41,13 +42,21 @@ namespace dung
 
             using(StreamReader sr = new StreamReader("info/global/items/guns/"+Type.ToString()+"/m.info"))
             {
+                FireSpeed = new List<int>();
+
                 List<string> tmplist = sr.ReadToEnd().Split('\n').ToList();
 
-                FireSpeed = Int32.Parse(tmplist[0]);
+                int tmpn = Int32.Parse(tmplist[0])+1, currentString = 1;
 
-                int tmpn = Int32.Parse(tmplist[1]), currentString = 2;
+                for(currentString=1; currentString<tmpn; currentString++)
+                {
+                    FireSpeed.Add(Int32.Parse(tmplist[currentString]));
+                }
+                
+                currentString = tmpn+1;
+                tmpn = Int32.Parse(tmplist[tmpn]) * 2 + tmpn;
 
-                for (int i = 2; i < tmpn * 2 + 2; i += 2)
+                for (int i = currentString; i < tmpn; i += 2)
                 {
                     bulletsShooting.Add(new Tuple<Bullet, double>(new Bullet(contentManager, Int32.Parse(tmplist[i]), 0, 0, 0), double.Parse(tmplist[i+1])));
 
@@ -104,7 +113,7 @@ namespace dung
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld, int myIndex)
         {
-            if (TimeSinceLastShoot < FireSpeed)
+            if (TimeSinceLastShoot < FireSpeed[currentFirePause])
             {
                 TimeSinceLastShoot++;
             }
@@ -136,7 +145,7 @@ namespace dung
 
         public void ShootInDirection(GameWorld gameWorld, ContentManager contentManager, double x, double y, double direction, double radius)
         {
-            if (TimeSinceLastShoot >= FireSpeed)
+            if (TimeSinceLastShoot >= FireSpeed[currentFirePause])
             {
                 TimeSinceLastShoot = 0;
 
@@ -147,6 +156,10 @@ namespace dung
 
                     gameWorld.AddObject(new Bullet(contentManager, bulletsShooting[i].Item1.Type, tmpbx, tmpby, direction+bulletsShooting[i].Item2, bulletsShooting[i].Item1));
                 }
+
+                currentFirePause++;
+
+                currentFirePause %= FireSpeed.Count;
             }
         }
 
