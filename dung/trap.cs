@@ -65,6 +65,7 @@ namespace dung
         public override List<Texture2D> Textures { get => base.Textures; protected set => base.Textures = value; }
         public int TexturePhase { get; protected set; }
         public int Damage { get; protected set; }
+        private int textureUpdateSlower = 0;
 
         public Trap(ContentManager contentManager, double x, double y, int type)
         {
@@ -151,13 +152,20 @@ namespace dung
                 gameWorld.referenceToHero.Attack(Damage);
             }
 
-            if (pact == Action)
+            textureUpdateSlower++;
+
+            if (textureUpdateSlower == 2)
             {
-                updateTexture(contentManager, false);
-            }
-            else
-            {
-                updateTexture(contentManager, true);
+                textureUpdateSlower = 0;
+
+                if (pact == Action)
+                {
+                    updateTexture(contentManager, false);
+                }
+                else
+                {
+                    updateTexture(contentManager, true);
+                }
             }
         }
 

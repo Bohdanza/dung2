@@ -47,11 +47,11 @@ namespace dung
 
             mapObjects = new List<MapObject>();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
             {
                 sampleBlocks.Add(new Block(i, 0, 0, contentManager));
             }
-            
+
             for (int i = 0; i < 2; i++)
             {
                 sampleGhosts.Add(new Ghost(contentManager, i, 0, 0, 0, 0));
@@ -90,14 +90,14 @@ namespace dung
             for (int i = 0; i < tmplist.Count; i++)
             {
                 List<Block> tmpblock = new List<Block>();
-                    
+
                 for (int j = 0; j < tmplist[i].Count; j++)
                 {
                     if (tmplist[i][j] == 1)
                     {
                         int vr = rnd.Next(0, 10);
-                        
-                        if(vr==0)
+
+                        if (vr == 0)
                         {
                             tmplist[i][j] = 3;
                         }
@@ -112,7 +112,7 @@ namespace dung
             //generating mobs, loot etc.
             List<int> specialRooms = new List<int>();
 
-            while(specialRooms.Count<1)
+            while (specialRooms.Count < 1)
             {
                 int tmpi = rnd.Next(0, ds.rooms.Count);
 
@@ -122,9 +122,8 @@ namespace dung
                 }
             }
 
-            AddObject(new Hero(contentManager, ds.rooms[specialRooms[0]].Item1, ds.rooms[specialRooms[0]].Item2));
-
-            referenceToHero = mapObjects[mapObjects.Count - 1];
+            referenceToHero = AddObject(new Hero(contentManager, ds.rooms[specialRooms[0]].Item1, ds.rooms[specialRooms[0]].Item2));
+            AddObject(new Door(contentManager, 0, ds.rooms[specialRooms[0]].Item1 + 2, ds.rooms[specialRooms[0]].Item2 + 2, this));
 
             List<List<int>> fightingRooms = new List<List<int>>();
 
@@ -144,7 +143,7 @@ namespace dung
 
                         int roomDif = ds.roomsRarity[i];
 
-                       /* if (roomDif == 0)
+                        if (roomDif == 0)
                         {
                             insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(3, 5), 0);
                         }
@@ -172,7 +171,7 @@ namespace dung
                             insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(7, 14), 1);
                             //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(2, 5), 2);
                         }
-                       */
+
                         int tmptype = 0;
 
                         List<int> tmprar = new List<int>();
@@ -192,7 +191,7 @@ namespace dung
                             insertGun(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 13, 13, tmprar[tmptype]);
                         }
 
-                        for(int tmpTraps=0; tmpTraps<=5; tmpTraps++)
+                        for (int tmpTraps = 0; tmpTraps <= 5; tmpTraps++)
                         {
                             insertObject(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, new Trap(contentManager, 0, 0, sampleTraps[0]));
                         }
@@ -241,7 +240,7 @@ namespace dung
             }
 
             List<string> read;
-             
+
             using (StreamReader sr = new StreamReader(path))
             {
                 read = sr.ReadToEnd().Split('\n').ToList();
@@ -264,8 +263,8 @@ namespace dung
                 {
                     int tmpblocktype = Int32.Parse(realBlocks[j + 1]);
 
-                    int tmpblockcount=Int32.Parse(realBlocks[j]);
-                    
+                    int tmpblockcount = Int32.Parse(realBlocks[j]);
+
                     for (int k = 0; k < tmpblockcount; k++)
                     {
                         blocksList.Add(new Block(tmpblocktype, i, currentYcoord, contentManager, sampleBlocks[tmpblocktype]));
@@ -313,12 +312,12 @@ namespace dung
                     mapObjects[i].Update(contentManager, this, i);
                 }
 
-                if(!mapObjects[i].alive)
+                if (!mapObjects[i].alive)
                 {
                     l = 0;
                     mapObjects.RemoveAt(i);
                 }
-                
+
             }
         }
 
@@ -329,7 +328,7 @@ namespace dung
             int tmpx = 0;
             int tmpy = 0;
 
-            if(referenceToHero!=null)
+            if (referenceToHero != null)
             {
                 tmpx = -(int)(referenceToHero.X * BlockWidth);
                 tmpy = -(int)(referenceToHero.Y * blockDrawY);
@@ -349,7 +348,7 @@ namespace dung
             starty = Math.Max(starty, 0);
 
             endx = Math.Min(endx, blocks.Count);
-            endy = Math.Min(endy, blocks[0].Count); 
+            endy = Math.Min(endy, blocks[0].Count);
 
             int mapObjectsJ = 0, l = 1;
 
@@ -358,7 +357,7 @@ namespace dung
             {
                 l = 1;
 
-                if (mapObjectsJ<mapObjects.Count && mapObjects[mapObjectsJ].Y < j)
+                if (mapObjectsJ < mapObjects.Count && mapObjects[mapObjectsJ].Y < j)
                 {
                     l = 0;
 
@@ -421,7 +420,7 @@ namespace dung
                 }
             }
 
-            if(md>-1)
+            if (md > -1)
             {
                 return mapObjects[mi];
             }
@@ -464,7 +463,7 @@ namespace dung
 
             return null;
         }
-       
+
         /// <summary>
         /// Adds object to mapObjects list 
         /// </summary>
@@ -522,7 +521,7 @@ namespace dung
                 }
             }
         }
-        
+
         private void insertMobs(ContentManager contentManager, int x, int y, int xsize, int ysize, int number, int type)
         {
             int c = 0;
@@ -561,7 +560,7 @@ namespace dung
                 }
             }
         }
-       
+
         private void insertObject(ContentManager contentManager, int x, int y, int xsize, int ysize, MapObject mapObject)
         {
             var rnd = new Random();
@@ -574,7 +573,7 @@ namespace dung
 
                 if ((int)tmpx >= 0 && (int)tmpy >= 0 && (int)tmpx < blocks.Count && (int)tmpy < blocks[(int)tmpx].Count && blocks[(int)tmpx][(int)tmpy].passable)
                 {
-                    MapObject reference =  AddObject(mapObject);
+                    MapObject reference = AddObject(mapObject);
 
                     reference.ChangeCoords(tmpx, tmpy);
 
@@ -600,6 +599,14 @@ namespace dung
             catch
             {
                 //We just dont care
+            }
+        }
+
+        public void PlaceBlock(Block blockToPlace, int x, int y)
+        {
+            if (x >= 0 && y >= 0 && x < blocks.Count && y < blocks[x].Count)
+            {
+                blocks[x][y] = blockToPlace;
             }
         }
 
