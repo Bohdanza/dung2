@@ -216,7 +216,7 @@ namespace dung
                                 {
                                     q1++;
                                 }
-                                else if(mainArray[z][k] != 5)
+                                else if(mainArray[z][k] == 2)
                                 {
                                     q2++;
                                 }
@@ -224,7 +224,7 @@ namespace dung
                         }
                     }
 
-                    if(q1==q2)
+                    if(q1==4&&q2==4)
                     {
                         mainArray[i][j] = 5;
                     }
@@ -375,8 +375,6 @@ namespace dung
 
             this.Reset((maxroom * 2 + 2) * dist, (maxroom * 2 + 2) * dist);
 
-            PlaceSquare(dist, dist + maxroom * dist, dist + maxroom * 2 * dist, dist + maxroom * dist+1, 1);
-
             for(int i=0; i< maxroom * 2 + 1; i++)
             {
                 this.rooms.Add(new Tuple<int, int>(dist + i * dist, dist + maxroom * dist));
@@ -384,19 +382,36 @@ namespace dung
                 if(i%2==0)
                 {
                     this.roomsRarity.Add(-1);
+
+                    PlaceSquare(dist + i * dist, mainArray.Count / 2, dist + (i + 1) * dist, mainArray.Count / 2 + 1, 1);
                 }
                 else
                 {
                     this.roomsRarity.Add((i - 1) / 2);
+                  //  PlaceSquare(dist + i * dist, mainArray.Count / 2, dist + (i + 1) * dist, mainArray.Count / 2 + 1, 1);
                 }
             }
 
             for (int i = 1; i < maxroom * 2 + 1; i += 2)
             {
                 PlaceSquare(i * dist + dist, mainArray[0].Count / 2 - (i + 2) * dist / 2, i * dist + dist + 1, mainArray[0].Count / 2 + (i + 2) * dist / 2, 1);
+                PlaceSquare((i+1) * dist + dist, mainArray[0].Count / 2 - (i + 2) * dist / 2, (i+1) * dist + dist + 1, mainArray[0].Count / 2 + (i + 2) * dist / 2, 1);
+
+                PlaceSquare(i * dist + dist, mainArray[0].Count / 2 - (i + 2) * dist / 2, (i + 1) * dist + dist, mainArray[0].Count / 2 - (i + 2) * dist / 2 + 1, 1);
+                PlaceSquare(i * dist + dist, mainArray[0].Count / 2 + (i + 2) * dist / 2, (i + 1) * dist + dist, mainArray[0].Count / 2 + (i + 2) * dist / 2 + 1, 1);
+
+                for (int j = 1; j <= (i + 2) / 2; j++)
+                {
+                    this.rooms.Add(new Tuple<int, int>(dist + i * dist, dist+(maxroom - j) * dist));
+                    this.rooms.Add(new Tuple<int, int>(dist + i * dist, dist+(maxroom + j) * dist));
+
+                    roomsRarity.Add((i - 1) / 2);
+                    roomsRarity.Add((i - 1) / 2);
+                }
             }
 
             ReplaceRooms(roomSize, roomSize);
+            PlaceWalls();
 
             PlaceDoors();
         }

@@ -61,7 +61,7 @@ namespace dung
 
             reloadTexture = contentManager.Load<Texture2D>("reloadfull");
 
-            GunInHand = new Gun(contentManager, 7, 0, 0);
+            GunInHand = new Gun(contentManager, 0, 0, 0);
 
             coins = new List<Coin>();
 
