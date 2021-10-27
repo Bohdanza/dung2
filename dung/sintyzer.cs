@@ -198,6 +198,40 @@ namespace dung
             }
         }
         
+        public void PlaceDoors()
+        {
+            for (int i = 1; i < mainArray.Count - 1; i++)
+            {
+                for (int j = 1; j < mainArray[i].Count - 1; j++)
+                {
+                    int q1 = 0, q2 = 0;
+
+                    for (int z = i - 1; z < i + 2; z++)
+                    {
+                        for (int k = j - 1; k < j + 2; k++)
+                        {
+                            if (k != j || z != i)
+                            {
+                                if(mainArray[z][k]==1)
+                                {
+                                    q1++;
+                                }
+                                else if(mainArray[z][k] != 5)
+                                {
+                                    q2++;
+                                }
+                            }
+                        }
+                    }
+
+                    if(q1==q2)
+                    {
+                        mainArray[i][j] = 5;
+                    }
+                }
+            }
+        }
+
         public void PlaceWalls()
         {
             for (int i = 0; i < mainArray.Count; i++)
@@ -333,6 +367,38 @@ namespace dung
             PlaceSquare(tmpx12, tmpx11, tmpx12 + 1, tmpx12*2 + 1, 1);
 
             ReplaceRooms(roomSize, roomSize);
+        }
+
+        public void FinalGenerator(int dist, int maxroom, int roomSize)
+        {
+            int[,] rooms = new int[maxroom * 2 + 2,maxroom * 2 + 2];
+
+            this.Reset((maxroom * 2 + 2) * dist, (maxroom * 2 + 2) * dist);
+
+            PlaceSquare(dist, dist + maxroom * dist, dist + maxroom * 2 * dist, dist + maxroom * dist+1, 1);
+
+            for(int i=0; i< maxroom * 2 + 1; i++)
+            {
+                this.rooms.Add(new Tuple<int, int>(dist + i * dist, dist + maxroom * dist));
+
+                if(i%2==0)
+                {
+                    this.roomsRarity.Add(-1);
+                }
+                else
+                {
+                    this.roomsRarity.Add((i - 1) / 2);
+                }
+            }
+
+            for (int i = 1; i < maxroom * 2 + 1; i += 2)
+            {
+                PlaceSquare(i * dist + dist, mainArray[0].Count / 2 - (i + 2) * dist / 2, i * dist + dist + 1, mainArray[0].Count / 2 + (i + 2) * dist / 2, 1);
+            }
+
+            ReplaceRooms(roomSize, roomSize);
+
+            PlaceDoors();
         }
 
         public void PlaceSquare(int x1, int y1, int x2, int y2, int placeType)

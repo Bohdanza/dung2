@@ -80,9 +80,7 @@ namespace dung
             //generating main dungeon
             DungeonSynthesizer ds = new DungeonSynthesizer(contentManager, 480, 480);
 
-            ds.RandomSeeds(400, 500, 16, 4);
-            ds.GenerateCorridors(250, 300);
-            ds.ReplaceRooms(13, 13);
+            ds.FinalGenerator(15, 4, 13);
 
             ds.PlaceWalls();
 
@@ -105,6 +103,11 @@ namespace dung
                             tmplist[i][j] = 3;
                         }
                     }
+                    
+                    if(tmplist[i][j]==5)
+                    {
+                        AddObject(new Door(contentManager, 0, i, j, this));
+                    }
 
                     tmpblock.Add(new Block(tmplist[i][j], i, j, contentManager, sampleBlocks[tmplist[i][j]]));
                 }
@@ -113,93 +116,75 @@ namespace dung
             }
 
             //generating mobs, loot etc.
-            List<int> specialRooms = new List<int>();
-
-            while (specialRooms.Count < 1)
-            {
-                int tmpi = rnd.Next(0, ds.rooms.Count);
-
-                if (!specialRooms.Contains(tmpi) && ds.roomsRarity[tmpi] == 0)
-                {
-                    specialRooms.Add(tmpi);
-                }
-            }
-
-            referenceToHero = AddObject(new Hero(contentManager, ds.rooms[specialRooms[0]].Item1, ds.rooms[specialRooms[0]].Item2));
-            AddObject(new Door(contentManager, 0, ds.rooms[specialRooms[0]].Item1 + 2, ds.rooms[specialRooms[0]].Item2 + 2, this));
-            AddObject(new Potion(contentManager, ds.rooms[specialRooms[0]].Item1 - 2, ds.rooms[specialRooms[0]].Item2 - 2, samplePotions[0]));
+            referenceToHero = AddObject(new Hero(contentManager, ds.rooms[0].Item1, ds.rooms[0].Item2));
 
             List<List<int>> fightingRooms = new List<List<int>>();
 
-            for (int i = 0; i < ds.rooms.Count; i++)
+            for (int i = 1; i < ds.rooms.Count; i++)
             {
-                if (!specialRooms.Contains(i))
+                if (ds.roomsRarity[i] != -1)
                 {
-                    int tmpspecial = rnd.Next(100);
+                    insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, "", 7, 5, 12);
 
-                    if (tmpspecial <= 80)
+                    int roomDif = ds.roomsRarity[i];
+                    int trapscount = roomDif+1;
+
+                    if (roomDif == 0)
                     {
-                        AddObject(new Trader(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, sampleTraders[0]));
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(3, 5), 0);
+                    }
+                    else if (roomDif == 1)
+                    {
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(5, 8), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(2, 5), 1);
+                    }
+                    else if (roomDif == 2)
+                    {
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(8, 12), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(5, 8), 1);
+                    }
+                    else if (roomDif == 3)
+                    {
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(11, 16), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(5, 10), 1);
+                        //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(1, 3), 2);
                     }
                     else
                     {
-                        insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 12, 12, "", 7, 5, 12);
+                        roomDif = 4;
 
-                        int roomDif = ds.roomsRarity[i];
-
-                        if (roomDif == 0)
-                        {
-                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(3, 5), 0);
-                        }
-                        else if (roomDif == 1)
-                        {
-                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(5, 8), 0);
-                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(2, 5), 1);
-                        }
-                        else if (roomDif == 2)
-                        {
-                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(8, 12), 0);
-                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(5, 8), 1);
-                        }
-                        else if (roomDif == 3)
-                        {
-                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(11, 16), 0);
-                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(5, 10), 1);
-                            //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(1, 3), 2);
-                        }
-                        else
-                        {
-                            roomDif = 4;
-
-                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(12, 21), 0);
-                            insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(7, 14), 1);
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(12, 21), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(7, 14), 1);
                             //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(2, 5), 2);
-                        }
+                    }
 
-                        int tmptype = 0;
+                    int tmptype = 0;
 
-                        List<int> tmprar = new List<int>();
-
-                        for (int tmprarc = 0; tmprarc < sampleGuns.Count; tmprarc++)
+                    List<int> tmprar = new List<int>();
+                            
+                    for (int tmprarc = 0; tmprarc < sampleGuns.Count; tmprarc++)
+                    {
+                        if (sampleGuns[tmprarc].rarity == roomDif)
                         {
-                            if (sampleGuns[tmprarc].rarity == roomDif)
-                            {
-                                tmprar.Add(tmprarc);
-                            }
-                        }
-
-                        tmptype = rnd.Next(0, tmprar.Count);
-
-                        if (tmptype < tmprar.Count && tmprar[tmptype] < sampleGuns.Count)
-                        {
-                            insertGun(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 13, 13, tmprar[tmptype]);
-                        }
-
-                        for (int tmpTraps = 0; tmpTraps <= 5; tmpTraps++)
-                        {
-                            insertObject(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, new Trap(contentManager, 0, 0, sampleTraps[0]));
+                            tmprar.Add(tmprarc);
                         }
                     }
+
+                    tmptype = rnd.Next(0, tmprar.Count);
+
+                    if (tmptype < tmprar.Count && tmprar[tmptype] < sampleGuns.Count)
+                    { 
+                        insertGun(contentManager, ds.rooms[i].Item1-6, ds.rooms[i].Item2-6, 13, 13, tmprar[tmptype]);
+                    }
+
+                    for (int tmpTraps = 0; tmpTraps <= trapscount; tmpTraps++)
+                    {
+                        insertObject(contentManager, ds.rooms[i].Item1-6, ds.rooms[i].Item2-6, 12, 12, new Trap(contentManager, 0, 0, sampleTraps[0]));
+                    }
+                }
+                else
+                {
+                    AddObject(new Trader(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, sampleTraders[0]));
                 }
             }
 

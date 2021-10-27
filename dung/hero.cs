@@ -61,7 +61,7 @@ namespace dung
 
             reloadTexture = contentManager.Load<Texture2D>("reloadfull");
 
-            GunInHand = new Gun(contentManager, 0, 0, 0);
+            GunInHand = new Gun(contentManager, 7, 0, 0);
 
             coins = new List<Coin>();
 
@@ -228,7 +228,7 @@ namespace dung
 
                         GunInHand = (Gun)closestGun;
 
-                        gameWorld.RemoveObject(closestGun);
+                        closestGun.Kill();
                     }
                 }
             }
@@ -248,10 +248,11 @@ namespace dung
 
                     if (gameWorld.GetDist(X, Y, closestCoin.X, closestCoin.Y) < speed * 3)
                     {
-                        gameWorld.RemoveObject(closestCoin);
                         coins.Add((Coin)closestCoin);
 
                         CoinsSum += ((Coin)closestCoin).value;
+
+                        closestCoin.Kill();
                     }
                 }
             }

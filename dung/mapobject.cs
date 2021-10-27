@@ -80,6 +80,11 @@ namespace dung
             Y += Math.Sin(direction) * speed;
         }
 
+        public virtual void Kill()
+        {
+            alive = false;
+        }
+
         public abstract MapObject Clone(ContentManager contentManager);
     }
 }
