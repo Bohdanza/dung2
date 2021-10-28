@@ -522,7 +522,9 @@ namespace dung
 
                 if ((int)tmpx >= 0 && (int)tmpy >= 0 && (int)tmpx < blocks.Count && (int)tmpy < blocks[(int)tmpx].Count && blocks[(int)tmpx][(int)tmpy].passable)
                 {
-                    AddObject(new Ghost(contentManager, type, tmpx, tmpy, tmpx, tmpy, sampleGhosts[type]));
+                    var refer= AddObject(new Ghost(contentManager, type, tmpx, tmpy, tmpx, tmpy, sampleGhosts[type]));
+
+                    ((Ghost)refer).influenceRect = new Rectangle(x+1, y+1, xsize, ysize);
 
                     c++;
                 }

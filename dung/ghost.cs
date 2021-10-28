@@ -28,6 +28,7 @@ namespace dung
         public override double Radius { get; protected set; }
         public override int HP { get; protected set; }
         protected double viewRadius { get; set; }
+        public Rectangle influenceRect = new Rectangle(0, 0, 0, 0);
 
         /// <summary>
         /// item is item, 2 ints are the min and the max number
@@ -223,7 +224,7 @@ namespace dung
 
             if (Action != "at" && Action != "di" && Action != "dm")
             {
-                if (gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= viewRadius)
+                if (influenceRect.Contains((float)gameWorld.referenceToHero.X, (float)gameWorld.referenceToHero.Y) && gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= viewRadius)
                 {
                     double x1 = X - gameWorld.referenceToHero.X, y1 = Y - gameWorld.referenceToHero.Y;
 
@@ -384,6 +385,41 @@ namespace dung
         public override MapObject Clone(ContentManager contentManager)
         {
             return new Ghost(contentManager, Type, X, Y, WorkingX, WorkingY, this);
+        }
+
+        /// <summary>
+        /// Fuck, i need to drink something harder than cola to write this. Anyway, me in future, please write it. Yes, you! And don't think that i'm talking about far future, i mean 28.10.2021
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="dx"></param>
+        /// <param name="dy"></param>
+        /// <param name="gameWorld"></param>
+        public void FindPath(int x, int y, int dx, int dy, GameWorld gameWorld)
+        {
+            List<Tuple<int, Tuple<int, int>>> discovered = new List<Tuple<int, Tuple<int, int>>>();
+            List<Tuple<int, Tuple<int, int>>> current = new List<Tuple<int, Tuple<int, int>>>();
+            List<Tuple<int, Tuple<int, int>>> newPoints = new List<Tuple<int, Tuple<int, int>>>();
+
+            current.Add(new Tuple<int, Tuple<int, int>>(0, new Tuple<int, int>(x, y)));
+
+            bool finished = false;
+
+            while (current.Count > 0 && !finished)
+            {
+                for (int i = 0; i < current.Count && !finished; i++)
+                {
+                    if (current[i].Item2.Item1 == dx && current[i].Item2.Item2 == dy)
+                    {
+                        finished = true;
+                    }
+
+                    if (current[i].Item2.Item1 > 0)
+                    {
+                        
+                    }
+                }
+            }
         }
     }
 }
