@@ -67,6 +67,8 @@ namespace dung
             }
 
             base.updateTexture(contentManager, true);
+
+            base.RefreshName();
         }
 
         /// <summary>
@@ -92,6 +94,8 @@ namespace dung
 
             rarity = sampleGun.rarity;
 
+            Name = sampleGun.Name;
+
             base.updateTexture(contentManager, true);
         }
 
@@ -107,6 +111,8 @@ namespace dung
             bulletsShooting = sampleGuns[Type].bulletsShooting;
 
             rarity = sampleGuns[Type].rarity;
+
+            Name = sampleGuns[Type].Name;
 
             base.updateTexture(contentManager, true);
         }

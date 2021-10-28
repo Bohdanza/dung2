@@ -145,7 +145,7 @@ namespace dung
 
             double dist = gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y);
 
-            if (dist <= Radius + gameWorld.referenceToHero.Radius && Action != "at")
+            if (dist <= Radius + gameWorld.referenceToHero.Radius && gameWorld.referenceToHero.Y < this.Y && Action != "at")
             {
                 Action = "at";
 

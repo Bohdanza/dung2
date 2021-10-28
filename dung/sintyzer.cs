@@ -388,7 +388,7 @@ namespace dung
                 else
                 {
                     this.roomsRarity.Add((i - 1) / 2);
-                  //  PlaceSquare(dist + i * dist, mainArray.Count / 2, dist + (i + 1) * dist, mainArray.Count / 2 + 1, 1);
+                  //PlaceSquare(dist + i * dist, mainArray.Count / 2, dist + (i + 1) * dist, mainArray.Count / 2 + 1, 1);
                 }
             }
 
@@ -398,7 +398,7 @@ namespace dung
                 PlaceSquare((i+1) * dist + dist, mainArray[0].Count / 2 - (i + 2) * dist / 2, (i+1) * dist + dist + 1, mainArray[0].Count / 2 + (i + 2) * dist / 2, 1);
 
                 PlaceSquare(i * dist + dist, mainArray[0].Count / 2 - (i + 2) * dist / 2, (i + 1) * dist + dist, mainArray[0].Count / 2 - (i + 2) * dist / 2 + 1, 1);
-                PlaceSquare(i * dist + dist, mainArray[0].Count / 2 + (i + 2) * dist / 2, (i + 1) * dist + dist, mainArray[0].Count / 2 + (i + 2) * dist / 2 + 1, 1);
+                PlaceSquare(i * dist + dist, mainArray[0].Count / 2 + (i + 2) * dist / 2-1, (i + 1) * dist + dist, mainArray[0].Count / 2 + (i + 2) * dist / 2 , 1);
 
                 for (int j = 1; j <= (i + 2) / 2; j++)
                 {

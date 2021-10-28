@@ -37,6 +37,8 @@ namespace dung
             }
 
             base.updateTexture(contentManager, true);
+
+            base.RefreshName();
         }
 
         public Potion(ContentManager contentManager, double x, double y, Potion sample)
@@ -48,6 +50,8 @@ namespace dung
 
             Radius = sample.Radius;
             AddHp = sample.AddHp;
+
+            Name = sample.Name;
 
             base.updateTexture(contentManager, true);
         }

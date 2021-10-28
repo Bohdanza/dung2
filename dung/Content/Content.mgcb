@@ -7106,6 +7106,13 @@
 /processorParam:TextureFormat=Color
 /build:hpline.png
 
+#begin item_font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:item_font.spritefont
+
 #begin mainfont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
