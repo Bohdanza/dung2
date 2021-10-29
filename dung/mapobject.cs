@@ -30,7 +30,7 @@ namespace dung
             
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, int x, int y)
+        public virtual void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
 
         }

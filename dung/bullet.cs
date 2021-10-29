@@ -149,19 +149,27 @@ namespace dung
             {
                 MapObject closestObject = gameWorld.GetClosestObject(X, Y, myIndex, "Ghost");
 
-                if (closestObject != null)
+                if (closestObject != null && gameWorld.GetDist(X, Y, closestObject.X, closestObject.Y) < Radius + closestObject.Radius)
                 {
+                    alive = false;
+
+                    closestObject.Attack(damage);
+                }
+                else
+                {
+                    closestObject = gameWorld.GetClosestObject(X, Y, myIndex, "Hero");
+
                     if (gameWorld.GetDist(X, Y, closestObject.X, closestObject.Y) < Radius + closestObject.Radius)
                     {
                         alive = false;
-                        
+
                         closestObject.Attack(damage);
                     }
                 }
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
             //spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
 

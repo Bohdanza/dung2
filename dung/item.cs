@@ -60,13 +60,16 @@ namespace dung
             base.Update(contentManager, gameWorld, myIndex);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
             spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
 
-            spriteBatch.DrawString(Font, Name, new Vector2(x - Textures[texturesPhase].Width / 2 - Font.MeasureString(Name).X / 2, y - Textures[texturesPhase].Height - Font.MeasureString(Name).Y * 1.1f), Color.White);
-            
-            base.Draw(spriteBatch, x, y);
+            if (gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= Radius + gameWorld.referenceToHero.Radius + 1)
+            {
+                spriteBatch.DrawString(Font, Name, new Vector2(x - Textures[texturesPhase].Width / 2 - Font.MeasureString(Name).X / 2, y - Textures[texturesPhase].Height - Font.MeasureString(Name).Y * 1.1f), Color.White);
+            }
+
+            base.Draw(spriteBatch, x, y, gameWorld);
         }
 
         public override string GetTypeAsString()

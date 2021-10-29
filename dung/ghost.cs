@@ -343,7 +343,7 @@ namespace dung
             pact = Action;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
             spriteBatch.Draw(Textures[texturePhase], new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height), Color.White);
         }

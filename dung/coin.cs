@@ -52,9 +52,9 @@ namespace dung
             base.Update(contentManager, gameWorld, myIndex);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
-            base.Draw(spriteBatch, x, y);
+            base.Draw(spriteBatch, x, y, gameWorld);
         }
 
         public override string GetTypeAsString()

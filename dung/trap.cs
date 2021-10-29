@@ -169,7 +169,7 @@ namespace dung
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
             spriteBatch.Draw(Textures[TexturePhase], new Vector2(x - Textures[TexturePhase].Width / 2, y - Textures[TexturePhase].Height), Color.White);
         }

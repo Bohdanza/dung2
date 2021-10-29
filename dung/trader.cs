@@ -163,9 +163,9 @@ namespace dung
             UpdateTexture(contentManager, false);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
-            base.Draw(spriteBatch, x, y);
+            base.Draw(spriteBatch, x, y, gameWorld);
 
             spriteBatch.DrawString(hpFont, ItemsForChange[currentOffer].Item1.ToString(), new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height - 25), Color.White);
 
@@ -174,7 +174,7 @@ namespace dung
                 spriteBatch.DrawString(hpFont, ItemsForChange[currentOffer].Item2.ToString(), new Vector2(x + Textures[texturePhase].Width / 2 - ItemsForChange[currentOffer].Item2.Item1.Textures[0].Width * 0.55f, y - Textures[texturePhase].Height * 1.1f), Color.White);
             }
 
-            ItemsForChange[currentOffer].Item2.Item1.Draw(spriteBatch, x + Textures[texturePhase].Width / 2, (int)(y - Textures[texturePhase].Height * 1.1 + ItemsForChange[currentOffer].Item2.Item1.Textures[0].Height * 0.5f));
+            ItemsForChange[currentOffer].Item2.Item1.Draw(spriteBatch, x + Textures[texturePhase].Width / 2, (int)(y - Textures[texturePhase].Height * 1.1 + ItemsForChange[currentOffer].Item2.Item1.Textures[0].Height * 0.5f), gameWorld);
         }
 
         public override MapObject Clone(ContentManager contentManager)

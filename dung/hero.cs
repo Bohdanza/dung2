@@ -128,7 +128,7 @@ namespace dung
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int x, int y)
+        public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
             //dont touch ANYTHING
             //Can U hear me?
@@ -269,7 +269,7 @@ namespace dung
                     
                 tmpdir %= (float)(Math.PI * 2);
 
-                GunInHand.ShootInDirection(gameWorld, contentManager, X, Y - ((double)Textures[texturesPhase].Height * 0.25 / GameWorld.blockDrawY), tmpdir, Radius);
+                GunInHand.ShootInDirection(gameWorld, contentManager, X, Y - ((double)Textures[texturesPhase].Height * 0.25 / GameWorld.blockDrawY), tmpdir, Radius*1.2);
             }
 
             if ((int)X != (int)px || (int)Y != (int)py)

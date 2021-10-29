@@ -116,13 +116,15 @@ namespace dung
             //generating mobs, loot etc.
             referenceToHero = AddObject(new Hero(contentManager, ds.rooms[0].Item1, ds.rooms[0].Item2));
 
+            AddObject(new Turret(contentManager, ds.rooms[0].Item1, ds.rooms[0].Item2 + 4, 0));
+
             List<List<int>> fightingRooms = new List<List<int>>();
 
             for (int i = 1; i < ds.rooms.Count; i++)
             {
                 if (ds.roomsRarity[i] != -1)
                 {
-                    insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, "", 7, 5, 12);
+                    insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, "", 7, 1, 7);
 
                     int roomDif = ds.roomsRarity[i];
                     int trapscount = roomDif+1;
@@ -350,7 +352,7 @@ namespace dung
 
                     if (GetDist(referenceToHero.X, referenceToHero.Y, mapObjects[mapObjectsJ].X, mapObjects[mapObjectsJ].Y) <= 40)
                     {
-                        mapObjects[mapObjectsJ].Draw(spriteBatch, drawx + (int)(mapObjects[mapObjectsJ].X * BlockWidth), drawy + (int)(mapObjects[mapObjectsJ].Y * blockDrawY));
+                        mapObjects[mapObjectsJ].Draw(spriteBatch, drawx + (int)(mapObjects[mapObjectsJ].X * BlockWidth), drawy + (int)(mapObjects[mapObjectsJ].Y * blockDrawY), this);
                     }
 
                     mapObjectsJ++;
