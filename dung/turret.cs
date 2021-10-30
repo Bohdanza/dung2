@@ -69,6 +69,8 @@ namespace dung
 
                     texturePhase++;
                 }
+
+                texturePhase = 0;
             }
             else
             {
@@ -82,17 +84,20 @@ namespace dung
         {
             base.Update(contentManager, gameWorld, myIndex);
 
-            updateTexture(contentManager, false);
-
             double tmpdir = Math.Atan2(Y - gameWorld.referenceToHero.Y, X - gameWorld.referenceToHero.X);
 
             tmpdir += 3f * (float)Math.PI;
 
             tmpdir %= (float)(Math.PI * 2);
 
-            gun.ShootInDirection(gameWorld, contentManager, X, Y, tmpdir, Radius);
+            var listFromStrings = new List<string>();
+            listFromStrings.Add("Hero");
+
+            gun.ShootInDirection(gameWorld, contentManager, X, Y, tmpdir, Radius, listFromStrings);
 
             gun.Update(contentManager, gameWorld, -1);
+            
+            updateTexture(contentManager, false);
         }
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
@@ -106,6 +111,11 @@ namespace dung
             tmpdir %= (float)(Math.PI * 2);
 
             gun.Draw(spriteBatch, x, y - Textures[texturePhase].Height, tmpdir);
+        }
+
+        public override string GetTypeAsString()
+        {
+            return "Turret";
         }
 
         public override MapObject Clone(ContentManager contentManager)

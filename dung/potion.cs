@@ -78,6 +78,11 @@ namespace dung
             spriteBatch.Draw(Textures[base.texturesPhase], new Vector2(x - Textures[base.texturesPhase].Width / 2, y - Textures[base.texturesPhase].Height), Color.White);
         }
 
+        public override string GetTypeAsString()
+        {
+            return "Potion";
+        }
+
         public override MapObject Clone(ContentManager contentManager)
         {
             return new Potion(contentManager, X, Y, this);

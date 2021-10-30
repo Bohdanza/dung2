@@ -27,6 +27,7 @@ namespace dung
         public List<Trader> sampleTraders { get; private set; } = new List<Trader>();
         public List<Trap> sampleTraps { get; private set; } = new List<Trap>();
         public List<Potion> samplePotions { get; private set; } = new List<Potion>();
+        public List<Turret> sampleTurrets { get; private set; } = new List<Turret>();
 
         private SoundEffect backgroundSong;
         private Texture2D cursor;
@@ -77,6 +78,11 @@ namespace dung
 
             samplePotions.Add(new Potion(contentManager, 0, 0, 10));
 
+            for (int i = 0; i < 1; i++)
+            {
+                sampleTurrets.Add(new Turret(contentManager, 0, 0, i));
+            }
+
             //generating main dungeon
             DungeonSynthesizer ds = new DungeonSynthesizer(contentManager, 480, 480);
 
@@ -116,7 +122,7 @@ namespace dung
             //generating mobs, loot etc.
             referenceToHero = AddObject(new Hero(contentManager, ds.rooms[0].Item1, ds.rooms[0].Item2));
 
-            AddObject(new Turret(contentManager, ds.rooms[0].Item1, ds.rooms[0].Item2 + 4, 0));
+           // AddObject(new Turret(contentManager, ds.rooms[0].Item1, ds.rooms[0].Item2 + 4, 0));
 
             List<List<int>> fightingRooms = new List<List<int>>();
 
@@ -131,23 +137,32 @@ namespace dung
 
                     if (roomDif == 0)
                     {
-                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(3, 5), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(3, 5), 0); 
+
+                        //insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
                     else if (roomDif == 1)
                     {
-                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(5, 8), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(2, 5), 1);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(4, 7), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(1, 3), 1);
+
+                        //insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
                     else if (roomDif == 2)
                     {
-                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(8, 12), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(5, 8), 1);
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(6, 9), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(2, 4), 1);
+
+                        insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
                     else if (roomDif == 3)
                     {
                         insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(11, 16), 0);
                         insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(5, 10), 1);
                         //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(1, 3), 2);
+
+                        insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
+                        insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
                     else
                     {
@@ -155,7 +170,10 @@ namespace dung
 
                         insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(12, 21), 0);
                         insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(7, 14), 1);
-                            //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(2, 5), 2);
+                        //insertMobs(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, 12, 12, rnd.Next(2, 5), 2);
+
+                        insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
+                        insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
 
                     int tmptype = 0;
@@ -433,6 +451,43 @@ namespace dung
             for (int i = 0; i < mapObjects.Count; i++)
             {
                 if (mapObjects[i].GetTypeAsString() == typeAsString)
+                {
+                    double tmpd = this.GetDist(x, y, mapObjects[i].X, mapObjects[i].Y);
+
+                    if (tmpd < md)
+                    {
+                        mi = i;
+
+                        md = tmpd;
+                    }
+                }
+            }
+
+            if (md > -1)
+            {
+                return mapObjects[mi];
+            }
+
+            return null;
+        }
+
+
+        /// <summary>
+        /// Get closest object of given types
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="indexToIgnore"></param>
+        /// <param name="typeAsString"></param>
+        /// <returns></returns>
+        public MapObject GetClosestObject(double x, double y, int indexToIgnore, List<string> typesAsStrings)
+        {
+            int mi = 0;
+            double md = double.MaxValue;
+
+            for (int i = 0; i < mapObjects.Count; i++)
+            {
+                if (typesAsStrings.Contains(mapObjects[i].GetTypeAsString()))
                 {
                     double tmpd = this.GetDist(x, y, mapObjects[i].X, mapObjects[i].Y);
 

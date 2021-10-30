@@ -40,6 +40,8 @@ namespace dung
         private int timeSinceLastAction = 0;
         public List<Coin> coins { get; protected set; }
         public int CoinsSum { get; set; } = 0;
+        private Texture2D damageTexture;
+        private int timeSinceLastDamage = 100;
 
         public Hero(ContentManager contentManager, double x, double y)
         {
@@ -60,6 +62,8 @@ namespace dung
             hpFont = contentManager.Load<SpriteFont>("hpfont");
 
             reloadTexture = contentManager.Load<Texture2D>("reloadfull");
+
+            damageTexture = contentManager.Load<Texture2D>("damage");
 
             GunInHand = new Gun(contentManager, 0, 0, 0);
 
@@ -93,6 +97,8 @@ namespace dung
             }
 
             hpFont = contentManager.Load<SpriteFont>("hpfont");
+
+            damageTexture = contentManager.Load<Texture2D>("damage");
 
             coins = new List<Coin>();
 
@@ -175,10 +181,20 @@ namespace dung
 
             spriteBatch.DrawString(hpFont, HP.ToString(), new Vector2(15, (int)(35 + hpHeartTextures[0].Height * 1.3)), Color.White);
             spriteBatch.DrawString(hpFont, CoinsSum.ToString(), new Vector2(1900 - hpFont.MeasureString(CoinsSum.ToString()).X, 15), Color.White);
+
+            if (timeSinceLastDamage <= 6)
+            {
+                spriteBatch.Draw(damageTexture, new Vector2(0, 0), new Color(255, 255, 255, 255 - timeSinceLastDamage * 42));
+            }
         }
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld, int myIndex)
         {
+            if(timeSinceLastDamage<=10)
+            {
+                timeSinceLastDamage++;
+            }
+
             timeSinceLastAction++;
 
             double px = X;
@@ -221,10 +237,14 @@ namespace dung
 
                 if (closestGun != null)
                 {
-                    if (gameWorld.GetDist(X, Y, closestGun.X, closestGun.Y) <= this.Radius + closestGun.Radius)
+                    if (gameWorld.GetDist(X, Y, closestGun.X, closestGun.Y) <= this.Radius + closestGun.Radius+0.5)
                     {
-                        GunInHand.ChangeCoords(X, Y);
-                        gameWorld.AddObject(GunInHand);
+                        GunInHand.ChangeCoords(this.X, this.Y);
+                        
+                        if (gameWorld.blocks[(int)X][(int)Y].passable)
+                        {
+                            gameWorld.AddObject(GunInHand);
+                        }
 
                         GunInHand = (Gun)closestGun;
 
@@ -302,6 +322,20 @@ namespace dung
 
         public override void Attack(int strenght)
         {
+            if (strenght > 0)
+            {
+                timeSinceLastDamage = 0;
+
+                var rnd = new Random();
+
+                double tmpx = 0.5 + rnd.NextDouble(), tmpy = 0.5 + rnd.NextDouble();
+
+                if ((int)X == (int)(X + tmpx) && (int)Y == (int)(Y + tmpx))
+                {
+                    this.Move(tmpx, tmpy);
+                }
+            }
+
             HP -= strenght;
 
             if (HP <= 0)

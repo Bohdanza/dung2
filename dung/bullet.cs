@@ -26,6 +26,7 @@ namespace dung
         public override bool alive { get; protected set; }
         public int beatFromWalls { get; protected set; }
         public int maxBeatFromWalls { get; protected set; }
+        public List<string> targets = new List<string>();
 
         /// <summary>
         /// With file reading
@@ -36,6 +37,8 @@ namespace dung
         /// <param name="y"></param>
         public Bullet(ContentManager contentManager, int type, double x, double y, double directon)
         {
+            targets.Add("Ghost");
+
             beatFromWalls = 0;
 
             alive = true;
@@ -67,6 +70,8 @@ namespace dung
 
         public Bullet(ContentManager contentManager, int type, double x, double y, double directon, Bullet sampleBullet)
         {
+            targets.Add("Ghost");
+
             beatFromWalls = 0;
 
             alive = true;
@@ -147,24 +152,13 @@ namespace dung
             }
             else
             {
-                MapObject closestObject = gameWorld.GetClosestObject(X, Y, myIndex, "Ghost");
+                MapObject closestObject = gameWorld.GetClosestObject(X, Y, myIndex, targets);
 
                 if (closestObject != null && gameWorld.GetDist(X, Y, closestObject.X, closestObject.Y) < Radius + closestObject.Radius)
                 {
                     alive = false;
 
                     closestObject.Attack(damage);
-                }
-                else
-                {
-                    closestObject = gameWorld.GetClosestObject(X, Y, myIndex, "Hero");
-
-                    if (gameWorld.GetDist(X, Y, closestObject.X, closestObject.Y) < Radius + closestObject.Radius)
-                    {
-                        alive = false;
-
-                        closestObject.Attack(damage);
-                    }
                 }
             }
         }

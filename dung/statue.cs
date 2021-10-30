@@ -114,6 +114,11 @@ namespace dung
             spriteBatch.Draw(Textures[TexturesPhase], new Vector2(x, y-Textures[TexturesPhase].Height+GameWorld.blockDrawY), Color.White);
         }
 
+        public override string GetTypeAsString()
+        {
+            return "Door";
+        }
+
         public override MapObject Clone(ContentManager contentManager)
         {
             throw new Exception("Door needs a GameWord object to be initialized, so U cant use this method. Try something like creating new door");

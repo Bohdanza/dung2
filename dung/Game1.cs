@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace dung
 {
@@ -20,12 +21,18 @@ namespace dung
         private SimpleFps fpsc = new SimpleFps();
         private SpriteFont tmpfont;
         private DungeonSynthesizer dungeonSynthesizer;
+        private Thread newGameWorldThread;
+        private button createWorldButton;
+        private bool worldActive = false;
+        private List<Texture2D> loadingScreenTextures;
+        private int loadingScreenPhase;
+        private Texture2D backgroundmenu;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = false;
+            IsMouseVisible = true;
 
             _graphics.ApplyChanges();
 
@@ -44,6 +51,11 @@ namespace dung
             _graphics.ApplyChanges();
         }
 
+        public void CreateWorld()
+        {
+            testworld = new GameWorld(this.Content);
+        }
+
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -57,25 +69,31 @@ namespace dung
                 
             tmpfont = Content.Load<SpriteFont>("mainfont");
 
-            //dungeonSynthesizer = new DungeonSynthesizer(Content, 768, 768);
+            backgroundmenu = Content.Load<Texture2D>("backgroundmenu");
 
-            //dungeonSynthesizer.AlternativeGenerate(30, 4, 12);
-            //dungeonSynthesizer.Reset(1024, 1024);
-            //dungeonSynthesizer.RandomSeeds(250, 750, 16, 4);
-            //dungeonSynthesizer.GenerateCorridors(250, 300);
+            var tmptex1 = Content.Load<Texture2D>("newgamebutton");
 
-            //dungeonSynthesizer.ReplaceRooms(13, 13);
-            //dungeonSynthesizer.PlaceWalls();
+            createWorldButton = new button(0, 130, 80, tmptex1.Width, tmptex1.Height, tmptex1, Content.Load<Texture2D>("newgamebuttonpressed"), Content.Load<SpriteFont>("button_font"), "New game", Color.White);
 
-            testworld = new GameWorld(Content/*, "info/worlds/world1"*/);
+            newGameWorldThread = new Thread(new ThreadStart(CreateWorld));
+
+            loadingScreenTextures = new List<Texture2D>();
+            loadingScreenPhase = 0;
+
+            while(File.Exists("Content/loadingscreen"+loadingScreenPhase.ToString()+".xnb"))
+            {
+                loadingScreenTextures.Add(Content.Load<Texture2D>("loadingscreen" + loadingScreenPhase.ToString()));
+
+                loadingScreenPhase++;
+            }
+
+            loadingScreenPhase = 0;
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            testworld.update(Content);
 
             KeyboardState ks = Keyboard.GetState();
 
@@ -84,9 +102,35 @@ namespace dung
                 fpsc.Update(gameTime);
             }
 
-            if(!IsActive)
+            if (worldActive && !IsActive && !newGameWorldThread.IsAlive)
             {
                 testworld.Save("info/worlds/world1");
+            }
+
+            if(!worldActive)
+            {
+                createWorldButton.update();
+
+                if (createWorldButton.pressed)
+                {
+                    worldActive = true; 
+                    
+                    IsMouseVisible = true;
+
+                    _graphics.ApplyChanges();
+
+                    newGameWorldThread.Start();
+                }
+            }    
+            else if(newGameWorldThread.IsAlive)
+            {
+                loadingScreenPhase++;
+
+                loadingScreenPhase %= loadingScreenTextures.Count;
+            }
+            else
+            {
+                testworld.update(Content);
             }
 
             base.Update(gameTime);
@@ -98,8 +142,21 @@ namespace dung
 
             _spriteBatch.Begin();
 
-            testworld.draw(_spriteBatch, tmpx, tmpy);
-            //dungeonSynthesizer.Visualize(_spriteBatch, 0, 0, 1, 1);
+            if (!worldActive)
+            {
+                _spriteBatch.Draw(backgroundmenu, new Vector2(0, 0), Color.White);
+
+                createWorldButton.draw(_spriteBatch);
+            }
+            else if (newGameWorldThread.IsAlive)
+            {
+                _spriteBatch.Draw(loadingScreenTextures[loadingScreenPhase], new Vector2(0, 0), Color.White);
+            }
+            else
+            {
+                testworld.draw(_spriteBatch, tmpx, tmpy);
+                //dungeonSynthesizer.Visualize(_spriteBatch, 0, 0, 1, 1);
+            }
 
             KeyboardState ks = Keyboard.GetState();
 

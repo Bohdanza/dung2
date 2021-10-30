@@ -168,6 +168,29 @@ namespace dung
                 currentFirePause %= FireSpeed.Count;
             }
         }
+        
+        public void ShootInDirection(GameWorld gameWorld, ContentManager contentManager, double x, double y, double direction, double radius, List<string> targets)
+        {
+            if (TimeSinceLastShoot >= FireSpeed[currentFirePause])
+            {
+                TimeSinceLastShoot = 0;
+
+                for (int i = 0; i < bulletsShooting.Count; i++)
+                {
+                    double tmpbx = x + Math.Cos(direction + bulletsShooting[i].Item2) * (radius + bulletsShooting[i].Item1.Radius);
+                    double tmpby = y + Math.Sin(direction + bulletsShooting[i].Item2) * (radius + bulletsShooting[i].Item1.Radius);
+
+                    var reference = gameWorld.AddObject(new Bullet(contentManager, bulletsShooting[i].Item1.Type, tmpbx, tmpby, direction + bulletsShooting[i].Item2, bulletsShooting[i].Item1));
+
+                    ((Bullet)reference).targets = targets;
+                }
+
+                currentFirePause++;
+
+                currentFirePause %= FireSpeed.Count;
+            }
+        }
+
 
         public override string GetTypeAsString()
         {
