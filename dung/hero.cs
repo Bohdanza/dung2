@@ -65,7 +65,7 @@ namespace dung
 
             damageTexture = contentManager.Load<Texture2D>("damage");
 
-            GunInHand = new Gun(contentManager, 0, 0, 0);
+            GunInHand = new Gun(contentManager, 12, 0, 0);
 
             coins = new List<Coin>();
 
@@ -239,14 +239,11 @@ namespace dung
                 {
                     if (gameWorld.GetDist(X, Y, closestGun.X, closestGun.Y) <= this.Radius + closestGun.Radius+0.5)
                     {
-                        GunInHand.ChangeCoords(this.X, this.Y);
-                        
-                        if (gameWorld.blocks[(int)X][(int)Y].passable)
-                        {
-                            gameWorld.AddObject(GunInHand);
-                        }
+                        GunInHand.ChangeCoords(closestGun.X, closestGun.Y);
+                      
+                        gameWorld.AddObject(GunInHand);
 
-                        GunInHand = (Gun)closestGun;
+                        GunInHand = (Gun)closestGun.Clone(contentManager);
 
                         closestGun.Kill();
                     }

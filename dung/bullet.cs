@@ -130,13 +130,27 @@ namespace dung
                 {
                     beatFromWalls++;
 
-                    if (Math.Abs(py - Y) <= Math.Abs(px - X))
+                    if ((int)X != (int)px)
                     {
-                        degDirection = Math.PI - degDirection;
+                        if (degDirection < 0 || degDirection >= Math.PI)
+                        {
+                            degDirection = Math.PI - degDirection;
+                        }
+                        else
+                        {
+                            degDirection = Math.PI*2 - degDirection;
+                        }
                     }
                     else
                     {
-                        degDirection = Math.PI * 2 - degDirection;
+                        if (degDirection < 0 || degDirection >= Math.PI)
+                        {
+                            degDirection = Math.PI * 2 - degDirection;
+                        }
+                        else
+                        {
+                            degDirection = Math.PI * -2 - degDirection;
+                        }
                     }
 
                     degDirection %= Math.PI;

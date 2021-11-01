@@ -19,7 +19,7 @@ namespace dung
         private int tmpx = 0, tmpy = 0;
         private GameWorld testworld;
         private SimpleFps fpsc = new SimpleFps();
-        private SpriteFont tmpfont;
+        private SpriteFont tmpfont, loadingFont;
         private DungeonSynthesizer dungeonSynthesizer;
         private Thread newGameWorldThread;
         private button createWorldButton;
@@ -27,6 +27,7 @@ namespace dung
         private List<Texture2D> loadingScreenTextures;
         private int loadingScreenPhase;
         private Texture2D backgroundmenu;
+        private List<Texture2D> storyImages;
 
         public Game1()
         {
@@ -66,8 +67,9 @@ namespace dung
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-                
+            
             tmpfont = Content.Load<SpriteFont>("mainfont");
+            loadingFont = Content.Load<SpriteFont>("button_font");
 
             backgroundmenu = Content.Load<Texture2D>("backgroundmenu");
 
@@ -113,9 +115,9 @@ namespace dung
 
                 if (createWorldButton.pressed)
                 {
-                    worldActive = true; 
-                    
-                    IsMouseVisible = true;
+                    worldActive = true;
+
+                    IsMouseVisible = false;
 
                     _graphics.ApplyChanges();
 
@@ -151,6 +153,8 @@ namespace dung
             else if (newGameWorldThread.IsAlive)
             {
                 _spriteBatch.Draw(loadingScreenTextures[loadingScreenPhase], new Vector2(0, 0), Color.White);
+
+                _spriteBatch.DrawString(loadingFont, "Loading", new Vector2(960 - loadingFont.MeasureString("Loading").X / 2, 870), Color.White);
             }
             else
             {

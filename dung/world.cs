@@ -59,9 +59,12 @@ namespace dung
                 sampleGhosts.Add(new Ghost(contentManager, i, 0, 0, 0, 0));
             }
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 14; i++)
             {
-                sampleGuns.Add(new Gun(contentManager, i, 0, 0));
+                if (i != 8 && i != 10)
+                {
+                    sampleGuns.Add(new Gun(contentManager, i, 0, 0));
+                }
             }
 
             sampleCoins.Add(new Coin(contentManager, 0, 0, 8));
@@ -84,8 +87,8 @@ namespace dung
             }
 
             //generating main dungeon
-            DungeonSynthesizer ds = new DungeonSynthesizer(contentManager, 480, 480);
-
+            dung.DungeonSynthesizer ds = new dung.DungeonSynthesizer(contentManager, 480, 480);
+            
             ds.FinalGenerator(17, 4, 13);
 
             List<List<int>> tmplist = ds.GetList();
