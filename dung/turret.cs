@@ -20,6 +20,7 @@ namespace dung
         private int texturePhase;
         public override double Radius { get => base.Radius; protected set => base.Radius = value; }
         public Gun gun { get; protected set; }
+        public double ActiveRadius { get; private set; }
 
         public Turret(ContentManager contentManager, double x, double y, int type)
         {
@@ -35,6 +36,8 @@ namespace dung
                 gun = new Gun(contentManager, Int32.Parse(tmplist[0]), x, y);
 
                 Radius = double.Parse(tmplist[1]);
+
+                ActiveRadius = double.Parse(tmplist[2]);
             }
 
             updateTexture(contentManager, true);
@@ -52,6 +55,8 @@ namespace dung
             gun.ChangeCoords(X, Y);
 
             Radius = sample.Radius;
+
+            ActiveRadius = sample.ActiveRadius;
 
             updateTexture(contentManager, true);
         }
@@ -84,16 +89,19 @@ namespace dung
         {
             base.Update(contentManager, gameWorld, myIndex);
 
-            double tmpdir = Math.Atan2(Y - gameWorld.referenceToHero.Y, X - gameWorld.referenceToHero.X);
+            if (gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= ActiveRadius)
+            {
+                double tmpdir = Math.Atan2(Y - gameWorld.referenceToHero.Y, X - gameWorld.referenceToHero.X);
 
-            tmpdir += 3f * (float)Math.PI;
+                tmpdir += 3f * (float)Math.PI;
 
-            tmpdir %= (float)(Math.PI * 2);
+                tmpdir %= (float)(Math.PI * 2);
 
-            var listFromStrings = new List<string>();
-            listFromStrings.Add("Hero");
+                var listFromStrings = new List<string>();
+                listFromStrings.Add("Hero");
 
-            gun.ShootInDirection(gameWorld, contentManager, X, Y, tmpdir, Radius, listFromStrings);
+                gun.ShootInDirection(gameWorld, contentManager, X, Y, tmpdir, Radius, listFromStrings);
+            }
 
             gun.Update(contentManager, gameWorld, -1);
             

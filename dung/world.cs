@@ -133,7 +133,7 @@ namespace dung
             {
                 if (ds.roomsRarity[i] != -1)
                 {
-                    insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, "", 7, 1, 7);
+                    insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, "", 7, 1, 3);
 
                     int roomDif = ds.roomsRarity[i];
                     int trapscount = roomDif+1;
@@ -142,7 +142,7 @@ namespace dung
                     {
                         insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(3, 5), 0); 
 
-                        //insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
+                       // insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
                     else if (roomDif == 1)
                     {
@@ -187,7 +187,7 @@ namespace dung
                     {
                         if (sampleGuns[tmprarc].rarity == roomDif)
                         {
-                            tmprar.Add(tmprarc);
+                            tmprar.Add(sampleGuns[tmprarc].Type);
                         }
                     }
 
@@ -584,7 +584,7 @@ namespace dung
                 {
                     var refer= AddObject(new Ghost(contentManager, type, tmpx, tmpy, tmpx, tmpy, sampleGhosts[type]));
 
-                    ((Ghost)refer).influenceRect = new Rectangle(x+1, y+1, xsize, ysize);
+                    ((Ghost)refer).influenceRect = new Rectangle(x, y, xsize+2, ysize+2);
 
                     c++;
                 }

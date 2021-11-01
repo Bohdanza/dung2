@@ -3601,6 +3601,18 @@
 /processorParam:TextureFormat=Color
 /build:13item0.png
 
+#begin 13item0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:13item0.png
+
 #begin 1block0.png
 /importer:TextureImporter
 /processor:TextureProcessor
