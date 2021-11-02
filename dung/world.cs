@@ -584,7 +584,7 @@ namespace dung
                 {
                     var refer= AddObject(new Ghost(contentManager, type, tmpx, tmpy, tmpx, tmpy, sampleGhosts[type]));
 
-                    ((Ghost)refer).influenceRect = new Rectangle(x, y, xsize+2, ysize+2);
+                    ((Ghost)refer).influenceRect = new Rectangle(x+1, y+1, xsize, ysize);
 
                     c++;
                 }

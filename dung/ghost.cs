@@ -34,6 +34,7 @@ namespace dung
         /// item is item, 2 ints are the min and the max number
         /// </summary>
         public List<Tuple<Item, int, int>> Loot { get; protected set; }
+        private List<Tuple<double, double>> path { get; set; } = new List<Tuple<double, double>>();
 
         /// <summary>
         /// with file reading, hp to max
@@ -224,15 +225,29 @@ namespace dung
 
             if (Action != "at" && Action != "di" && Action != "dm")
             {
-                if (influenceRect.Contains((float)gameWorld.referenceToHero.X, (float)gameWorld.referenceToHero.Y) && gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= viewRadius)
+                if (influenceRect.Contains((float)gameWorld.referenceToHero.X, (float)gameWorld.referenceToHero.Y) && gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= viewRadius && gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) >= Radius + gameWorld.referenceToHero.Radius)
                 {
-                    double x1 = X - gameWorld.referenceToHero.X, y1 = Y - gameWorld.referenceToHero.Y;
+                    if (path.Count > 0)
+                    {
+                        if (gameWorld.GetDist(X, Y, path[0].Item1, path[0].Item2) <= speed)
+                        {
+                            path.RemoveAt(0);
+                        }
+                        else
+                        {
+                            double x1 = X - path[0].Item1, y1 = Y - path[0].Item2;
 
-                    degDirection = Math.Atan2(y1, x1);
+                            degDirection = Math.Atan2(y1, x1);
 
-                    degDirection += (float)Math.PI;
+                            degDirection += (float)Math.PI;
 
-                    degDirection %= (float)(Math.PI * 2);
+                            degDirection %= (float)(Math.PI * 2);
+                        }
+                    }
+                    else
+                    {
+                        FindPath((int)Math.Ceiling(X), (int)Math.Ceiling(Y), (int)Math.Ceiling(gameWorld.referenceToHero.X), (int)Math.Ceiling(gameWorld.referenceToHero.Y), gameWorld);
+                    }
 
                     Action = "wa";
                 }
@@ -388,7 +403,7 @@ namespace dung
         }
 
         /// <summary>
-        /// Fuck, i need to drink something harder than cola to write this. Anyway, me in future, please write it. Yes, you! And don't think that i'm talking about far future, i mean 28.10.2021
+        /// Now it's finished
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -397,29 +412,151 @@ namespace dung
         /// <param name="gameWorld"></param>
         public void FindPath(int x, int y, int dx, int dy, GameWorld gameWorld)
         {
-            List<Tuple<int, Tuple<int, int>>> discovered = new List<Tuple<int, Tuple<int, int>>>();
-            List<Tuple<int, Tuple<int, int>>> current = new List<Tuple<int, Tuple<int, int>>>();
-            List<Tuple<int, Tuple<int, int>>> newPoints = new List<Tuple<int, Tuple<int, int>>>();
+            x -= influenceRect.X;
+            y -= influenceRect.Y;
+            
+            dx -= influenceRect.X;
+            dy -= influenceRect.Y;
 
-            current.Add(new Tuple<int, Tuple<int, int>>(0, new Tuple<int, int>(x, y)));
+            List<List<int>> interpr = new List<List<int>>();
 
-            bool finished = false;
-
-            while (current.Count > 0 && !finished)
+            for (int i = influenceRect.X; i < influenceRect.X + influenceRect.Width; i++)
             {
-                for (int i = 0; i < current.Count && !finished; i++)
-                {
-                    if (current[i].Item2.Item1 == dx && current[i].Item2.Item2 == dy)
-                    {
-                        finished = true;
-                    }
+                List<int> tmplist = new List<int>();
 
-                    if (current[i].Item2.Item1 > 0)
+                for (int j = influenceRect.Y; j < influenceRect.Y + influenceRect.Height; j++)
+                {
+                    if (gameWorld.blocks[i][j].passable)
                     {
-                        
+                        tmplist.Add(-3);
+                    }
+                    else
+                    {
+                        tmplist.Add(-4);
                     }
                 }
+
+                interpr.Add(tmplist);
             }
+
+            List<Tuple<int, int>> current, discovered;
+
+            current = new List<Tuple<int, int>>();
+            discovered = new List<Tuple<int, int>>();
+
+            current.Add(new Tuple<int, int>(x, y));
+            interpr[x][y] = 0;
+
+            while (interpr[dx][dy] == -3 && current.Count > 0)
+            {
+                discovered = new List<Tuple<int, int>>();
+
+                while(current.Count>0)
+                {
+                    int tmpx = current[0].Item1;
+                    int tmpy = current[0].Item2;
+
+                    current.RemoveAt(0);
+
+                    if (tmpx > 0)
+                    {
+                        if (interpr[tmpx - 1][tmpy] != -4)
+                        {
+                            if (interpr[tmpx - 1][tmpy] == -3)
+                            {
+                                interpr[tmpx - 1][tmpy] = interpr[tmpx][tmpy] + 1;
+
+                                discovered.Add(new Tuple<int, int>(tmpx - 1, tmpy));
+                            }
+                            else
+                            {
+                                interpr[tmpx - 1][tmpy] = Math.Min(interpr[tmpx][tmpy] + 1, interpr[tmpx - 1][tmpy]);
+                            }
+                        }
+                    }
+                    
+                    if (tmpy > 0)
+                    {
+                        if (interpr[tmpx][tmpy-1] != -4)
+                        {
+                            if (interpr[tmpx][tmpy-1] == -3)
+                            {
+                                interpr[tmpx][tmpy - 1] = interpr[tmpx][tmpy] + 1;
+
+                                discovered.Add(new Tuple<int, int>(tmpx, tmpy-1));
+                            }
+                            else
+                            {
+                                interpr[tmpx][tmpy - 1] = Math.Min(interpr[tmpx][tmpy] + 1, interpr[tmpx][tmpy - 1]);
+                            }
+                        }
+                    }
+
+                    if (tmpx < interpr.Count - 1)
+                    {
+                        if (interpr[tmpx + 1][tmpy] != -4)
+                        {
+                            if (interpr[tmpx + 1][tmpy] == -3)
+                            {
+                                interpr[tmpx + 1][tmpy] = interpr[tmpx][tmpy] + 1;
+
+                                discovered.Add(new Tuple<int, int>(tmpx + 1, tmpy));
+                            }
+                            else
+                            {
+                                interpr[tmpx + 1][tmpy] = Math.Min(interpr[tmpx][tmpy] + 1, interpr[tmpx + 1][tmpy]);
+                            }
+                        }
+                    }
+
+                    if (tmpy < interpr[tmpx].Count - 1)
+                    {
+                        if (interpr[tmpx][tmpy + 1] != -4)
+                        {
+                            if (interpr[tmpx][tmpy + 1] == -3)
+                            {
+                                interpr[tmpx][tmpy + 1] = interpr[tmpx][tmpy] + 1;
+
+                                discovered.Add(new Tuple<int, int>(tmpx, tmpy + 1));
+                            }
+                            else
+                            {
+                                interpr[tmpx][tmpy + 1] = Math.Min(interpr[tmpx][tmpy] + 1, interpr[tmpx][tmpy + 1]);
+                            }
+                        }
+                    }
+                }
+
+                current = discovered;
+            }
+
+            path = new List<Tuple<double, double>>();
+
+            int cx = dx, cy = dy;
+
+            while (cx != x || cy != y)
+            {
+                path.Add(new Tuple<double, double>(cx + influenceRect.X, cy + influenceRect.Y));
+
+                if (cx > 0 && interpr[cx - 1][cy] == interpr[cx][cy] - 1)
+                {
+                    cx--;
+                }
+                else if (cy > 0 && interpr[cx][cy - 1] == interpr[cx][cy] - 1)
+                {
+                    cy--;
+                }
+                else if (cx < interpr.Count - 1 && interpr[cx + 1][cy] == interpr[cx][cy] - 1)
+                {
+                    cx++;
+                }
+                else if (cy < interpr[cx].Count - 1 && interpr[cx][cy + 1] == interpr[cx][cy] - 1)
+                {
+                    cy++;
+                }
+            }
+
+            path.Reverse();
         }
     }
 }
