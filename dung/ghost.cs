@@ -225,29 +225,15 @@ namespace dung
 
             if (Action != "at" && Action != "di" && Action != "dm")
             {
-                if (influenceRect.Contains((float)gameWorld.referenceToHero.X, (float)gameWorld.referenceToHero.Y) && gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= viewRadius && gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) >= Radius + gameWorld.referenceToHero.Radius)
+                if (influenceRect.Contains((float)gameWorld.referenceToHero.X, (float)gameWorld.referenceToHero.Y) && gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= viewRadius)
                 {
-                    if (path.Count > 0)
-                    {
-                        if (gameWorld.GetDist(X, Y, path[0].Item1, path[0].Item2) <= speed)
-                        {
-                            path.RemoveAt(0);
-                        }
-                        else
-                        {
-                            double x1 = X - path[0].Item1, y1 = Y - path[0].Item2;
+                    double x1 = X - gameWorld.referenceToHero.X, y1 = Y - gameWorld.referenceToHero.Y;
 
-                            degDirection = Math.Atan2(y1, x1);
+                    degDirection = Math.Atan2(y1, x1);
 
-                            degDirection += (float)Math.PI;
+                    degDirection += (float)Math.PI;
 
-                            degDirection %= (float)(Math.PI * 2);
-                        }
-                    }
-                    else
-                    {
-                        FindPath((int)Math.Ceiling(X), (int)Math.Ceiling(Y), (int)Math.Ceiling(gameWorld.referenceToHero.X), (int)Math.Ceiling(gameWorld.referenceToHero.Y), gameWorld);
-                    }
+                    degDirection %= (float)(Math.PI * 2);
 
                     Action = "wa";
                 }
