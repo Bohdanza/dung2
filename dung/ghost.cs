@@ -309,7 +309,7 @@ namespace dung
 
             //to check if it has already dropped
             if (Action == "di" && texturePhase == Textures.Count - 1 && !alreadyDropped)
-            {
+            {   
                 alreadyDropped = true;
 
                 foreach(var currentItem in Loot)
