@@ -41,7 +41,7 @@ namespace dung
         public List<Coin> coins { get; protected set; }
         public int CoinsSum { get; set; } = 0;
         private Texture2D damageTexture;
-        private int timeSinceLastDamage = 100;
+        private int timeSinceLastDamage = 100, timeSinceLastUpdateTexture = 0;
 
         public Hero(ContentManager contentManager, double x, double y)
         {
@@ -149,13 +149,13 @@ namespace dung
 
             if (Direction == "w")
             {
-                GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.25), tmpdir);
+                GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.07), tmpdir);
                 spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
             }
             else
             {
                 spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
-                GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.25), tmpdir);
+                GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.07), tmpdir);
             }
             
             if (GunInHand.TimeSinceLastShoot < GunInHand.FireSpeed[GunInHand.currentFirePause])
@@ -280,13 +280,13 @@ namespace dung
             
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
-                double tmpdir = Math.Atan2(540 - (int)(Textures[texturesPhase].Height * 0.25) - mouseState.Y, 960 - mouseState.X);
+                double tmpdir = Math.Atan2(540 - (int)(Textures[texturesPhase].Height * 0.07) - mouseState.Y, 960 - mouseState.X);
 
                 tmpdir += (float)Math.PI;
                     
                 tmpdir %= (float)(Math.PI * 2);
 
-                GunInHand.ShootInDirection(gameWorld, contentManager, X, Y - ((double)Textures[texturesPhase].Height * 0.25 / GameWorld.blockDrawY), tmpdir, Radius*1.2);
+                GunInHand.ShootInDirection(gameWorld, contentManager, X, Y - ((double)Textures[texturesPhase].Height * 0.07 / GameWorld.blockDrawY), tmpdir, Radius*1.2);
             }
 
             if ((int)X != (int)px || (int)Y != (int)py)
@@ -307,12 +307,18 @@ namespace dung
                 Action = "id";
             }
 
+            timeSinceLastUpdateTexture++;
+
             if (Action != pact || Direction != pdir)
             {
+                timeSinceLastUpdateTexture = 0;
+
                 UpdateTextures(contentManager, true);
             }
-            else
+            else if (timeSinceLastUpdateTexture >= 16)
             {
+                timeSinceLastUpdateTexture = 0;
+                
                 UpdateTextures(contentManager, false);
             }
         }

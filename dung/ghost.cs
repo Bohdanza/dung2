@@ -24,7 +24,7 @@ namespace dung
         private double degDirection, speed;
         private string pact = "id";
 
-        private int texturePhase, timeSinceLastAttack, attackSpeed;
+        private int texturePhase, timeSinceLastAttack, attackSpeed, timeSinceLastUpdateTexture = 0;
         public override double Radius { get; protected set; }
         public override int HP { get; protected set; }
         protected double viewRadius { get; set; }
@@ -35,6 +35,7 @@ namespace dung
         /// </summary>
         public List<Tuple<Item, int, int>> Loot { get; protected set; }
         private List<Tuple<double, double>> path { get; set; } = new List<Tuple<double, double>>();
+        private bool alreadyDropped = false;
 
         /// <summary>
         /// with file reading, hp to max
@@ -307,8 +308,10 @@ namespace dung
             }
 
             //to check if it has already dropped
-            if (Action == "di" && texturePhase == Textures.Count-1)
+            if (Action == "di" && texturePhase == Textures.Count - 1 && !alreadyDropped)
             {
+                alreadyDropped = true;
+
                 foreach(var currentItem in Loot)
                 {
                     int c = rnd.Next(currentItem.Item2, currentItem.Item2);
@@ -332,13 +335,19 @@ namespace dung
                 direction = "w";
             }
 
-            if (pact == Action && pdir == direction)
+            timeSinceLastUpdateTexture++;
+
+            if (pact != Action || pdir != direction)
             {
-                updateTexture(contentManager, false);
-            }
-            else
-            {
+                timeSinceLastUpdateTexture = 0;
+
                 updateTexture(contentManager, true);
+            }
+            else if(timeSinceLastUpdateTexture>=16)
+            {
+                timeSinceLastUpdateTexture = 0;
+
+                updateTexture(contentManager, false);
             }
 
             pact = Action;
