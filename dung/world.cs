@@ -16,7 +16,7 @@ namespace dung
     public class GameWorld
     {
         public List<List<Block>> blocks;
-        public const int blockDrawY = 32, BlockWidth = 32;
+        public const int blockDrawY = 36, BlockWidth = 36;
         private Texture2D darknessEffect, backgroundTexture;
         private List<MapObject> mapObjects;
         public MapObject referenceToHero { get; private set; }
@@ -166,7 +166,7 @@ namespace dung
                         insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(2, 4), 1);
                         insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(2, 4), 1);
 
-                        insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
+                       // insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
                     else if (roomDif == 3)
                     {
@@ -174,8 +174,8 @@ namespace dung
                         insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(5, 10), 1);
                         insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(3, 6), 2);
 
-                        insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
-                        insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
+                      // insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
+                      //  insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
                     else
                     {
@@ -185,7 +185,7 @@ namespace dung
                         insertMobs(contentManager, ds.rooms[i].Item1-7, ds.rooms[i].Item2-7, 13, 13, rnd.Next(7, 14), 1);
                         insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(4, 7), 2);
 
-                        insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
+                    //    insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                         insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
 

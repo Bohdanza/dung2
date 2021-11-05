@@ -34,9 +34,9 @@ namespace dung
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-
+            
             _graphics.ApplyChanges();
-
+            
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.PreferredBackBufferHeight = 1080;
 
@@ -48,7 +48,7 @@ namespace dung
 
             this.Window.IsBorderless = true;
 
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
         }
 
