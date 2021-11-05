@@ -179,6 +179,8 @@ namespace dung
         {
             if (reload)
             {
+                direction = "s";
+
                 Textures = new List<Texture2D>();
 
                 texturePhase = 0;
@@ -326,15 +328,6 @@ namespace dung
                 }
             }
 
-            if (degDirection * 57.2957795 >= 0 && degDirection * 57.2957795 <= 180)
-            {
-                direction = "s";
-            }
-            else
-            {
-                direction = "w";
-            }
-
             timeSinceLastUpdateTexture++;
 
             if (pact != Action || pdir != direction)
@@ -343,7 +336,7 @@ namespace dung
 
                 updateTexture(contentManager, true);
             }
-            else if(timeSinceLastUpdateTexture>=16)
+            else if(timeSinceLastUpdateTexture>=12)
             {
                 timeSinceLastUpdateTexture = 0;
 
@@ -355,7 +348,14 @@ namespace dung
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
-            spriteBatch.Draw(Textures[texturePhase], new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height), Color.White);
+            if (degDirection * 57.2957795 >= 90 && degDirection * 57.2957795 <= 270)
+            {
+                spriteBatch.Draw(Textures[texturePhase], new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(Textures[texturePhase], new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height), new Rectangle(0, 0, Textures[texturePhase].Width, Textures[texturePhase].Height), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.FlipHorizontally, 0);
+            }
         }
 
         public override void Attack(int strenght)

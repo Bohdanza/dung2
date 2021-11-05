@@ -22,6 +22,7 @@ namespace dung
         public int currentOffer { get; protected set; } = 0;
         private SpriteFont hpFont;
         private int itemsCount { get; set; } = 0;
+        private int timeSinceLastUpdateTexture = 0;
 
         public Trader(ContentManager contentManager, double x, double y, int type)
         {
@@ -159,8 +160,15 @@ namespace dung
                     }
                 }
             }
-            
-            UpdateTexture(contentManager, false);
+
+            timeSinceLastUpdateTexture++;
+
+            if (timeSinceLastUpdateTexture >= 16)
+            {
+                timeSinceLastUpdateTexture = 0;
+
+                UpdateTexture(contentManager, false);
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)

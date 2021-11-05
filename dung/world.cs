@@ -16,7 +16,7 @@ namespace dung
     public class GameWorld
     {
         public List<List<Block>> blocks;
-        public const int blockDrawY = 64, BlockWidth = 64;
+        public const int blockDrawY = 32, BlockWidth = 32;
         private Texture2D darknessEffect, backgroundTexture;
         private List<MapObject> mapObjects;
         public MapObject referenceToHero { get; private set; }
@@ -136,7 +136,7 @@ namespace dung
                     insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, "", 7, 1, 3);
 
                     int roomDif = ds.roomsRarity[i];
-                    int trapscount = roomDif+1;
+                    int trapscount = roomDif;
 
                     if (roomDif == 0)
                     {
@@ -343,7 +343,7 @@ namespace dung
 
         public void draw(SpriteBatch spriteBatch, int x, int y)
         {
-            //spriteBatch.Draw(backgroundTexture, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(backgroundTexture, new Vector2(0, 0), Color.White);
 
             int tmpx = 0;
             int tmpy = 0;
@@ -357,7 +357,7 @@ namespace dung
             int drawx = tmpx + x + 960;
             int drawy = tmpy + y + 540;
 
-            int startx = drawx / blocks[0][0].textures[0].Width, endx = startx * -1 + 1920 / blocks[0][0].textures[0].Width, starty = drawy / blockDrawY, endy = starty * -1 + 1080 / blockDrawY + 1;
+            int startx = drawx / BlockWidth, endx = startx * -1 + 1920 / BlockWidth, starty = drawy / blockDrawY, endy = starty * -1 + 1080 / blockDrawY + 1;
 
             endx++;
 
