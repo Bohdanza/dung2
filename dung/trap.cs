@@ -97,7 +97,7 @@ namespace dung
             Action = "id";
 
             Type = sample.Type;
-
+            
             X = x;
             Y = y;
 
@@ -154,18 +154,17 @@ namespace dung
 
             textureUpdateSlower++;
 
-            if (textureUpdateSlower == 2)
+            if (pact == Action)
             {
                 textureUpdateSlower = 0;
 
-                if (pact == Action)
-                {
-                    updateTexture(contentManager, false);
-                }
-                else
-                {
-                    updateTexture(contentManager, true);
-                }
+                updateTexture(contentManager, false);
+            }
+            else if (textureUpdateSlower == 5)
+            {
+                textureUpdateSlower = 0;
+
+                updateTexture(contentManager, true);
             }
         }
 

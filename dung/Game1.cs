@@ -48,7 +48,7 @@ namespace dung
 
             this.Window.IsBorderless = true;
 
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
         }
 
