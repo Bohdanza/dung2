@@ -20,9 +20,14 @@ namespace dung
         private int TexturePhase, lifetime, timeSinceBorn;
         public override int Type { get => base.Type; protected set => base.Type = value; }
         public double degDirection { get; protected set; }
-        
+        public Vector2 drawMovement;
+        private Vector2 drawPlus;
+
         public Particle(ContentManager contentManager, double x, double y, int type, int lifetime, double degDirection)
         {
+            drawPlus = new Vector2(0, 0);
+            drawMovement = new Vector2(0, 0);
+
             this.degDirection = degDirection;
 
             Type = type;
@@ -54,7 +59,7 @@ namespace dung
                     TexturePhase++;
                 }
 
-                TexturePhase = 6;
+                TexturePhase = 0;
             }
             else
             {
@@ -68,6 +73,8 @@ namespace dung
         {
             updateTexture(contentManager, false);
 
+            drawPlus = new Vector2(drawPlus.X + drawMovement.X, drawPlus.Y + drawMovement.Y);
+
             timeSinceBorn++;
 
             if(timeSinceBorn>lifetime)
@@ -78,7 +85,7 @@ namespace dung
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
-            spriteBatch.Draw(Textures[TexturePhase], new Vector2(x - Textures[TexturePhase].Width / 2, y - Textures[TexturePhase].Height / 2), Color.White);
+            spriteBatch.Draw(Textures[TexturePhase], new Vector2(x - Textures[TexturePhase].Width / 2 + drawPlus.X, y - Textures[TexturePhase].Height / 2 + drawPlus.Y), Color.White);
 
             //spriteBatch.Draw(Textures[TexturePhase], new Vector2(x - Textures[TexturePhase].Width / 2, y - Textures[TexturePhase].Height / 2), new Rectangle(0, 0, Textures[TexturePhase].Width, Textures[TexturePhase].Height), Color.White, (float)degDirection, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
         }

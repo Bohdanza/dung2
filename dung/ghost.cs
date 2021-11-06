@@ -226,6 +226,13 @@ namespace dung
 
             var rnd = new Random();
 
+            if(rnd.Next(0, 100)<=7)
+            {
+                var partref = gameWorld.AddObject(new Particle(contentManager, X + (rnd.NextDouble() - 0.5), Y + (rnd.NextDouble() - 0.5), 0, 120, 0));
+
+                ((Particle)partref).drawMovement.Y = -1;
+            }
+
             if (Action != "at" && Action != "di" && Action != "dm")
             {
                 if (influenceRect.Contains((float)gameWorld.referenceToHero.X, (float)gameWorld.referenceToHero.Y) && gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= viewRadius)
