@@ -51,7 +51,7 @@ namespace dung
           `._ _..-'                         |
              `-..____...-''                              |
                                                          |
-                               mGk                       |
+                                                         |
         */
 
     public class Trap:MapObject

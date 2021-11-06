@@ -124,6 +124,8 @@ namespace dung
             X += Math.Cos(degDirection) * speed;
             Y += Math.Sin(degDirection) * speed;
 
+            gameWorld.AddObject(new Particle(contentManager, px, py, 0, 5, this.degDirection));
+
             if ((int)X != (int)px || (int)Y != (int)py)
             {
                 if (X < 0 || Y < 0 || X >= gameWorld.blocks.Count || Y >= gameWorld.blocks[(int)X].Count || !gameWorld.blocks[(int)X][(int)Y].passable)
@@ -179,9 +181,9 @@ namespace dung
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
-            //spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
+            spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height / 2), Color.White);
 
-            spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height / 2), new Rectangle(0, 0, Textures[texturesPhase].Width, Textures[texturesPhase].Height), Color.White, (float)degDirection, new Vector2(Textures[texturesPhase].Width / 2, Textures[texturesPhase].Height / 2), 1f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height / 2), new Rectangle(0, 0, Textures[texturesPhase].Width, Textures[texturesPhase].Height), Color.White, (float)degDirection, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
         }
 
         public override string GetTypeAsString()

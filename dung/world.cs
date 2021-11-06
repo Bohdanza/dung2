@@ -319,8 +319,6 @@ namespace dung
 
         public void update(ContentManager contentManager)
         {
-            mapObjects.Sort((a, b) => a.Y.CompareTo(b.Y));
-
             int l = 1;
 
             for (int i = 0; i < mapObjects.Count; i += l)
@@ -337,8 +335,9 @@ namespace dung
                     l = 0;
                     mapObjects.RemoveAt(i);
                 }
-
             }
+
+            mapObjects.Sort((a, b) => a.Y.CompareTo(b.Y));
         }
 
         public void draw(SpriteBatch spriteBatch, int x, int y)
@@ -531,8 +530,6 @@ namespace dung
             mapObjects.Add(mapObject);
 
             MapObject reference = mapObjects[mapObjects.Count - 1];
-
-            mapObjects.Sort((a, b) => a.Y.CompareTo(b.Y));
 
             return reference;
         }
