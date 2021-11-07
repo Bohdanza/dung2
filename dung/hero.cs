@@ -50,7 +50,7 @@ namespace dung
 
             Radius = 0.5;
 
-            HP = 3;
+            HP = 40;
 
             hpHeartTextures = new List<Texture2D>();
             
@@ -65,7 +65,7 @@ namespace dung
 
             damageTexture = contentManager.Load<Texture2D>("damage");
 
-            GunInHand = new Gun(contentManager, 0, 0, 0);
+            GunInHand = new Gun(contentManager, 1, 0, 0);
 
             coins = new List<Coin>();
 

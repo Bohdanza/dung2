@@ -371,19 +371,25 @@ namespace dung
 
         public void FinalGenerator(int dist, int maxroom, int roomSize)
         {
+            int bossroom = 0;
             int[,] rooms = new int[maxroom * 2 + 2,maxroom * 2 + 2];
 
-            this.Reset((maxroom * 2 + 2) * dist, (maxroom * 2 + 2) * dist);
+            this.Reset((maxroom * 2 + 5) * dist, (maxroom * 2 + 2) * dist);
 
-            for(int i=0; i< maxroom * 2 + 1; i++)
+            for(int i=0; i< maxroom * 2 + 2; i++)
             {
                 this.rooms.Add(new Tuple<int, int>(dist + i * dist, dist + maxroom * dist));
 
-                if(i%2==0)
+                if (i % 2 == 0 || i == maxroom * 2 + 1)
                 {
                     this.roomsRarity.Add(-1);
 
-                    PlaceSquare(dist + i * dist, mainArray.Count / 2, dist + (i + 1) * dist, mainArray.Count / 2 + 1, 1);
+                    PlaceSquare(dist + i * dist, dist + maxroom * dist, dist + (i + 1) * dist, dist + maxroom * dist + 1, 1);
+
+                    if (i == maxroom * 2 + 1)
+                    {
+                        bossroom = this.rooms.Count - 1;
+                    }
                 }
                 else
                 {
@@ -414,6 +420,8 @@ namespace dung
             PlaceWalls();
 
             PlaceDoors();
+
+            this.roomsRarity[bossroom] = -2;
         }
 
         public void PlaceSquare(int x1, int y1, int x2, int y2, int placeType)

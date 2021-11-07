@@ -71,6 +71,7 @@ namespace dung
         public Bullet(ContentManager contentManager, int type, double x, double y, double directon, Bullet sampleBullet)
         {
             targets.Add("Ghost");
+            targets.Add("Boss");
 
             beatFromWalls = 0;
 
