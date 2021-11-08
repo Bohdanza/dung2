@@ -94,7 +94,7 @@ namespace dung
 
             if (Type == 0)
             {
-                if(gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y)<=8)
+                if(gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y)<=11)
                 {
                     double tmpdir = Math.Atan2(Y - gameWorld.referenceToHero.Y, X - gameWorld.referenceToHero.X);
 
@@ -108,7 +108,16 @@ namespace dung
                     guns[0].ShootInDirection(gameWorld, contentManager, X, Y, tmpdir, Radius, listFromStrings);
                 }
             }
-            
+
+            var rnd = new Random();
+
+            if (rnd.Next(0, 100) <= 25)
+            {
+                var refer = gameWorld.AddObject(new Particle(contentManager, (rnd.NextDouble() - 0.5) * 17 + X, (rnd.NextDouble() - 0.5) * 17 + Y, 0, 120, 0));
+
+                ((Particle)refer).drawMovement = new Vector2(0, -1);
+            }
+
             timeSinceLastUpdateTexture++;
 
             if (pact != Action)

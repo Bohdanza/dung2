@@ -192,9 +192,18 @@ namespace dung
         {
             for(int i=0; i<rooms.Count; i++)
             {
-                int xi = rooms[i].Item1, yi = rooms[i].Item2;
+                if (roomsRarity[i] == -2)
+                {
+                    int xi = rooms[i].Item1, yi = rooms[i].Item2;
 
-                PlaceSquare(xi - x / 2, yi - y / 2, xi + x / 2, yi + y / 2, 1);
+                    PlaceSquare(xi - x / 2 - 2, yi - y / 2 - 2, xi + x / 2 + 2, yi + y / 2 + 2, 1);
+                }
+                else
+                {
+                    int xi = rooms[i].Item1, yi = rooms[i].Item2;
+
+                    PlaceSquare(xi - x / 2, yi - y / 2, xi + x / 2, yi + y / 2, 1);
+                }
             }
         }
         
@@ -384,10 +393,14 @@ namespace dung
                 {
                     this.roomsRarity.Add(-1);
 
-                    PlaceSquare(dist + i * dist, dist + maxroom * dist, dist + (i + 1) * dist, dist + maxroom * dist + 1, 1);
+                    if (i != maxroom * 2 + 1)
+                    {
+                        PlaceSquare(dist + i * dist, dist + maxroom * dist, dist + (i + 1) * dist, dist + maxroom * dist + 1, 1);
+                    }
 
                     if (i == maxroom * 2 + 1)
                     {
+                        this.roomsRarity[roomsRarity.Count - 1] = -2;
                         bossroom = this.rooms.Count - 1;
                     }
                 }

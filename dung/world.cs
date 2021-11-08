@@ -125,7 +125,7 @@ namespace dung
             //generating mobs, loot etc.
             referenceToHero = AddObject(new Hero(contentManager, ds.rooms[0].Item1, ds.rooms[0].Item2));
 
-            AddObject(new Boss(contentManager, 0, ds.rooms[0].Item1, ds.rooms[0].Item2));
+          //  AddObject(new Boss(contentManager, 0, ds.rooms[0].Item1, ds.rooms[0].Item2));
             // AddObject(new Turret(contentManager, ds.rooms[0].Item1, ds.rooms[0].Item2 + 4, 0));
 
             List<List<int>> fightingRooms = new List<List<int>>();

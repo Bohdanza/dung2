@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Microsoft.Xna.Framework.Audio;
 
 namespace dung
 {
@@ -24,7 +26,7 @@ namespace dung
         private double degDirection, speed;
         private string pact = "id";
 
-        private int texturePhase, timeSinceLastAttack, attackSpeed, timeSinceLastUpdateTexture = 0;
+        private int texturePhase, timeSinceLastAttack, attackSpeed, timeSinceLastUpdateTexture = 0, timeSinceLastDamage=2;
         public override double Radius { get; protected set; }
         public override int HP { get; protected set; }
         protected double viewRadius { get; set; }
@@ -36,6 +38,7 @@ namespace dung
         public List<Tuple<Item, int, int>> Loot { get; protected set; }
         private List<Tuple<double, double>> path { get; set; } = new List<Tuple<double, double>>();
         private bool alreadyDropped = false;
+        private List<SoundEffect> soundEffects;
 
         /// <summary>
         /// with file reading, hp to max
@@ -95,6 +98,8 @@ namespace dung
             }
             
             updateTexture(contentManager, true);
+
+            loadSounds(contentManager);
         }
 
         /// <summary>
@@ -138,6 +143,8 @@ namespace dung
             Loot = sampleGhost.Loot;
 
             updateTexture(contentManager, true);
+
+            loadSounds(contentManager);
         }
 
         public Ghost(ContentManager contentManager, List<string> strList, int beginning, List<Ghost> samples)
@@ -173,6 +180,18 @@ namespace dung
             Loot = samples[Type].Loot;
 
             updateTexture(contentManager, true);
+
+            loadSounds(contentManager);
+        }
+
+        private void loadSounds(ContentManager contentManager)
+        {
+            soundEffects = new List<SoundEffect>();
+
+            if (File.Exists("Content/" + Type.ToString() + "mob_id_sound.xnb"))
+            {
+                soundEffects.Add(contentManager.Load<SoundEffect>(Type.ToString() + "mob_id_sound"));
+            }
         }
 
         private void updateTexture(ContentManager contentManager, bool reload)
@@ -219,6 +238,7 @@ namespace dung
         {
             string pdir = direction;
 
+            timeSinceLastDamage++;
             timeSinceLastAttack++;
 
             double px = X;
@@ -335,6 +355,22 @@ namespace dung
                 }
             }
 
+            //playing sounds
+            if ((rnd.Next(0, 10000) <= 0 || (Action == "at" && timeSinceLastDamage==1)) && soundEffects.Count > 0)
+            {
+                double dist_to_hero = gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y);
+
+                if (dist_to_hero <= 25)
+                {
+                    var inst = soundEffects[0].CreateInstance();
+
+                    inst.Volume = (float)(dist_to_hero / 25d) * 0.5f;
+
+                    inst.Play();
+                }
+            }
+
+
             timeSinceLastUpdateTexture++;
 
             if (pact != Action || pdir != direction)
@@ -371,11 +407,14 @@ namespace dung
 
             if (strenght > 0)
             {
+                timeSinceLastDamage = 0;
                 Action = "dm";
             }
 
             if (HP <= 0)
             {
+                timeSinceLastDamage = 0;
+
                 HP = 0;
 
                 Action = "di";

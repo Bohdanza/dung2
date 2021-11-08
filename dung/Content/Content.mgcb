@@ -49,30 +49,6 @@
 /processorParam:TextureFormat=Color
 /build:0boss_di_s0.png
 
-#begin 0boss_di_s0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:0boss_di_s0.png
-
-#begin 0boss_dm_s0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:0boss_dm_s0.png
-
 #begin 0boss_dm_s0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -96,6 +72,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:0boss_id_s0.png
+
+#begin 0boss_id_s1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:0boss_id_s1.png
 
 #begin 0bullet0.png
 /importer:TextureImporter
@@ -576,6 +564,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:0mob_id_s1.png
+
+#begin 0mob_id_sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:0mob_id_sound.wav
+
+#begin 0mob_id_sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:0mob_id_sound.wav
 
 #begin 0mob_wa_s0.png
 /importer:TextureImporter
@@ -1632,30 +1632,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:2mob_id_s0.png
-
-#begin 2mob_id_s0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:2mob_id_s0.png
-
-#begin 2mob_id_s1.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:2mob_id_s1.png
 
 #begin 2mob_id_s1.png
 /importer:TextureImporter
