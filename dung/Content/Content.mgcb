@@ -709,18 +709,6 @@
 /processorParam:TextureFormat=Color
 /build:0npc_id_1.png
 
-#begin 0npc_id_2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:0npc_id_2.png
-
 #begin 0particle0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -996,6 +984,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:14item0.png
+
+#begin 15bullet0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:15bullet0.png
 
 #begin 1block0.png
 /importer:TextureImporter
