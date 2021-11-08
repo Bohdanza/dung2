@@ -59,7 +59,7 @@ namespace dung
                 sampleGhosts.Add(new Ghost(contentManager, i, 0, 0, 0, 0));
             }
 
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 15; i++)
             {
                 if (i != 8 && i != 10)
                 {
@@ -192,19 +192,19 @@ namespace dung
 
                     int tmptype = 0;
 
-                    List<int> tmprar = new List<int>();
+                    List<Gun> tmprar = new List<Gun>();
 
                     for (int tmprarc = 0; tmprarc < sampleGuns.Count; tmprarc++)
-                    {
+                    { 
                         if (sampleGuns[tmprarc].rarity == roomDif)
                         {
-                            tmprar.Add(sampleGuns[tmprarc].Type);
+                            tmprar.Add(sampleGuns[tmprarc]);
                         }
                     }
 
                     tmptype = rnd.Next(0, tmprar.Count);
 
-                    if (tmptype < tmprar.Count && tmprar[tmptype] < sampleGuns.Count)
+                    if (tmptype < tmprar.Count)
                     {
                         insertGun(contentManager, ds.rooms[i].Item1 - 6, ds.rooms[i].Item2 - 6, 13, 13, tmprar[tmptype]);
                     }
@@ -603,7 +603,7 @@ namespace dung
             }
         }
 
-        private void insertGun(ContentManager contentManager, int x, int y, int xsize, int ysize, int type)
+        private void insertGun(ContentManager contentManager, int x, int y, int xsize, int ysize, Gun sampleGun)
         {
             var rnd = new Random();
             bool placed = false;
@@ -615,7 +615,7 @@ namespace dung
 
                 if ((int)tmpx >= 0 && (int)tmpy >= 0 && (int)tmpx < blocks.Count && (int)tmpy < blocks[(int)tmpx].Count && blocks[(int)tmpx][(int)tmpy].passable)
                 {
-                    AddObject(new Gun(contentManager, type, tmpx, tmpy, sampleGuns[type]));
+                    AddObject(new Gun(contentManager, sampleGun.Type, tmpx, tmpy, sampleGun));
 
                     placed = true;
                 }

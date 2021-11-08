@@ -75,7 +75,7 @@ namespace dung
 
             var tmptex1 = Content.Load<Texture2D>("newgamebutton");
 
-            createWorldButton = new button(0, 130, 80, tmptex1.Width, tmptex1.Height, tmptex1, Content.Load<Texture2D>("newgamebuttonpressed"), Content.Load<SpriteFont>("button_font"), "New game", Color.White);
+            createWorldButton = new button(0, 960-tmptex1.Width/2, 80, tmptex1.Width, tmptex1.Height, tmptex1, Content.Load<Texture2D>("newgamebuttonpressed"), Content.Load<SpriteFont>("button_font"), "", Color.White);
 
             newGameWorldThread = new Thread(new ThreadStart(CreateWorld));
 

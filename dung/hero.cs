@@ -141,7 +141,7 @@ namespace dung
             //U don't want to see what would happen, trust me
             var mouseState = Mouse.GetState();
 
-            double tmpdir = Math.Atan2(540 - (int)(Textures[texturesPhase].Height * 0.25) - mouseState.Y, 960 - mouseState.X);
+            double tmpdir = Math.Atan2(540 - (int)(Textures[texturesPhase].Height * 0.04) - mouseState.Y, 960 - mouseState.X);
 
             tmpdir += 3f * (float)Math.PI;
 
@@ -149,13 +149,13 @@ namespace dung
 
             if (Direction == "w")
             {
-                GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.07), tmpdir);
+                GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.04), tmpdir);
                 spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
             }
             else
             {
                 spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
-                GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.07), tmpdir);
+                GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.04), tmpdir);
             }
             
             if (GunInHand.TimeSinceLastShoot < GunInHand.FireSpeed[GunInHand.currentFirePause])
@@ -286,7 +286,7 @@ namespace dung
                     
                 tmpdir %= (float)(Math.PI * 2);
 
-                GunInHand.ShootInDirection(gameWorld, contentManager, X, Y - ((double)Textures[texturesPhase].Height * 0.07 / GameWorld.blockDrawY), tmpdir, Radius*1.2);
+                GunInHand.ShootInDirection(gameWorld, contentManager, X, Y - ((double)Textures[texturesPhase].Height * 0.04 / GameWorld.blockDrawY), tmpdir, Radius*1.2);
             }
 
             if ((int)X != (int)px || (int)Y != (int)py)

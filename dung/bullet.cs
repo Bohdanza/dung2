@@ -178,6 +178,8 @@ namespace dung
                     closestObject.Attack(damage);
                 }
             }
+
+            UpdateTexture(contentManager, false);
         }
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
