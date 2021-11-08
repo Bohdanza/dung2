@@ -15,6 +15,8 @@ namespace dung
 {
     public class GameWorld
     {
+        public bool Active { get; private set; } = true;
+        private button exitButton;
         public List<List<Block>> blocks;
         public const int blockDrawY = 36, BlockWidth = 36;
         private Texture2D darknessEffect, backgroundTexture;
@@ -31,6 +33,7 @@ namespace dung
 
         private SoundEffect backgroundSong;
         private Texture2D cursor;
+        private SoundEffectInstance soundEffectInstance1;
 
         /// <summary>
         /// new world
@@ -46,6 +49,10 @@ namespace dung
 
             darknessEffect = contentManager.Load<Texture2D>("darkness");
             backgroundTexture = contentManager.Load<Texture2D>("background1");
+
+            var tmptex1 = contentManager.Load<Texture2D>("exitworldbuttonnormal");
+
+            exitButton = new button(0, 10, 1000, tmptex1.Width, tmptex1.Height, tmptex1, contentManager.Load<Texture2D>("exitworldbuttonpressed"), contentManager.Load<SpriteFont>("button_font"), "", Color.White);
 
             mapObjects = new List<MapObject>();
 
@@ -224,12 +231,12 @@ namespace dung
                 }
             }
 
-            SoundEffectInstance soundEffectInstance = backgroundSong.CreateInstance();
+            soundEffectInstance1 = backgroundSong.CreateInstance();
 
-            soundEffectInstance.IsLooped = true;
-            soundEffectInstance.Volume = 0.3f;
+            soundEffectInstance1.IsLooped = true;
+            soundEffectInstance1.Volume = 0.3f;
 
-            soundEffectInstance.Play();
+            soundEffectInstance1.Play();
         }
 
         //TODO:
@@ -343,6 +350,15 @@ namespace dung
             }
 
             mapObjects.Sort((a, b) => a.Y.CompareTo(b.Y));
+
+            exitButton.update();
+
+            if(exitButton.pressed)
+            {
+                this.Active = false;
+
+                soundEffectInstance1.Stop();
+            }
         }
 
         public void draw(SpriteBatch spriteBatch, int x, int y)
@@ -409,14 +425,16 @@ namespace dung
 
             var mouseState = Mouse.GetState();
 
-            //drawing cursor
-            spriteBatch.Draw(cursor, new Vector2(mouseState.X - cursor.Width / 2, mouseState.Y - cursor.Height / 2), Color.White);
-
             if (referenceToHero != null)
             {
                 //hero hp, inventory & other
                 ((Hero)referenceToHero).DrawInterface(spriteBatch);
             }
+
+            exitButton.draw(spriteBatch);
+            
+            //drawing cursor
+            spriteBatch.Draw(cursor, new Vector2(mouseState.X - cursor.Width / 2, mouseState.Y - cursor.Height / 2), Color.White);
         }
 
         public double GetDist(double x, double y, double x1, double y1)

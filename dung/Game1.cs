@@ -22,7 +22,7 @@ namespace dung
         private SpriteFont tmpfont, loadingFont;
         private DungeonSynthesizer dungeonSynthesizer;
         private Thread newGameWorldThread;
-        private button createWorldButton;
+        private button createWorldButton, exitFromGameButton;
         private bool worldActive = false;
         private List<Texture2D> loadingScreenTextures;
         private int loadingScreenPhase;
@@ -50,6 +50,8 @@ namespace dung
 
             _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
+
+            this.Window.Title = "World of pain";
         }
 
         public void CreateWorld()
@@ -76,6 +78,10 @@ namespace dung
             var tmptex1 = Content.Load<Texture2D>("newgamebutton");
 
             createWorldButton = new button(0, 960-tmptex1.Width/2, 80, tmptex1.Width, tmptex1.Height, tmptex1, Content.Load<Texture2D>("newgamebuttonpressed"), Content.Load<SpriteFont>("button_font"), "", Color.White);
+
+            tmptex1 = Content.Load<Texture2D>("exitgamebutton");
+
+            exitFromGameButton = new button(0, 960 - tmptex1.Width / 2, 950, tmptex1.Width, tmptex1.Height, tmptex1, Content.Load<Texture2D>("exitgamebuttonpressed"));
 
             newGameWorldThread = new Thread(new ThreadStart(CreateWorld));
 
@@ -121,7 +127,15 @@ namespace dung
 
                     _graphics.ApplyChanges();
 
+                    newGameWorldThread = new Thread(new ThreadStart(CreateWorld));
                     newGameWorldThread.Start();
+                }
+
+                exitFromGameButton.update();
+
+                if(exitFromGameButton.pressed)
+                {
+                    Exit();
                 }
             }    
             else if(newGameWorldThread.IsAlive)
@@ -133,6 +147,13 @@ namespace dung
             else
             {
                 testworld.update(Content);
+
+                if(!testworld.Active)
+                {
+                    IsMouseVisible = true;
+
+                    worldActive = false;
+                }
             }
 
             base.Update(gameTime);
@@ -149,6 +170,7 @@ namespace dung
                 _spriteBatch.Draw(backgroundmenu, new Vector2(0, 0), Color.White);
 
                 createWorldButton.draw(_spriteBatch);
+                exitFromGameButton.draw(_spriteBatch);
             }
             else if (newGameWorldThread.IsAlive)
             {
