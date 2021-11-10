@@ -48,7 +48,7 @@ namespace dung
             X = x;
             Y = y;
 
-            Radius = 0.5;
+            Radius = 0.35;
 
             HP = 3;
 
@@ -87,7 +87,7 @@ namespace dung
 
             GunInHand = new Gun(contentManager, strList, beginning + 4, sampleGuns);
             
-            Radius = 0.5;
+            Radius = 0.35;
 
             hpHeartTextures = new List<Texture2D>();
 
@@ -297,6 +297,39 @@ namespace dung
                     Y = py;
                 }
             }
+
+            //USED TO FIX STICKING BUG
+            if (X > px)
+            {
+                int xTex2 = (int)(X + Radius);
+
+                if (xTex2 >= gameWorld.blocks.Count)
+                {
+                    xTex2 = gameWorld.blocks.Count - 1;
+                }
+
+                if (!gameWorld.blocks[xTex2][(int)Y].passable)
+                {
+                    X = px;
+                }
+            }
+            
+            if (X < px)
+            {
+                int xTex1 = (int)(X - Radius);
+
+                if (xTex1 < 0)
+                {
+                    xTex1 = 0;
+                }
+
+                if (!gameWorld.blocks[xTex1][(int)Y].passable)
+                {
+                    X = px;
+                }
+            }
+
+            //000
 
             if (X != px || Y != py)
             {
