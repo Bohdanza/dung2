@@ -46,9 +46,9 @@ namespace dung
             this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
             _graphics.ApplyChanges();
 
-            this.Window.IsBorderless = true;
+            this.Window.IsBorderless = false;
 
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
 
             this.Window.Title = "World of pain";

@@ -15,11 +15,13 @@ namespace dung
 {
     public class GameWorld
     {
+        public bool settingsOpened { get; private set; } = false;
         public bool Active { get; private set; } = true;
-        private button exitButton;
+        private button exitButton, settingsButton;
+        private Slider musicSlider, soundsSlider;
         public List<List<Block>> blocks;
         public const int blockDrawY = 36, BlockWidth = 36;
-        private Texture2D darknessEffect, backgroundTexture;
+        private Texture2D darknessEffect, backgroundTexture, settingsDarkness;
         private List<MapObject> mapObjects;
         public MapObject referenceToHero { get; private set; }
         public List<Block> sampleBlocks { get; private set; } = new List<Block>();
@@ -32,7 +34,7 @@ namespace dung
         public List<Turret> sampleTurrets { get; private set; } = new List<Turret>();
 
         private SoundEffect backgroundSong;
-        private Texture2D cursor;
+        private Texture2D cursor, YouDiedTexture;
         private SoundEffectInstance soundEffectInstance1;
 
         /// <summary>
@@ -45,14 +47,27 @@ namespace dung
 
             cursor = contentManager.Load<Texture2D>("cursor");
 
+            YouDiedTexture = contentManager.Load<Texture2D>("you_died_screen");
+
             backgroundSong = contentManager.Load<SoundEffect>("background_music0");
 
             darknessEffect = contentManager.Load<Texture2D>("darkness");
             backgroundTexture = contentManager.Load<Texture2D>("background1");
+            settingsDarkness = contentManager.Load<Texture2D>("settings_darkness");
 
             var tmptex1 = contentManager.Load<Texture2D>("exitworldbuttonnormal");
 
-            exitButton = new button(0, 10, 1000, tmptex1.Width, tmptex1.Height, tmptex1, contentManager.Load<Texture2D>("exitworldbuttonpressed"), contentManager.Load<SpriteFont>("button_font"), "", Color.White);
+            exitButton = new button(0, 960-tmptex1.Width/2, 740, tmptex1.Width, tmptex1.Height, tmptex1, contentManager.Load<Texture2D>("exitworldbuttonpressed"), contentManager.Load<SpriteFont>("button_font"), "", Color.White);
+
+            tmptex1 = contentManager.Load<Texture2D>("settings_button_normal");
+
+            settingsButton = new button(0, 10, 1070 - tmptex1.Height, tmptex1.Width, tmptex1.Height, tmptex1, contentManager.Load<Texture2D>("settings_button_pressed"));
+
+            tmptex1 = contentManager.Load<Texture2D>("normal_slider");
+
+            musicSlider = new Slider(960 - 500, 306 - tmptex1.Height / 2, 1000, tmptex1.Height, 0, 0, tmptex1);
+            musicSlider.LockY = true;
+            musicSlider.LockX = false;
 
             mapObjects = new List<MapObject>();
 
@@ -128,7 +143,7 @@ namespace dung
 
                 blocks.Add(tmpblock);
             }
-
+            
             //generating mobs, loot etc.
             referenceToHero = AddObject(new Hero(contentManager, ds.rooms[0].Item1, ds.rooms[0].Item2));
 
@@ -331,33 +346,61 @@ namespace dung
 
         public void update(ContentManager contentManager)
         {
-            int l = 1;
-
-            for (int i = 0; i < mapObjects.Count; i += l)
+            if (settingsOpened)
             {
-                l = 1;
+                settingsButton.update();
 
-                if (GetDist(referenceToHero.X, referenceToHero.Y, mapObjects[i].X, mapObjects[i].Y) <= 35)
+                if (settingsButton.pressed)
                 {
-                    mapObjects[i].Update(contentManager, this, i);
+                    settingsOpened = false;
                 }
 
-                if (!mapObjects[i].alive)
+                exitButton.update();
+
+                if (exitButton.pressed)
                 {
-                    l = 0;
-                    mapObjects.RemoveAt(i);
+                    this.Active = false;
+
+                    soundEffectInstance1.Stop();
+                }
+
+                musicSlider.Update();
+
+                this.soundEffectInstance1.Volume = musicSlider.SliderX / musicSlider.Width;
+            }
+            else
+            {
+                settingsButton.update();
+
+                if (settingsButton.pressed)
+                {
+                    settingsOpened = true;
                 }
             }
 
-            mapObjects.Sort((a, b) => a.Y.CompareTo(b.Y));
-
-            exitButton.update();
-
-            if(exitButton.pressed)
+            if (!settingsOpened)
             {
-                this.Active = false;
+                int l = 1;
 
-                soundEffectInstance1.Stop();
+                for (int i = 0; i < mapObjects.Count; i += l)
+                {
+                    l = 1;
+
+                    if (GetDist(referenceToHero.X, referenceToHero.Y, mapObjects[i].X, mapObjects[i].Y) <= 35)
+                    {
+                        mapObjects[i].Update(contentManager, this, i);
+                    }
+
+                    if (!mapObjects[i].alive)
+                    {
+                        l = 0;
+                        mapObjects.RemoveAt(i);
+                    }
+                }
+
+                mapObjects.Sort((a, b) => a.Y.CompareTo(b.Y));
+
+                //  exitButton.update();
             }
         }
 
@@ -431,8 +474,22 @@ namespace dung
                 ((Hero)referenceToHero).DrawInterface(spriteBatch);
             }
 
-            exitButton.draw(spriteBatch);
-            
+            if (referenceToHero.HP <= 0)
+            {
+                spriteBatch.Draw(YouDiedTexture, new Vector2(0, 0), Color.White);
+            }
+
+            if(settingsOpened)
+            {
+                spriteBatch.Draw(settingsDarkness, new Vector2(0, 0), Color.White);
+                
+                exitButton.draw(spriteBatch);
+
+                musicSlider.Draw(spriteBatch);
+            }
+
+            settingsButton.draw(spriteBatch);
+
             //drawing cursor
             spriteBatch.Draw(cursor, new Vector2(mouseState.X - cursor.Width / 2, mouseState.Y - cursor.Height / 2), Color.White);
         }
