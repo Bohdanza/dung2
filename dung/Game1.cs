@@ -25,7 +25,7 @@ namespace dung
         private button createWorldButton, exitFromGameButton;
         private bool worldActive = false;
         private List<Texture2D> loadingScreenTextures;
-        private int loadingScreenPhase;
+        private int loadingScreenPhase, menuBackgroundPhase = 0, menuBackgroundNextPhase = 0, menuBackGroundTime = 0;
         private Texture2D backgroundmenu;
         private List<Texture2D> storyImages;
 
@@ -73,7 +73,21 @@ namespace dung
             tmpfont = Content.Load<SpriteFont>("mainfont");
             loadingFont = Content.Load<SpriteFont>("button_font");
 
-            backgroundmenu = Content.Load<Texture2D>("backgroundmenu");
+            int i = 0;
+
+            storyImages = new List<Texture2D>();
+
+            while (File.Exists("Content/backgroundmenu" + i.ToString() + ".xnb"))
+            {
+                storyImages.Add(Content.Load<Texture2D>("backgroundmenu" + i.ToString()));
+
+                i++;
+            }
+
+            var rnd = new Random();
+
+            menuBackgroundPhase = rnd.Next(0, storyImages.Count);
+            menuBackgroundNextPhase = rnd.Next(0, storyImages.Count);
 
             var tmptex1 = Content.Load<Texture2D>("newgamebutton");
 
@@ -82,7 +96,7 @@ namespace dung
             tmptex1 = Content.Load<Texture2D>("exitgamebutton");
 
             exitFromGameButton = new button(0, 960 - tmptex1.Width / 2, 950, tmptex1.Width, tmptex1.Height, tmptex1, Content.Load<Texture2D>("exitgamebuttonpressed"));
-
+            
             newGameWorldThread = new Thread(new ThreadStart(CreateWorld));
 
             loadingScreenTextures = new List<Texture2D>();
@@ -100,7 +114,7 @@ namespace dung
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 Exit();
 
             KeyboardState ks = Keyboard.GetState();
@@ -170,7 +184,24 @@ namespace dung
 
             if (!worldActive)
             {
-                _spriteBatch.Draw(backgroundmenu, new Vector2(0, 0), Color.White);
+                _spriteBatch.Draw(storyImages[menuBackgroundNextPhase], new Vector2(0, 0), Color.White);
+                _spriteBatch.Draw(storyImages[menuBackgroundPhase], new Vector2(0, 0), Color.White*((float)menuBackGroundTime/1000));
+
+                menuBackGroundTime--;
+
+                if (menuBackGroundTime <= 0)
+                {
+                    menuBackGroundTime = 1000;
+
+                    Random rnd = new Random();
+
+                    menuBackgroundPhase = menuBackgroundNextPhase;
+
+                    while (menuBackgroundNextPhase == menuBackgroundPhase)
+                    {
+                        menuBackgroundNextPhase = rnd.Next(0, storyImages.Count);
+                    }
+                }
 
                 createWorldButton.draw(_spriteBatch);
                 exitFromGameButton.draw(_spriteBatch);
