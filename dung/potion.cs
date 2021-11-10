@@ -34,6 +34,13 @@ namespace dung
                 Radius = double.Parse(tmplist[0]);
 
                 AddHp = Int32.Parse(tmplist[1]);
+
+                if (Type == 15)
+                {
+                    var rnd = new Random();
+
+                    AddHp = rnd.Next(-1, 3);
+                }
             }
 
             base.updateTexture(contentManager, true);
@@ -50,6 +57,13 @@ namespace dung
 
             Radius = sample.Radius;
             AddHp = sample.AddHp;
+
+            if (Type == 15)
+            {
+                var rnd = new Random();
+
+                AddHp = rnd.Next(-1, 3);
+            }
 
             Name = sample.Name;
 

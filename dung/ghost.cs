@@ -364,7 +364,7 @@ namespace dung
                 {
                     var inst = soundEffects[0].CreateInstance();
 
-                    inst.Volume = (float)(dist_to_hero / 25d) * 0.5f;
+                    inst.Volume = (float)(dist_to_hero / 25d) * gameWorld.soundsVolume;
 
                     inst.Play();
                 }

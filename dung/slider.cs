@@ -60,7 +60,7 @@ namespace dung
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(SliderTexture, new Vector2(X + SliderX, Y + SliderY), Color.White);
+            spriteBatch.Draw(SliderTexture, new Vector2(X + SliderX - SliderTexture.Width / 2, Y + SliderY - SliderTexture.Height / 2), Color.White);
         }
 
         public void ChangeCoords(int x, int y)

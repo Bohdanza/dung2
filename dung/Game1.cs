@@ -110,49 +110,52 @@ namespace dung
                 fpsc.Update(gameTime);
             }
 
-            if (worldActive && !IsActive && !newGameWorldThread.IsAlive)
+            /*if (worldActive && !IsActive && !newGameWorldThread.IsAlive)
             {
                 testworld.Save("info/worlds/world1");
-            }
+            }*/
 
-            if(!worldActive)
+            if (IsActive)
             {
-                createWorldButton.update();
-
-                if (createWorldButton.pressed)
+                if (!worldActive)
                 {
-                    worldActive = true;
+                    createWorldButton.update();
 
-                    IsMouseVisible = false;
+                    if (createWorldButton.pressed)
+                    {
+                        worldActive = true;
 
-                    _graphics.ApplyChanges();
+                        IsMouseVisible = false;
 
-                    newGameWorldThread = new Thread(new ThreadStart(CreateWorld));
-                    newGameWorldThread.Start();
+                        _graphics.ApplyChanges();
+
+                        newGameWorldThread = new Thread(new ThreadStart(CreateWorld));
+                        newGameWorldThread.Start();
+                    }
+
+                    exitFromGameButton.update();
+
+                    if (exitFromGameButton.pressed)
+                    {
+                        Exit();
+                    }
                 }
-
-                exitFromGameButton.update();
-
-                if(exitFromGameButton.pressed)
+                else if (newGameWorldThread.IsAlive)
                 {
-                    Exit();
+                    loadingScreenPhase++;
+
+                    loadingScreenPhase %= loadingScreenTextures.Count;
                 }
-            }    
-            else if(newGameWorldThread.IsAlive)
-            {
-                loadingScreenPhase++;
-
-                loadingScreenPhase %= loadingScreenTextures.Count;
-            }
-            else
-            {
-                testworld.update(Content);
-
-                if(!testworld.Active)
+                else
                 {
-                    IsMouseVisible = true;
+                    testworld.update(Content);
 
-                    worldActive = false;
+                    if (!testworld.Active)
+                    {
+                        IsMouseVisible = true;
+
+                        worldActive = false;
+                    }
                 }
             }
 

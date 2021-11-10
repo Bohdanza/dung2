@@ -36,6 +36,7 @@ namespace dung
         private SoundEffect backgroundSong;
         private Texture2D cursor, YouDiedTexture;
         private SoundEffectInstance soundEffectInstance1;
+        public float soundsVolume = 0.3f;
 
         /// <summary>
         /// new world
@@ -57,7 +58,7 @@ namespace dung
 
             var tmptex1 = contentManager.Load<Texture2D>("exitworldbuttonnormal");
 
-            exitButton = new button(0, 960-tmptex1.Width/2, 740, tmptex1.Width, tmptex1.Height, tmptex1, contentManager.Load<Texture2D>("exitworldbuttonpressed"), contentManager.Load<SpriteFont>("button_font"), "", Color.White);
+            exitButton = new button(0, 960-tmptex1.Width/2, 450, tmptex1.Width, tmptex1.Height, tmptex1, contentManager.Load<Texture2D>("exitworldbuttonpressed"), contentManager.Load<SpriteFont>("button_font"), "", Color.White);
 
             tmptex1 = contentManager.Load<Texture2D>("settings_button_normal");
 
@@ -65,9 +66,13 @@ namespace dung
 
             tmptex1 = contentManager.Load<Texture2D>("normal_slider");
 
-            musicSlider = new Slider(960 - 500, 306 - tmptex1.Height / 2, 1000, tmptex1.Height, 0, 0, tmptex1);
+            musicSlider = new Slider(960 - 500, 310, 1000, tmptex1.Height, 300, 0, tmptex1);
             musicSlider.LockY = true;
             musicSlider.LockX = false;
+
+            soundsSlider = new Slider(960 - 500, 400, 1000, tmptex1.Height, 300, 0, tmptex1);
+            soundsSlider.LockY = true;
+            soundsSlider.LockX = false;
 
             mapObjects = new List<MapObject>();
 
@@ -102,6 +107,7 @@ namespace dung
             }
 
             samplePotions.Add(new Potion(contentManager, 0, 0, 10));
+            samplePotions.Add(new Potion(contentManager, 0, 0, 15));
 
             for (int i = 0; i < 1; i++)
             {
@@ -363,10 +369,14 @@ namespace dung
 
                     soundEffectInstance1.Stop();
                 }
-
+                
                 musicSlider.Update();
 
-                this.soundEffectInstance1.Volume = musicSlider.SliderX / musicSlider.Width;
+                this.soundEffectInstance1.Volume = (float)musicSlider.SliderX / musicSlider.Width;
+
+                soundsSlider.Update();
+
+                this.soundsVolume = (float)soundsSlider.SliderX / soundsSlider.Width;
             }
             else
             {
@@ -486,6 +496,8 @@ namespace dung
                 exitButton.draw(spriteBatch);
 
                 musicSlider.Draw(spriteBatch);
+
+                soundsSlider.Draw(spriteBatch);
             }
 
             settingsButton.draw(spriteBatch);

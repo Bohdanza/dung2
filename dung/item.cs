@@ -64,7 +64,7 @@ namespace dung
         {
             spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
 
-            if (gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= Radius + gameWorld.referenceToHero.Radius + 1)
+            if (gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= Radius + gameWorld.referenceToHero.Radius + 2)
             {
                 spriteBatch.DrawString(Font, Name, new Vector2(x - Textures[texturesPhase].Width / 2 - Font.MeasureString(Name).X / 2, y - Textures[texturesPhase].Height - Font.MeasureString(Name).Y * 1.1f), Color.White);
             }
