@@ -46,7 +46,7 @@ namespace dung
             this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
             _graphics.ApplyChanges();
 
-            this.Window.IsBorderless = false;
+            this.Window.IsBorderless = true;
 
             _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
@@ -158,7 +158,10 @@ namespace dung
                 {
                     loadingScreenPhase++;
 
-                    loadingScreenPhase %= loadingScreenTextures.Count;
+                    if (loadingScreenPhase >= this.loadingScreenTextures.Count * 5)
+                    {
+                        loadingScreenPhase = 0;
+                    }
                 }
                 else
                 {
@@ -208,7 +211,7 @@ namespace dung
             }
             else if (newGameWorldThread.IsAlive)
             {
-                _spriteBatch.Draw(loadingScreenTextures[loadingScreenPhase], new Vector2(0, 0), Color.White);
+                _spriteBatch.Draw(loadingScreenTextures[loadingScreenPhase / 5], new Vector2(0, 0), Color.White);
 
                 _spriteBatch.DrawString(loadingFont, "Loading", new Vector2(960 - loadingFont.MeasureString("Loading").X / 2, 870), Color.White);
             }

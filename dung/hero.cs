@@ -50,7 +50,7 @@ namespace dung
 
             Radius = 0.35;
 
-            HP = 3;
+            HP = 15;
 
             hpHeartTextures = new List<Texture2D>();
             
@@ -386,14 +386,21 @@ namespace dung
 
         private void stabilizeHpList()
         {
-            while (HpTextures.Count > HP)
+            int hptex = HP / 5;
+
+            if (HP % 5 != 0)
+            {
+                hptex++;
+            }
+
+            while (HpTextures.Count > hptex)
             {
                 HpTextures.RemoveAt(HpTextures.Count - 1);
             }
 
             var rnd = new Random();
 
-            while (HpTextures.Count < HP)
+            while (HpTextures.Count < hptex)
             {
                 HpTextures.Add(rnd.Next(0, hpHeartTextures.Count));
             }

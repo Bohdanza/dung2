@@ -47,7 +47,7 @@ namespace dung
             var rnd = new Random();
 
             cursor = contentManager.Load<Texture2D>("cursor");
-
+            
             YouDiedTexture = contentManager.Load<Texture2D>("you_died_screen");
 
             backgroundSong = contentManager.Load<SoundEffect>("background_music0");
@@ -117,7 +117,10 @@ namespace dung
             //generating main dungeon
             dung.DungeonSynthesizer ds = new dung.DungeonSynthesizer(contentManager, 480, 480);
             
-            ds.FinalGenerator(17, 4, 13);
+            ds.SnakeGenerate(17, 16);
+            ds.ReplaceRooms(17, 17);
+            ds.PlaceWalls();
+            ds.PlaceDoors();
 
             List<List<int>> tmplist = ds.GetList();
 
@@ -162,46 +165,46 @@ namespace dung
             {
                 if (ds.roomsRarity[i] >= 0)
                 {
-                    insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, "", 7, 1, 3);
+                    insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, "", 7, 1, 3);
 
                     int roomDif = ds.roomsRarity[i];
                     int trapscount = roomDif;
 
                     if (roomDif == 0)
                     {
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(3, 5), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(3, 5), 0);
 
                         // insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, 1, 2);
                         // insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
                     else if (roomDif == 1)
                     {
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(4, 7), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(4, 7), 0);
 
                         if (rnd.Next(0, 2) == 0)
                         {
-                            insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(1, 3), 1);
+                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(1, 3), 1);
                         }
                         else
                         {
-                            insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(1, 3), 2);
+                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(1, 3), 2);
                         }
 
                         //insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
                     else if (roomDif == 2)
                     {
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(6, 9), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(2, 4), 1);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(2, 4), 2);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(6, 9), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(2, 4), 1);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(2, 4), 2);
 
                         // insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
                     else if (roomDif == 3)
                     {
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(11, 16), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(5, 10), 1);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(3, 6), 2);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(11, 16), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(5, 10), 1);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(3, 6), 2);
 
                         // insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                         //  insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
@@ -210,12 +213,12 @@ namespace dung
                     {
                         roomDif = 4;
 
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(12, 21), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(7, 14), 1);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, rnd.Next(4, 7), 2);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(12, 21), 0);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(7, 14), 1);
+                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(4, 7), 2);
 
                         //    insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
-                        insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
+                        //insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 17, 17, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
 
                     int tmptype = 0;
@@ -676,8 +679,8 @@ namespace dung
 
             while (c < number)
             {
-                double tmpx = x + rnd.NextDouble() * xsize;
-                double tmpy = y + rnd.NextDouble() * ysize;
+                double tmpx = x + 7 + rnd.NextDouble() * (xsize - 12);
+                double tmpy = y + 7 + rnd.NextDouble() * (ysize - 12);
 
                 if ((int)tmpx >= 0 && (int)tmpy >= 0 && (int)tmpx < blocks.Count && (int)tmpy < blocks[(int)tmpx].Count && blocks[(int)tmpx][(int)tmpy].passable)
                 {

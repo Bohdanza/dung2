@@ -213,29 +213,38 @@ namespace dung
             {
                 for (int j = 1; j < mainArray[i].Count - 1; j++)
                 {
-                    int q1 = 0, q2 = 0;
-
-                    for (int z = i - 1; z < i + 2; z++)
+                    if (mainArray[i][j] == 1 && i > 0 && j > 0 && i < mainArray.Count - 1 && j < mainArray[i].Count - 1)
                     {
-                        for (int k = j - 1; k < j + 2; k++)
+                        int q2 = 0, q1 = 0;
+
+                        //I know that looks like shit, but 2 next loops will do only 9 operations, so i wrote them instead of 9 long ifs
+                        for (int i1 = i - 1; i1 < i + 2; i1++)
                         {
-                            if (k != j || z != i)
+                            for (int j1 = j - 1; j1 < j + 2; j1++)
                             {
-                                if(mainArray[z][k]==1)
+                                if (i1 >= 0 && j1 >= 0 && i1 < mainArray.Count && j1 < mainArray[i].Count)
                                 {
-                                    q1++;
-                                }
-                                else if(mainArray[z][k] == 2)
-                                {
-                                    q2++;
+                                    if (mainArray[i1][j1] == 1)
+                                    {
+                                        q1++;
+                                    }
+
+                                    if (mainArray[i1][j1] == 2)
+                                    {
+                                        q2++;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    if(q1==4&&q2==4)
-                    {
-                        mainArray[i][j] = 5;
+                        if (mainArray[i - 1][j] == 2 && mainArray[i + 1][j] == 2 && q1 == 7)
+                        {
+                            mainArray[i][j] = 5;
+                        }
+                        else if(mainArray[i][j-1] == 2 && mainArray[i][j+1] == 2 && q1 == 7)
+                        {
+                            mainArray[i][j] = 5;
+                        }
                     }
                 }
             }
@@ -384,7 +393,7 @@ namespace dung
             int[,] rooms = new int[maxroom * 2 + 2,maxroom * 2 + 2];
 
             this.Reset((maxroom * 2 + 5) * dist, (maxroom * 2 + 2) * dist);
-
+            
             for(int i=0; i< maxroom * 2 + 2; i++)
             {
                 this.rooms.Add(new Tuple<int, int>(dist + i * dist, dist + maxroom * dist));
@@ -437,10 +446,104 @@ namespace dung
             this.roomsRarity[bossroom] = -2;
         }
 
+        public void SnakeGenerate(int dist, int roomsCount)
+        {
+            Reset((roomsCount + 2) * dist, (roomsCount + 2) * dist);
+            
+            int[,] roomsList = new int[roomsCount, roomsCount];
+
+            for (int i = 0; i < roomsCount; i++)
+                for (int j = 0; j < roomsCount; j++)
+                    roomsList[i,j] = 0;
+
+            roomsRarity = new List<int>();
+
+            rooms = new List<Tuple<int, int>>();
+
+            rooms.Add(new Tuple<int, int>(dist, dist));
+            roomsRarity.Add(-1);
+
+            roomsList[0, 0] = 1;
+
+            var rnd = new Random();
+
+            while (rooms.Count < roomsCount)
+            {
+                int x = rooms[rooms.Count - 1].Item1 / dist - 1, y = rooms[rooms.Count - 1].Item2 / dist - 1;
+
+                List<Tuple<int, int>> neighbours = new List<Tuple<int, int>>();
+
+                if (x > 0 && roomsList[x - 1, y] == 0)
+                {
+                    neighbours.Add(new Tuple<int, int>(x - 1, y));
+                }
+
+                if (y > 0 && roomsList[x, y - 1] == 0)
+                {
+                    neighbours.Add(new Tuple<int, int>(x, y - 1));
+                }
+
+                if (x < roomsCount && roomsList[x + 1, y] == 0)
+                {
+                    neighbours.Add(new Tuple<int, int>(x + 1, y));
+                }
+
+                if (y < roomsCount && roomsList[x, y + 1] == 0)
+                {
+                    neighbours.Add(new Tuple<int, int>(x, y + 1));
+                }
+
+                if (neighbours.Count == 0)
+                {
+                    rooms.RemoveAt(rooms.Count - 1);
+                    roomsRarity.RemoveAt(roomsRarity.Count - 1);
+                }
+                else
+                {
+                    int q = rnd.Next(0, neighbours.Count);
+
+                    rooms.Add(new Tuple<int, int>(dist + neighbours[q].Item1 * dist, dist + neighbours[q].Item2 * dist));
+                    roomsRarity.Add(rooms.Count / 4);
+
+                    roomsList[neighbours[q].Item1, neighbours[q].Item2] = 1;
+
+                    int perc = rnd.Next(0, 100);
+
+                    if (rnd.Next(0, 100) <= 25)
+                    {
+                        roomsRarity[roomsRarity.Count - 1] = -1;
+                    }
+                }
+            }
+
+            this.roomsRarity[roomsRarity.Count - 1] = -2;
+
+            for (int i = 0; i < rooms.Count - 1; i++)
+            {
+                PlaceSquare(rooms[i].Item1, rooms[i].Item2, rooms[i + 1].Item1 + 1, rooms[i + 1].Item2 + 1, 1);
+            }
+        }
+
         public void PlaceSquare(int x1, int y1, int x2, int y2, int placeType)
         {
             int xbegin = Math.Max(0, x1), xend = Math.Min(x2, mainArray.Count);
             int ybegin = Math.Max(0, y1), yend = Math.Min(y2, mainArray[0].Count);
+
+            if (xbegin > xend)
+            {
+                int tmp = xbegin;
+
+                xbegin = xend;
+                xend = tmp;
+            }
+
+            if (ybegin > yend)
+            {
+                int tmp = ybegin;
+
+                ybegin = yend;
+                yend = tmp;
+            }
 
             for (int i = xbegin; i < xend; i++)
             {
