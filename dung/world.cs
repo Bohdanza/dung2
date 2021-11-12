@@ -76,7 +76,7 @@ namespace dung
 
             mapObjects = new List<MapObject>();
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 7; i++)
             {
                 sampleBlocks.Add(new Block(i, 0, 0, contentManager));
             }
@@ -141,8 +141,37 @@ namespace dung
                             tmplist[i][j] = 3;
                         }
                     }
+
+                    if (tmplist[i][j] == 2)
+                    {
+                        int vr = rnd.Next(0, 10);
+
+                        if (vr <= 4)
+                        {
+                            tmplist[i][j] = 6;
+                        }
+                    }
                     
-                    if(tmplist[i][j]==5)
+                    if (tmplist[i][j] == 0)
+                    {
+                        int vr = rnd.Next(0, 10);
+
+                        if (vr <= 4)
+                        {
+                            vr = rnd.Next(0, 10);
+
+                            if (vr <= 4)
+                            {
+                                tmplist[i][j] = 6;
+                            }
+                            else
+                            {
+                                tmplist[i][j] = 2;
+                            }
+                        }
+                    }
+
+                    if (tmplist[i][j]==5)
                     {
                         AddObject(new Door(contentManager, 0, i, j, this));
                     }
@@ -649,7 +678,16 @@ namespace dung
 
                 if (tmpx >= 0 && tmpy >= 0 && tmpx < blocks.Count && tmpy < blocks[tmpx].Count)
                 {
-                    blocks[tmpx][tmpy] = new Block(2, tmpx, tmpy, contentManager);
+                    int q = rnd.Next(0, 100);
+
+                    if (q < 50)
+                    {
+                        blocks[tmpx][tmpy] = new Block(2, tmpx, tmpy, contentManager, sampleBlocks[2]);
+                    }
+                    else
+                    {
+                        blocks[tmpx][tmpy] = new Block(6, tmpx, tmpy, contentManager, sampleBlocks[6]);
+                    }
                 }
 
                 int px1 = tmpx;
