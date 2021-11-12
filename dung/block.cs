@@ -97,7 +97,7 @@ namespace dung
 
         public virtual void draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
-            spriteBatch.Draw(textures[texturePhase], new Vector2(x, y), Color.White);
+            spriteBatch.Draw(textures[texturePhase], new Vector2(x - textures[texturePhase].Width / 2 + GameWorld.BlockWidth / 2, y), Color.White);
         }
     }
 }

@@ -192,18 +192,18 @@ namespace dung
         {
             for(int i=0; i<rooms.Count; i++)
             {
-                if (roomsRarity[i] == -2)
+              /*  if (roomsRarity[i] == -2)
                 {
                     int xi = rooms[i].Item1, yi = rooms[i].Item2;
 
                     PlaceSquare(xi - x / 2 - 2, yi - y / 2 - 2, xi + x / 2 + 2, yi + y / 2 + 2, 1);
                 }
                 else
-                {
+                {*/
                     int xi = rooms[i].Item1, yi = rooms[i].Item2;
-
+                    
                     PlaceSquare(xi - x / 2, yi - y / 2, xi + x / 2, yi + y / 2, 1);
-                }
+                //}
             }
         }
         

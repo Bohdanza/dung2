@@ -165,7 +165,7 @@ namespace dung
             {
                 if (ds.roomsRarity[i] >= 0)
                 {
-                    insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, "", 7, 1, 3);
+                    insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 8, ds.rooms[i].Item2 - 8, 16, 16, "", 7, 1, 3);
 
                     int roomDif = ds.roomsRarity[i];
                     int trapscount = roomDif;
