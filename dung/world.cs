@@ -81,7 +81,7 @@ namespace dung
                 sampleBlocks.Add(new Block(i, 0, 0, contentManager));
             }
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 sampleGhosts.Add(new Ghost(contentManager, i, 0, 0, 0, 0));
             }
@@ -194,10 +194,17 @@ namespace dung
                     }
                     else if (roomDif == 2)
                     {
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(6, 9), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(2, 4), 1);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(2, 4), 2);
-
+                        if (rnd.Next(0, 100) <= 75)
+                        {
+                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(5, 8), 0);
+                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(2, 4), 1);
+                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(2, 4), 2);
+                        }
+                        else
+                        {
+                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(2, 3), 0);
+                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, 1, 3);
+                        }
                         // insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
                     }
                     else if (roomDif == 3)

@@ -246,7 +246,19 @@ namespace dung
 
             var rnd = new Random();
 
-            if(rnd.Next(0, 100)<=7)
+            int prc = 7;
+
+            if(Action=="dm")
+            {
+                prc = 30;
+            }
+
+            if(Action=="di")
+            {
+                prc = 70;
+            }
+
+            if(rnd.Next(0, 100)<=prc)
             {
                 var partref = gameWorld.AddObject(new Particle(contentManager, X + (rnd.NextDouble() - 0.5), Y + (rnd.NextDouble() - 0.5), 0, 120, 0));
 

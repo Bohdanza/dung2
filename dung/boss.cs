@@ -94,7 +94,7 @@ namespace dung
 
             if (Type == 0)
             {
-                if(gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y)<=11)
+                if(gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y)<=9)
                 {
                     double tmpdir = Math.Atan2(Y - gameWorld.referenceToHero.Y, X - gameWorld.referenceToHero.X);
 
