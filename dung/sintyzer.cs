@@ -237,11 +237,11 @@ namespace dung
                             }
                         }
 
-                        if (mainArray[i - 1][j] == 2 && mainArray[i + 1][j] == 2 && q1 == 7)
+                        if (mainArray[i - 1][j] == 7 && mainArray[i + 7][j] == 7 && q1 == 7)
                         {
                             mainArray[i][j] = 5;
                         }
-                        else if(mainArray[i][j-1] == 2 && mainArray[i][j+1] == 2 && q1 == 7)
+                        else if (mainArray[i][j - 1] == 7 && mainArray[i][j + 1] == 7 && q1 == 7)
                         {
                             mainArray[i][j] = 5;
                         }
@@ -263,11 +263,11 @@ namespace dung
                         {
                             for (int j1 = j - 1; j1 < j + 2; j1++)
                             {
-                                if(i1>=0&&j1>=0&&i1<mainArray.Count&&j1<mainArray[i].Count)
+                                if (i1 >= 0 && j1 >= 0 && i1 < mainArray.Count && j1 < mainArray[i].Count)
                                 {
                                     if(mainArray[i1][j1]==1)
                                     {
-                                        mainArray[i][j] = 2;
+                                        mainArray[i][j] = 7;
                                     }
                                 }
                             }

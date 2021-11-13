@@ -48,7 +48,7 @@ namespace dung
 
             this.Window.IsBorderless = true;
 
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             this.Window.Title = "World of pain";
@@ -65,7 +65,7 @@ namespace dung
 
             base.Initialize();
         }
-
+        
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -213,7 +213,7 @@ namespace dung
             {
                 _spriteBatch.Draw(loadingScreenTextures[loadingScreenPhase / 5], new Vector2(0, 0), Color.White);
 
-                _spriteBatch.DrawString(loadingFont, "Loading", new Vector2(960 - loadingFont.MeasureString("Loading").X / 2, 870), Color.White);
+                _spriteBatch.DrawString(loadingFont, "Loading", new Vector2(960 - loadingFont.MeasureString("Loading").X / 2, 180), Color.White);
             }
             else
             {

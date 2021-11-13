@@ -76,7 +76,7 @@ namespace dung
 
             mapObjects = new List<MapObject>();
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 8; i++)
             {
                 sampleBlocks.Add(new Block(i, 0, 0, contentManager));
             }
@@ -504,10 +504,10 @@ namespace dung
                 {
                     for (int i = startx; i < endx; i++)
                     {
-                        if (blocks[i][j].type != 0)
-                        {
+                        // if (blocks[i][j].type != 0)
+                        //{
                             blocks[i][j].draw(spriteBatch, drawx + i * BlockWidth, drawy + j * blockDrawY - blocks[i][j].textures[0].Height + blockDrawY, this);
-                        }
+                        //}
                     }
                 }
             }

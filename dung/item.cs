@@ -22,34 +22,42 @@ namespace dung
         public virtual int weight { get; protected set; }
         public virtual string Name { get; protected set; } = "";
         public virtual SpriteFont Font { get; protected set; } = null;
+        private int timeSinceTextureUpdate = 0;
 
         protected virtual void updateTexture(ContentManager contentManager, bool reload)
         {
-            if (reload)
+            timeSinceTextureUpdate++;
+
+            if (timeSinceTextureUpdate >= 16 || reload)
             {
-                if (Font == null)
+                timeSinceTextureUpdate = 0;
+
+                if (reload)
                 {
-                    Font = contentManager.Load<SpriteFont>("item_font");
+                    if (Font == null)
+                    {
+                        Font = contentManager.Load<SpriteFont>("item_font");
+                    }
+
+                    texturesPhase = 0;
+
+                    Textures = new List<Texture2D>();
+
+                    while (File.Exists("Content/" + Type.ToString() + "item" + texturesPhase.ToString() + ".xnb"))
+                    {
+                        Textures.Add(contentManager.Load<Texture2D>(Type.ToString() + "item" + texturesPhase.ToString()));
+
+                        texturesPhase++;
+                    }
+
+                    texturesPhase = 0;
                 }
-
-                texturesPhase = 0;
-
-                Textures = new List<Texture2D>();
-
-                while (File.Exists("Content/" + Type.ToString() + "item" + texturesPhase.ToString() + ".xnb"))
+                else
                 {
-                    Textures.Add(contentManager.Load<Texture2D>(Type.ToString() + "item" + texturesPhase.ToString()));
-
                     texturesPhase++;
+
+                    texturesPhase %= Textures.Count;
                 }
-
-                texturesPhase = 0;
-            }
-            else
-            {
-                texturesPhase++;
-
-                texturesPhase %= Textures.Count;
             }
         }
 
