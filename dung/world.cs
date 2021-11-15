@@ -471,7 +471,7 @@ namespace dung
 
             int startx = drawx / BlockWidth, endx = startx * -1 + 1920 / BlockWidth, starty = drawy / blockDrawY, endy = starty * -1 + 1080 / blockDrawY + 1;
 
-            endx++;
+            endx += 2;
 
             startx *= -1;
             starty *= -1;

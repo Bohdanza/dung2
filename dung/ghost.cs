@@ -31,6 +31,7 @@ namespace dung
         public override int HP { get; protected set; }
         protected double viewRadius { get; set; }
         public Rectangle influenceRect = new Rectangle(0, 0, 0, 0);
+        private bool reject = false;
 
         /// <summary>
         /// item is item, 2 ints are the min and the max number
@@ -236,6 +237,16 @@ namespace dung
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld, int myIndex)
         {
+            if (reject)
+            {
+                var prtrefer = gameWorld.AddObject(new Particle(contentManager, X, Y, 1, 10, 0));
+
+                ((Particle)prtrefer).drawPlus = new Vector2(0, -(float)Textures[texturePhase].Height);
+                ((Particle)prtrefer).drawMovement = new Vector2(0, -1.25f);
+            }
+
+            reject = false;
+
             string pdir = direction;
 
             timeSinceLastDamage++;
@@ -344,7 +355,7 @@ namespace dung
 
                     timeSinceLastAttack = 0;
 
-                    gameWorld.referenceToHero.Attack(1);
+                    gameWorld.referenceToHero.Attack(1, gameWorld);
                 }
             }
 
@@ -413,23 +424,30 @@ namespace dung
             }
         }
 
-        public override void Attack(int strenght)
+        public override void Attack(int strenght, GameWorld gameWorld)
         {
-            HP -= strenght;
-
-            if (strenght > 0)
+            if (this.influenceRect.Contains((float)gameWorld.referenceToHero.X, (float)gameWorld.referenceToHero.Y))
             {
-                timeSinceLastDamage = 0;
-                Action = "dm";
+                HP -= strenght;
+
+                if (strenght > 0)
+                {
+                    timeSinceLastDamage = 0;
+                    Action = "dm";
+                }
+
+                if (HP <= 0)
+                {
+                    timeSinceLastDamage = 0;
+
+                    HP = 0;
+
+                    Action = "di";
+                }
             }
-
-            if (HP <= 0)
+            else
             {
-                timeSinceLastDamage = 0;
-
-                HP = 0;
-
-                Action = "di";
+                reject = true;
             }
         }
 

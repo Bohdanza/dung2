@@ -141,20 +141,26 @@ namespace dung
             spriteBatch.Draw(Textures[texturePhase], new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height), Color.White);
         }
         
-        public override void Attack(int strenght)
+        public override void Attack(int strenght, GameWorld gameWorld)
         {
-            HP -= strenght;
-
-            if (strenght > 0)
+            if (Type == 0)
             {
-                Action = "dm";
-            }
+                if (gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= 9)
+                {
+                    HP -= strenght;
 
-            if (HP <= 0)
-            {
-                HP = 0;
+                    if (strenght > 0)
+                    {
+                        Action = "dm";
+                    }
 
-                Action = "di";
+                    if (HP <= 0)
+                    {
+                        HP = 0;
+
+                        Action = "di";
+                    }
+                }
             }
         }
 

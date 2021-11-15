@@ -40,7 +40,7 @@ namespace dung
 
         }
 
-        public virtual void Attack(int strenght)
+        public virtual void Attack(int strenght, GameWorld gameWorld)
         {
 
         }

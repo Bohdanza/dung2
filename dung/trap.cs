@@ -149,7 +149,7 @@ namespace dung
             {
                 Action = "at";
 
-                gameWorld.referenceToHero.Attack(Damage);
+                gameWorld.referenceToHero.Attack(Damage, gameWorld);
             }
 
             textureUpdateSlower++;

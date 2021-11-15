@@ -175,7 +175,7 @@ namespace dung
                 {
                     alive = false;
 
-                    closestObject.Attack(damage);
+                    closestObject.Attack(damage, gameWorld);
                 }
             }
 

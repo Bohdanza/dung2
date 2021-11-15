@@ -21,7 +21,7 @@ namespace dung
         public override int Type { get => base.Type; protected set => base.Type = value; }
         public double degDirection { get; protected set; }
         public Vector2 drawMovement;
-        private Vector2 drawPlus;
+        public Vector2 drawPlus;
 
         public Particle(ContentManager contentManager, double x, double y, int type, int lifetime, double degDirection)
         {

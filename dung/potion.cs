@@ -80,7 +80,7 @@ namespace dung
                 {
                     alive = false;
 
-                    gameWorld.referenceToHero.Attack(-AddHp);
+                    gameWorld.referenceToHero.Attack(-AddHp, gameWorld);
                 }
             }
 

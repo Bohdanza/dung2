@@ -50,7 +50,7 @@ namespace dung
 
             Radius = 0.35;
 
-            HP = 15;
+            HP = 5;
 
             hpHeartTextures = new List<Texture2D>();
             
@@ -170,7 +170,7 @@ namespace dung
 
         public void DrawInterface(SpriteBatch spriteBatch)
         {
-            int cx = 15;
+            int cx = 5;
 
             for (int i = 0; i < HpTextures.Count; i++)
             {
@@ -356,7 +356,7 @@ namespace dung
             }
         }
 
-        public override void Attack(int strenght)
+        public override void Attack(int strenght, GameWorld gameWorld)
         {
             if (strenght > 0)
             {
