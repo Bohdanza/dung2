@@ -36,6 +36,7 @@ namespace dung
         private List<Texture2D> hpHeartTextures;
         private SpriteFont hpFont;
         public Gun GunInHand;
+        public List<Effect> effects { get; protected set; }
 
         private int timeSinceLastAction = 0;
         public List<Coin> coins { get; protected set; }
@@ -68,6 +69,10 @@ namespace dung
             GunInHand = new Gun(contentManager, 0, 0, 0);
 
             coins = new List<Coin>();
+
+            effects = new List<Effect>();
+
+            effects.Add(new Effect(contentManager, 0, 1000, this));
 
             HpTextures = new List<int>();
 
@@ -329,8 +334,12 @@ namespace dung
                 }
             }
 
-            //000
+            foreach(var currentEffect in effects)
+            {
+                currentEffect.Update(contentManager, gameWorld);
+            }
 
+            //000
             if (X != px || Y != py)
             {
                 Action = "wa";

@@ -43,12 +43,13 @@ namespace dung
             _graphics.ApplyChanges();
             
             this.IsFixedTimeStep = true;
+
             this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
             _graphics.ApplyChanges();
 
             this.Window.IsBorderless = true;
 
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
 
             this.Window.Title = "World of pain";
