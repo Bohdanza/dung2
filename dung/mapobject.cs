@@ -25,6 +25,8 @@ namespace dung
         public virtual int HP { get; protected set; }
         public virtual bool alive { get; protected set; } = true;
 
+        public virtual List<Effect> Effects { get; protected set; }
+
         public virtual void Update(ContentManager contentManager, GameWorld gameWorld, int myIndex)
         {
             
@@ -33,6 +35,25 @@ namespace dung
         public virtual void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
 
+        }
+
+        public virtual void UpdateEffects(ContentManager contentManager, GameWorld gameWorld)
+        {
+            int l = 1;
+
+            for (int i = 0; i < Effects.Count; i+=l)
+            {
+                l = 1;
+
+                Effects[i].Update(contentManager, gameWorld);
+                
+                if(Effects[i].timeSinceCreation>=Effects[i].Lifetime)
+                {
+                    l = 0;
+
+                    Effects.RemoveAt(i);
+                }
+            }
         }
 
         public virtual void Infect()

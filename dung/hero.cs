@@ -36,7 +36,7 @@ namespace dung
         private List<Texture2D> hpHeartTextures;
         private SpriteFont hpFont;
         public Gun GunInHand;
-        public List<Effect> effects { get; protected set; }
+        public override List<Effect> Effects { get; protected set; }
 
         private int timeSinceLastAction = 0;
         public List<Coin> coins { get; protected set; }
@@ -70,9 +70,9 @@ namespace dung
 
             coins = new List<Coin>();
 
-            effects = new List<Effect>();
+            Effects = new List<Effect>();
 
-            effects.Add(new Effect(contentManager, 0, 1000, this));
+            //Effects.Add(new Effect(contentManager, 0, 1000, this));
 
             HpTextures = new List<int>();
 
@@ -195,7 +195,7 @@ namespace dung
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld, int myIndex)
         {
-            if(timeSinceLastDamage<=10)
+            if (timeSinceLastDamage <= 10)
             {
                 timeSinceLastDamage++;
             }
@@ -210,7 +210,7 @@ namespace dung
 
             var keyboardState = Keyboard.GetState();
 
-            if(keyboardState.IsKeyDown(Keys.W))
+            if (keyboardState.IsKeyDown(Keys.W))
             {
                 Y -= speed;
 
@@ -242,10 +242,10 @@ namespace dung
 
                 if (closestGun != null)
                 {
-                    if (gameWorld.GetDist(X, Y, closestGun.X, closestGun.Y) <= this.Radius + closestGun.Radius+0.5)
+                    if (gameWorld.GetDist(X, Y, closestGun.X, closestGun.Y) <= this.Radius + closestGun.Radius + 0.5)
                     {
                         GunInHand.ChangeCoords(closestGun.X, closestGun.Y);
-                      
+
                         gameWorld.AddObject(GunInHand);
 
                         GunInHand = (Gun)closestGun.Clone(contentManager);
@@ -282,16 +282,16 @@ namespace dung
             GunInHand.Update(contentManager, gameWorld, myIndex);
 
             var mouseState = Mouse.GetState();
-            
+
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
                 double tmpdir = Math.Atan2(540 - (int)(Textures[texturesPhase].Height * 0.07) - mouseState.Y, 960 - mouseState.X);
 
                 tmpdir += (float)Math.PI;
-                    
+
                 tmpdir %= (float)(Math.PI * 2);
 
-                GunInHand.ShootInDirection(gameWorld, contentManager, X, Y - ((double)Textures[texturesPhase].Height * 0.04 / GameWorld.blockDrawY), tmpdir, Radius*1.2);
+                GunInHand.ShootInDirection(gameWorld, contentManager, X, Y - ((double)Textures[texturesPhase].Height * 0.04 / GameWorld.blockDrawY), tmpdir, Radius * 1.2);
             }
 
             if ((int)X != (int)px || (int)Y != (int)py)
@@ -318,7 +318,7 @@ namespace dung
                     X = px;
                 }
             }
-            
+
             if (X < px)
             {
                 int xTex1 = (int)(X - Radius);
@@ -334,10 +334,7 @@ namespace dung
                 }
             }
 
-            foreach(var currentEffect in effects)
-            {
-                currentEffect.Update(contentManager, gameWorld);
-            }
+            base.UpdateEffects(contentManager, gameWorld);
 
             //000
             if (X != px || Y != py)
@@ -360,7 +357,7 @@ namespace dung
             else if (timeSinceLastUpdateTexture >= 16)
             {
                 timeSinceLastUpdateTexture = 0;
-                
+
                 UpdateTextures(contentManager, false);
             }
         }

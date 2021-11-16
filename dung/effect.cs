@@ -45,10 +45,10 @@ namespace dung
                     added.Add(new Tuple<string, int, int>(tmplist[currentString], Int32.Parse(tmplist[currentString + 1]), Int32.Parse(tmplist[currentString + 2])));
                 }
 
-                tmpn = Int32.Parse(tmplist[currentString]) * 2 + currentString + 1;
+                tmpn = Int32.Parse(tmplist[currentString]) + currentString + 1;
                 parcticleSummonProbability = Int32.Parse(tmplist[currentString]);
 
-                for (currentString+=2; currentString <= tmpn; currentString += 2)
+                for (currentString+=2; currentString <= tmpn; currentString += 1)
                 {
                     particles.Add(new Particle(contentManager, 0, 0, Int32.Parse(tmplist[currentString]), 0, 0));
                 }
@@ -57,6 +57,8 @@ namespace dung
 
         public void Update(ContentManager contentManager, GameWorld gameWorld)
         {
+            timeSinceCreation++;
+
             var rnd = new Random();
             
             foreach(var currentParticle in particles)
@@ -68,6 +70,19 @@ namespace dung
                     var refer = gameWorld.AddObject(new Particle(contentManager, myObject.X - 0.5 + rnd.NextDouble(), myObject.Y - 0.5 + rnd.NextDouble(), currentParticle.Type, 100, 0));
                     
                     ((Particle)refer).drawMovement = new Vector2(0, -1);
+                }
+            }
+
+            foreach(var currentElement in added)
+            {
+                if (currentElement.Item1.Trim('\r').Trim('\n') == "HP")
+                {
+                    int tmp = rnd.Next(0, 10000);
+
+                    if (tmp <= currentElement.Item3)
+                    {
+                        myObject.Attack(currentElement.Item2 * -1, gameWorld);
+                    }
                 }
             }
         }
