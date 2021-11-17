@@ -22,7 +22,7 @@ namespace dung
         public int damage { get; protected set; }
         public double degDirection { get; protected set; }
         public double speed { get; protected set; }
-        private int texturesPhase;
+        private int texturesPhase, timeSinceLastUpdate=0;
         public override bool alive { get; protected set; }
         public int beatFromWalls { get; protected set; }
         public int maxBeatFromWalls { get; protected set; }
@@ -64,7 +64,7 @@ namespace dung
 
                 maxBeatFromWalls = Int32.Parse(tmplist[3]);
             }
-
+            
             UpdateTexture(contentManager, true);
         }
 
@@ -179,7 +179,13 @@ namespace dung
                 }
             }
 
-            UpdateTexture(contentManager, false);
+            timeSinceLastUpdate++;
+
+            if (timeSinceLastUpdate >= 16)
+            {
+                timeSinceLastUpdate = 0;
+                UpdateTexture(contentManager, false);
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)

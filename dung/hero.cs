@@ -66,7 +66,7 @@ namespace dung
 
             damageTexture = contentManager.Load<Texture2D>("damage");
 
-            GunInHand = new Gun(contentManager, 0, 0, 0);
+            GunInHand = new Gun(contentManager, 1, 0, 0);
 
             coins = new List<Coin>();
 

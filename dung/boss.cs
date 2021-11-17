@@ -106,6 +106,7 @@ namespace dung
                     listFromStrings.Add("Hero");
                   
                     guns[0].ShootInDirection(gameWorld, contentManager, X, Y, tmpdir, Radius, listFromStrings);
+                    Action = "at";
                 }
             }
 

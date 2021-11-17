@@ -117,7 +117,7 @@ namespace dung
             //generating main dungeon
             dung.DungeonSynthesizer ds = new dung.DungeonSynthesizer(contentManager, 480, 480);
             
-            ds.SnakeGenerate(17, 16);
+            ds.SnakeGenerate(17, 2);
             ds.ReplaceRooms(17, 17);
             ds.PlaceWalls();
             ds.PlaceDoors();
