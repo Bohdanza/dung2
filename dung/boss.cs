@@ -38,8 +38,8 @@ namespace dung
             {
                 guns = new List<Gun>();
 
-                guns.Add(new Gun(contentManager, 14, 0, 0));
-                HP = 150;
+                guns.Add(new Gun(contentManager, 0, 0, 0));
+                HP = 100;
 
                 Radius = 0.75;
             }
@@ -94,7 +94,7 @@ namespace dung
 
             if (Type == 0)
             {
-                if(gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y)<=9)
+                if (gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y) <= 9 && Action != "dm")
                 {
                     double tmpdir = Math.Atan2(Y - gameWorld.referenceToHero.Y, X - gameWorld.referenceToHero.X);
 

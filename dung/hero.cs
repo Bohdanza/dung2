@@ -19,7 +19,7 @@ namespace dung
         public string Direction { get; protected set; } = "s";
         public override int Type { get; protected set; }
         public override List<Texture2D> Textures { get; protected set; }
-        const double speed = 0.1;
+        const double speed = 0.05;
         private int texturesPhase;
         public override double Radius { get; protected set; }
         public override int HP { get; protected set; }
@@ -51,9 +51,9 @@ namespace dung
 
             Radius = 0.35;
 
-            HP = 5;
+            HP = 15;
 
-            hpHeartTextures = new List<Texture2D>();
+            hpHeartTextures = new List<Texture2D>();            
             
             for (int i = 0; i < 5; i++)
             {
@@ -66,7 +66,7 @@ namespace dung
 
             damageTexture = contentManager.Load<Texture2D>("damage");
 
-            GunInHand = new Gun(contentManager, 1, 0, 0);
+            GunInHand = new Gun(contentManager, 0, 0, 0);
 
             coins = new List<Coin>();
 
@@ -122,9 +122,9 @@ namespace dung
 
                 texturesPhase = 0;
 
-                while (File.Exists("Content/" + Type.ToString() + "hero_" + Action.ToString() + "_" + Direction.ToString() + "_" + texturesPhase.ToString() + ".xnb"))
+                while (File.Exists("Content/" + Type.ToString() + "hero_" + Action.ToString() + "_" + "s" + "_" + texturesPhase.ToString() + ".xnb"))
                 {
-                    Textures.Add(contentManager.Load<Texture2D>(Type.ToString() + "hero_" + Action.ToString() + "_" + Direction.ToString() + "_" + texturesPhase.ToString()));
+                    Textures.Add(contentManager.Load<Texture2D>(Type.ToString() + "hero_" + Action.ToString() + "_" + "s" + "_" + texturesPhase.ToString()));
 
                     texturesPhase++;
                 }
@@ -152,7 +152,7 @@ namespace dung
 
             tmpdir %= (float)(Math.PI * 2);
 
-            if (Direction == "w")
+            /*if (Direction == "w")
             {
                 GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.04), tmpdir);
                 spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
@@ -161,7 +161,7 @@ namespace dung
             {
                 spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
                 GunInHand.Draw(spriteBatch, x, y - (int)(Textures[texturesPhase].Height * 0.04), tmpdir);
-            }
+            }*/
             
             if (GunInHand.TimeSinceLastShoot < GunInHand.FireSpeed[GunInHand.currentFirePause])
             {
@@ -170,6 +170,15 @@ namespace dung
                 spriteBatch.Draw(reloadTexture,
                 new Vector2(x - reloadTexture.Width / 2, (int)(y - Textures[texturesPhase].Height - reloadTexture.Height * 1.2)),
                 new Rectangle(0, 0, (int)(reloadTexture.Width * (double)GunInHand.TimeSinceLastShoot / GunInHand.FireSpeed[GunInHand.currentFirePause]), reloadTexture.Height), Color.White);
+            }
+
+            if (Direction == "s")
+            {
+                spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(Textures[texturesPhase], new Vector2(x - Textures[texturesPhase].Width / 2, y - Textures[texturesPhase].Height), new Rectangle(0, 0, Textures[texturesPhase].Width, Textures[texturesPhase].Height), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.FlipHorizontally, 0);
             }
         }
 
@@ -213,25 +222,25 @@ namespace dung
             if (keyboardState.IsKeyDown(Keys.W))
             {
                 Y -= speed;
-
-                Direction = "w";
             }
 
             if (keyboardState.IsKeyDown(Keys.A))
             {
                 X -= speed;
+
+                Direction = "s";
             }
 
             if (keyboardState.IsKeyDown(Keys.S))
             {
                 Y += speed;
-
-                Direction = "s";
             }
 
             if (keyboardState.IsKeyDown(Keys.D))
             {
                 X += speed;
+
+                Direction = "w";
             }
 
             if (timeSinceLastAction >= 100 && keyboardState.IsKeyDown(Keys.Space))

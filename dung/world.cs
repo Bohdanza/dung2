@@ -117,7 +117,7 @@ namespace dung
             //generating main dungeon
             dung.DungeonSynthesizer ds = new dung.DungeonSynthesizer(contentManager, 480, 480);
             
-            ds.SnakeGenerate(17, 2);
+            ds.SnakeGenerate(17, 16);
             ds.ReplaceRooms(17, 17);
             ds.PlaceWalls();
             ds.PlaceDoors();
@@ -320,7 +320,7 @@ namespace dung
             {
                 sampleBlocks.Add(new Block(i, 0, 0, contentManager));
             }
-
+            
             for (int i = 0; i < 2; i++)
             {
                 sampleGhosts.Add(new Ghost(contentManager, i, 0, 0, 0, 0));
