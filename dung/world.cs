@@ -20,7 +20,7 @@ namespace dung
         private button exitButton, settingsButton;
         private Slider musicSlider, soundsSlider;
         public List<List<Block>> blocks;
-        public const int blockDrawY = 36, BlockWidth = 36;
+        public const int blockDrawY = 140, BlockWidth = 140;
         private Texture2D darknessEffect, backgroundTexture, settingsDarkness;
         private List<MapObject> mapObjects;
         public MapObject referenceToHero { get; private set; }
@@ -117,8 +117,8 @@ namespace dung
             //generating main dungeon
             dung.DungeonSynthesizer ds = new dung.DungeonSynthesizer(contentManager, 480, 480);
             
-            ds.SnakeGenerate(17, 16);
-            ds.ReplaceRooms(17, 17);
+            ds.SnakeGenerate(11, 2);
+            ds.ReplaceRooms(11, 11);
             ds.PlaceWalls();
             ds.PlaceDoors();
 
@@ -493,10 +493,10 @@ namespace dung
                 {
                     l = 0;
 
-                    if (GetDist(referenceToHero.X, referenceToHero.Y, mapObjects[mapObjectsJ].X, mapObjects[mapObjectsJ].Y) <= 40)
-                    {
+                    //if (GetDist(referenceToHero.X, referenceToHero.Y, mapObjects[mapObjectsJ].X, mapObjects[mapObjectsJ].Y) <= 200)
+                    //{
                         mapObjects[mapObjectsJ].Draw(spriteBatch, drawx + (int)(mapObjects[mapObjectsJ].X * BlockWidth), drawy + (int)(mapObjects[mapObjectsJ].Y * blockDrawY), this);
-                    }
+                    //}
 
                     mapObjectsJ++;
                 }
@@ -510,6 +510,18 @@ namespace dung
                         //}
                     }
                 }
+            }
+
+            while (mapObjectsJ < mapObjects.Count)
+            {
+                l = 0;
+
+                //if (GetDist(referenceToHero.X, referenceToHero.Y, mapObjects[mapObjectsJ].X, mapObjects[mapObjectsJ].Y) <= 200)
+                //{
+                    mapObjects[mapObjectsJ].Draw(spriteBatch, drawx + (int)(mapObjects[mapObjectsJ].X * BlockWidth), drawy + (int)(mapObjects[mapObjectsJ].Y * blockDrawY), this);
+               //}
+
+                mapObjectsJ++;
             }
 
             //effects

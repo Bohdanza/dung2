@@ -38,7 +38,7 @@ namespace dung
             {
                 guns = new List<Gun>();
 
-                guns.Add(new Gun(contentManager, 0, 0, 0));
+                guns.Add(new Gun(contentManager, 14, 0, 0));
                 HP = 100;
 
                 Radius = 0.75;
@@ -106,7 +106,7 @@ namespace dung
                     listFromStrings.Add("Hero");
                   
                     guns[0].ShootInDirection(gameWorld, contentManager, X, Y, tmpdir, Radius, listFromStrings);
-                    Action = "at";
+                   // Action = "at";
                 }
             }
 

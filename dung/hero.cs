@@ -122,11 +122,18 @@ namespace dung
 
                 texturesPhase = 0;
 
-                while (File.Exists("Content/" + Type.ToString() + "hero_" + Action.ToString() + "_" + "s" + "_" + texturesPhase.ToString() + ".xnb"))
+                try
                 {
-                    Textures.Add(contentManager.Load<Texture2D>(Type.ToString() + "hero_" + Action.ToString() + "_" + "s" + "_" + texturesPhase.ToString()));
+                    while (true)
+                    {
+                        Textures.Add(contentManager.Load<Texture2D>(Type.ToString() + "hero_" + Action.ToString() + "_" + "s" + "_" + texturesPhase.ToString()));
 
-                    texturesPhase++;
+                        texturesPhase++;
+                    }
+                }
+                catch
+                {
+
                 }
 
                 texturesPhase = 0;
@@ -204,6 +211,8 @@ namespace dung
 
         public override void Update(ContentManager contentManager, GameWorld gameWorld, int myIndex)
         {
+            var rnd = new Random();
+
             if (timeSinceLastDamage <= 10)
             {
                 timeSinceLastDamage++;
@@ -219,26 +228,30 @@ namespace dung
 
             var keyboardState = Keyboard.GetState();
 
+            //speed is going to change randomly
+            double spdMin = 0.9;
+            double spd = (spdMin + rnd.NextDouble() * (1-spdMin)) * speed;
+
             if (keyboardState.IsKeyDown(Keys.W))
             {
-                Y -= speed;
+                Y -= spd;
             }
 
             if (keyboardState.IsKeyDown(Keys.A))
             {
-                X -= speed;
+                X -= spd;
 
                 Direction = "s";
             }
 
             if (keyboardState.IsKeyDown(Keys.S))
             {
-                Y += speed;
+                Y += spd;
             }
 
             if (keyboardState.IsKeyDown(Keys.D))
             {
-                X += speed;
+                X += spd;
 
                 Direction = "w";
             }
