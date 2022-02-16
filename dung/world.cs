@@ -20,7 +20,7 @@ namespace dung
         private button exitButton, settingsButton;
         private Slider musicSlider, soundsSlider;
         public List<List<Block>> blocks;
-        public const int blockDrawY = 140, BlockWidth = 140;
+        public const int blockDrawY = 40, BlockWidth = 40;
         private Texture2D darknessEffect, backgroundTexture, settingsDarkness;
         private List<MapObject> mapObjects;
         public MapObject referenceToHero { get; private set; }
@@ -115,12 +115,9 @@ namespace dung
             }
 
             //generating main dungeon
-            dung.DungeonSynthesizer ds = new dung.DungeonSynthesizer(contentManager, 480, 480);
-            
-            ds.SnakeGenerate(11, 2);
-            ds.ReplaceRooms(11, 11);
-            ds.PlaceWalls();
-            ds.PlaceDoors();
+            dung.DungeonSynthesizer ds = new dung.DungeonSynthesizer(contentManager, 0, 0);
+
+            ds.TownGenerate(255, 255, 100);
 
             List<List<int>> tmplist = ds.GetList();
 
@@ -136,7 +133,7 @@ namespace dung
                     {
                         int vr = rnd.Next(0, 10);
 
-                        if (vr == 0)
+                        if (vr < 3)
                         {
                             tmplist[i][j] = 3;
                         }
@@ -181,123 +178,27 @@ namespace dung
 
                 blocks.Add(tmpblock);
             }
-            
+
             //generating mobs, loot etc.
-            referenceToHero = AddObject(new Hero(contentManager, ds.rooms[0].Item1, ds.rooms[0].Item2));
 
-          //  AddObject(new Boss(contentManager, 0, ds.rooms[0].Item1, ds.rooms[0].Item2));
-            // AddObject(new Turret(contentManager, ds.rooms[0].Item1, ds.rooms[0].Item2 + 4, 0));
+            int x1 = 128;
+            int y1 = 128;   
 
-            List<List<int>> fightingRooms = new List<List<int>>();
-
-            for (int i = 1; i < ds.rooms.Count; i++)
+            while (!blocks[x1][y1].passable)
             {
-                if (ds.roomsRarity[i] >= 0)
-                {
-                    insertRoomObtaclesAt(contentManager, ds.rooms[i].Item1 - 8, ds.rooms[i].Item2 - 8, 16, 16, "", 7, 1, 3);
-
-                    int roomDif = ds.roomsRarity[i];
-                    int trapscount = roomDif;
-
-                    if (roomDif == 0)
-                    {
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(3, 5), 0);
-
-                        // insertMobs(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, 1, 2);
-                        // insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
-                    }
-                    else if (roomDif == 1)
-                    {
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(4, 7), 0);
-
-                        if (rnd.Next(0, 2) == 0)
-                        {
-                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(1, 3), 1);
-                        }
-                        else
-                        {
-                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(1, 3), 2);
-                        }
-
-                        //insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
-                    }
-                    else if (roomDif == 2)
-                    {
-                        if (rnd.Next(0, 100) <= 75)
-                        {
-                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(5, 8), 0);
-                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(2, 4), 1);
-                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(2, 4), 2);
-                        }
-                        else
-                        {
-                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(2, 3), 0);
-                            insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, 1, 3);
-                        }
-                        // insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
-                    }
-                    else if (roomDif == 3)
-                    {
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(11, 16), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(5, 10), 1);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(3, 6), 2);
-
-                        // insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
-                        //  insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
-                    }
-                    else
-                    {
-                        roomDif = 4;
-
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(12, 21), 0);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(7, 14), 1);
-                        insertMobs(contentManager, ds.rooms[i].Item1 - 9, ds.rooms[i].Item2 - 9, 17, 17, rnd.Next(4, 7), 2);
-
-                        //    insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 13, 13, new Turret(contentManager, 0, 0, sampleTurrets[0]));
-                        //insertObject(contentManager, ds.rooms[i].Item1 - 7, ds.rooms[i].Item2 - 7, 17, 17, new Turret(contentManager, 0, 0, sampleTurrets[0]));
-                    }
-
-                    int tmptype = 0;
-
-                    List<Gun> tmprar = new List<Gun>();
-
-                    for (int tmprarc = 0; tmprarc < sampleGuns.Count; tmprarc++)
-                    { 
-                        if (sampleGuns[tmprarc].rarity == roomDif)
-                        {
-                            tmprar.Add(sampleGuns[tmprarc]);
-                        }
-                    }
-
-                    tmptype = rnd.Next(0, tmprar.Count);
-
-                    if (tmptype < tmprar.Count)
-                    {
-                        insertGun(contentManager, ds.rooms[i].Item1 - 6, ds.rooms[i].Item2 - 6, 13, 13, tmprar[tmptype]);
-                    }
-
-                    for (int tmpTraps = 0; tmpTraps <= trapscount; tmpTraps++)
-                    {
-                        insertObject(contentManager, ds.rooms[i].Item1 - 6, ds.rooms[i].Item2 - 6, 12, 12, new Trap(contentManager, 0, 0, sampleTraps[0]));
-                    }
-                }
-                else if (ds.roomsRarity[i] == -1)
-                {
-                    AddObject(new Trader(contentManager, ds.rooms[i].Item1, ds.rooms[i].Item2, sampleTraders[0]));
-                }
-                else
-                {
-                    AddObject(new Boss(contentManager, 0, ds.rooms[i].Item1, ds.rooms[i].Item2));
-                }
+                x1 = rnd.Next(0, 255);
+                y1 = rnd.Next(0, 255);
             }
+            
+            referenceToHero = AddObject(new Hero(contentManager, x1, y1));
 
             soundEffectInstance1 = backgroundSong.CreateInstance();
-
+             
             soundEffectInstance1.IsLooped = true;
             soundEffectInstance1.Volume = 0.3f;
 
             soundEffectInstance1.Play();
-        }
+        } 
 
         //TODO:
         /// <summary>

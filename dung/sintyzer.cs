@@ -524,7 +524,43 @@ namespace dung
             }
         }
 
-        public void PlaceSquare(int x1, int y1, int x2, int y2, int placeType)
+        public void TownGenerate(int x, int y, int buildingsCount)
+        {
+            mainArray = new List<List<int>>();
+
+            for (int i = 0; i < y; i++)
+            {
+                List<int> arr = new List<int>();
+
+                for (int j = 0; j < x; j++)
+                {
+                    arr.Add(1);
+                }
+
+                mainArray.Add(arr);
+            }
+
+            List<Tuple<int, int>> alreadyPlaced = new List<Tuple<int, int>>();
+
+            var rnd = new Random();
+
+            int c = 0;
+
+            while (c < buildingsCount)
+            {
+                int x1 = rnd.Next(0, x);
+                int y1 = rnd.Next(0, y);
+
+                int widht = rnd.Next(6, 18);
+                int height = rnd.Next(6, 18);
+
+                PlaceSquare(x1, y1, x1 + widht, y1 + height, 7);
+
+                c++;
+            }
+        }
+
+        public List<Tuple<int, int>> PlaceSquare(int x1, int y1, int x2, int y2, int placeType)
         {
             int xbegin = Math.Max(0, x1), xend = Math.Min(x2, mainArray.Count);
             int ybegin = Math.Max(0, y1), yend = Math.Min(y2, mainArray[0].Count);
@@ -545,13 +581,19 @@ namespace dung
                 yend = tmp;
             }
 
+            List<Tuple<int, int>> arr = new List<Tuple<int, int>>();
+
             for (int i = xbegin; i < xend; i++)
             {
                 for (int j = ybegin; j < yend; j++)
                 {
                     mainArray[i][j] = placeType;
+
+                    arr.Add(new Tuple<int, int>(i, j));
                 }
             }
+
+            return arr;
         }
 
         public void Visualize(SpriteBatch spriteBatch, int x, int y, int width, int height)
@@ -560,11 +602,11 @@ namespace dung
             {
                 for (int j = 0; j < mainArray[i].Count; j++)
                 {
-                    if (this.mainArray[i][j] == 1)
+                    if (this.mainArray[i][j] != 0)
                     {
                         spriteBatch.Draw(texture, new Vector2(i * width + x, j * height + y), Color.White);
                     }
-                    else if (this.mainArray[i][j] == 2)
+                    else
                     {
                         spriteBatch.Draw(texture, new Vector2(i * width  + x, j * height + y), Color.Black);
                     }

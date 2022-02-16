@@ -376,7 +376,7 @@ namespace dung
 
                 UpdateTextures(contentManager, true);
             }
-            else if (timeSinceLastUpdateTexture >= 16)
+            else if (timeSinceLastUpdateTexture >= 5)
             {
                 timeSinceLastUpdateTexture = 0;
 
