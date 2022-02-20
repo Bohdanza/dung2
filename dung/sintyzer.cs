@@ -551,8 +551,8 @@ namespace dung
                 int x1 = rnd.Next(0, x);
                 int y1 = rnd.Next(0, y);
 
-                int widht = rnd.Next(6, 18);
-                int height = rnd.Next(6, 18);
+                int widht = rnd.Next(1, 2);
+                int height = rnd.Next(1, 2);
 
                 PlaceSquare(x1, y1, x1 + widht, y1 + height, 7);
 

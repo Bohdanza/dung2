@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace dung
 {
-    public class Ghost:MapObject
+    public class Ghost : MapObject
     {
         public override double X { get; protected set; }
         public override double Y { get; protected set; }
@@ -26,7 +26,7 @@ namespace dung
         private double degDirection, speed;
         private string pact = "id";
 
-        private int texturePhase, timeSinceLastAttack, attackSpeed, timeSinceLastUpdateTexture = 0, timeSinceLastDamage=2;
+        private int texturePhase, timeSinceLastAttack, attackSpeed, timeSinceLastUpdateTexture = 0, timeSinceLastDamage = 2;
         public override double Radius { get; protected set; }
         public override int HP { get; protected set; }
         protected double viewRadius { get; set; }
@@ -67,7 +67,7 @@ namespace dung
             WorkingY = workingY;
 
             Type = type;
-            
+
             //shit in files
             using (StreamReader sr = new StreamReader("info/global/mobs/" + Type.ToString() + "/m.info"))
             {
@@ -97,7 +97,7 @@ namespace dung
                     }
                 }
             }
-            
+
             updateTexture(contentManager, true);
 
             loadSounds(contentManager);
@@ -199,8 +199,6 @@ namespace dung
         {
             if (reload)
             {
-                direction = "s";
-
                 Textures = new List<Texture2D>();
 
                 texturePhase = 0;
@@ -259,17 +257,17 @@ namespace dung
 
             int prc = 7;
 
-            if(Action=="dm")
+            if (Action == "dm")
             {
                 prc = 30;
             }
 
-            if(Action=="di")
+            if (Action == "di")
             {
                 prc = 70;
             }
 
-            if(rnd.Next(0, 100)<=prc)
+            if (rnd.Next(0, 100) <= prc)
             {
                 var partref = gameWorld.AddObject(new Particle(contentManager, X + (rnd.NextDouble() - 0.5), Y + (rnd.NextDouble() - 0.5), 0, 120, 0));
 
@@ -361,10 +359,10 @@ namespace dung
 
             //to check if it has already dropped
             if (Action == "di" && texturePhase == Textures.Count - 1 && !alreadyDropped)
-            {   
+            {
                 alreadyDropped = true;
 
-                foreach(var currentItem in Loot)
+                foreach (var currentItem in Loot)
                 {
                     int c = rnd.Next(currentItem.Item2, currentItem.Item2);
 
@@ -379,7 +377,7 @@ namespace dung
             }
 
             //playing sounds
-            if ((rnd.Next(0, 10000) <= 0 || (Action == "at" && timeSinceLastDamage==1)) && soundEffects.Count > 0)
+            if ((rnd.Next(0, 10000) <= 0 || (Action == "at" && timeSinceLastDamage == 1)) && soundEffects.Count > 0)
             {
                 double dist_to_hero = gameWorld.GetDist(X, Y, gameWorld.referenceToHero.X, gameWorld.referenceToHero.Y);
 
@@ -393,6 +391,14 @@ namespace dung
                 }
             }
 
+            if (degDirection < Math.PI * 0.5 || degDirection > Math.PI * 1.5)
+            {
+                direction = "w";
+            }
+            else
+            {
+                direction = "s";
+            }
 
             timeSinceLastUpdateTexture++;
 
@@ -402,7 +408,7 @@ namespace dung
 
                 updateTexture(contentManager, true);
             }
-            else if(timeSinceLastUpdateTexture>=12)
+            else if(timeSinceLastUpdateTexture>=5)
             {
                 timeSinceLastUpdateTexture = 0;
 
@@ -414,14 +420,7 @@ namespace dung
 
         public override void Draw(SpriteBatch spriteBatch, int x, int y, GameWorld gameWorld)
         {
-            if (degDirection * 57.2957795 >= 90 && degDirection * 57.2957795 <= 270)
-            {
-                spriteBatch.Draw(Textures[texturePhase], new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height), Color.White);
-            }
-            else
-            {
-                spriteBatch.Draw(Textures[texturePhase], new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height), new Rectangle(0, 0, Textures[texturePhase].Width, Textures[texturePhase].Height), Color.White, 0f, new Vector2(0, 0), 1f, SpriteEffects.FlipHorizontally, 0);
-            }
+            spriteBatch.Draw(Textures[texturePhase], new Vector2(x - Textures[texturePhase].Width / 2, y - Textures[texturePhase].Height), Color.White);
         }
 
         public override void Attack(int strenght, GameWorld gameWorld)

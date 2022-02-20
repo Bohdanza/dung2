@@ -137,6 +137,15 @@ namespace dung
                         {
                             tmplist[i][j] = 3;
                         }
+
+                        vr = rnd.Next(0, 255);
+
+                        if(vr==0)
+                        {
+                            var grev = AddObject(new Ghost(contentManager, 0, i, j, i, j, sampleGhosts[0]));
+
+                            ((Ghost)grev).influenceRect = new Rectangle(0, 0, 255, 255);
+                        }
                     }
 
                     if (tmplist[i][j] == 2)
