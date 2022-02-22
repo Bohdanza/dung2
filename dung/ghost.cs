@@ -391,7 +391,7 @@ namespace dung
                 }
             }
 
-            if (degDirection < Math.PI * 0.5 || degDirection > Math.PI * 1.5)
+            if (degDirection > Math.PI)
             {
                 direction = "w";
             }
